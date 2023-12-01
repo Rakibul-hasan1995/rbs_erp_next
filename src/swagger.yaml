@@ -1,0 +1,2462 @@
+openapi: '3.0.0'
+servers:
+  - description: dev server
+    url: http://localhost:3000/api/v1
+info:
+  description: RBS Inventory API
+  version: "1.0.0"
+  title: RBS Inventory API
+  contact:
+    email: rakibulhasan.bdm@gmail.com
+    name: Rakibul Hasan
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags: 
+  - name: Public-routes
+    description: 'Public Routes'
+
+  - name: User-routes
+    description: 'User Routes'
+
+  - name: User 
+    description: 'users endpoints'
+
+  - name: Orders
+    description: 'Orders endpoints'
+
+  - name: Production
+    description: 'Productions endpoints'
+
+  - name: Receive_challan
+    description: 'Receive_challan endpoints'
+
+  - name: Delivery_challan
+    description: 'Delivery_challan endpoints'
+
+  - name: Invoice
+    description: 'Invoices endpoints'
+
+  - name: Payment
+    description: 'Payment endpoints'
+
+  - name: Purchase-Orders
+    description: 'Purchase orders / sub contactor endpoints'
+
+  - name: Purchase-Orders-invoice
+    description: 'Purchase-order invoice'
+
+  - name: Purchase-Payments
+    description: 'purchase-payments endpoints' 
+paths:
+  '/auth/signup':
+     post:
+       description: Public can create own account 
+       tags: [User, Public-routes]
+       requestBody:
+          $ref: '#/components/requestBodies/authSignup'
+       responses:
+        '201':
+            description: Signup Successful
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      format: int32
+                      example: 201
+                    message:
+                      type: string
+                      example: Signup Successful
+                    data:
+                      type: object
+                      properties:
+                        access_token:
+                          type: string
+                          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyX25hbWUiOiJSYWtpYnVsIiwiVXNlcl9pZCI6IjYyOTZmYTA0NDI2NzIzNGVjYTllNGMyYiIsIlVzZXJfcm9sZSI6ImFkbWluIiwiaWF0IjoxNjkzMjE2NzQ1LCJleHAiOjE2OTU4MDg3NDV9.QRL5EqxwVDPLorpX4GVwvtx21_Xnt2vYsuk4x5Xr4qE
+                    links:
+                      type: object
+                      properties:
+                        self:
+                          type: string
+                          example: '/auth/signup'
+                        signin:
+                          type: string
+                          example: '/auth/signin'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+  '/auth/signin':
+    post:
+      description: signin user
+      tags:
+        - "Public-routes"
+        - "User"
+      requestBody:
+        content:
+          'application/json':
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    example: xyz@example.com
+                  password: 
+                    type: string
+                    example: abcs#5790
+                required: [email, password]
+      responses:
+        '200':
+          description: Successfully login
+          content:
+            'application/json':
+              schema:
+               type: object
+               properties:
+                    code:
+                      type: integer
+                      format: int32
+                      example: 200
+                    message:
+                      type: string
+                      example: Signin Successful
+                    data:
+                      type: object
+                      properties:
+                        access_token:
+                          type: string
+                          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyX25hbWUiOiJSYWtpYnVsIiwiVXNlcl9pZCI6IjYyOTZmYTA0NDI2NzIzNGVjYTllNGMyYiIsIlVzZXJfcm9sZSI6ImFkbWluIiwiaWF0IjoxNjkzMjE2NzQ1LCJleHAiOjE2OTU4MDg3NDV9.QRL5EqxwVDPLorpX4GVwvtx21_Xnt2vYsuk4x5Xr4qE
+                    links:
+                      type: object
+                      properties:
+                        self:
+                          type: string
+                          example: '/auth/login'
+                        get-me:
+                          type: string
+                          example: '/user/34dkjhou304jsdf'
+        '403': 
+          $ref: '#/components/responses/403'
+        '500': 
+          $ref: '#/components/responses/500'
+ 
+  '/users':
+    get: 
+      security:
+        - bearerAuth: []
+      tags: [User ]
+      description: only admin can Get users
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/searchBy'
+        - $ref: '#/components/parameters/rollParams'
+      responses:
+        '200':
+          description: Successfully get users
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+                  pagination:
+                    $ref: '#/components/schemas/pagination'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        
+        - User
+      description: admin can create user
+      requestBody:
+        $ref: '#/components/requestBodies/createUser'
+      responses: 
+        '201':
+          description: Successfully create user
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully create user
+                  data:
+                    $ref: '#/components/schemas/user'
+                  links:
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        self:
+                          type: string
+                          example: /user/507f1f77bcf86cd799439011
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
+  '/users/{_id}':
+    get:   
+      security:
+        - bearerAuth: []
+      tags: [User ]
+      description: get single user
+      parameters:
+        - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully get users
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/user'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+    put:
+      security:
+        - bearerAuth: []
+      description: update user data
+      tags:
+        
+        - User-routes
+        - User
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        description: a JSON object contain user information
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/user'
+         
+      responses:
+        '200':
+          description: Successfully update user
+          content:
+            'application/json':
+              schema: 
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Successfully update user
+                  data: 
+                    anyOf:
+                      - $ref: '#/components/schemas/user'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'        
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can delete any user !but its danger
+      tags:
+        
+        - User
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete User
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete user
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'          
+  '/orders':
+    get:
+      security:
+        - bearerAuth: []
+      description: get Orders
+      tags:
+        - Orders
+        - User-routes
+        
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/searchBy'
+        - $ref: '#/components/parameters/expandParam'
+        - $ref: '#/components/parameters/filterKey'
+        - $ref: '#/components/parameters/filterValue'
+      responses:
+        '200':
+          description: get orders
+          content:
+            'application/json':
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  data:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/order'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    post:
+      security:
+        - bearerAuth: []
+      description: create order
+      tags: 
+        - Orders
+        - User-routes
+        
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/order'
+      responses:
+        '201':
+          description: Successfully create order
+          content:
+            'application/json':
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/order'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+  '/orders/{_id}':
+    get:
+      description: get single order by _id
+      security:
+        - bearerAuth: []
+      tags:
+        - Orders 
+        - User-routes
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+       - $ref: '#/components/parameters/expandParam'
+
+      responses:
+        '200':
+          description: get single order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/order'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update Order By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Orders 
+        
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/order'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/order'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Order !but its danger!!!
+      tags:
+        
+        - Orders
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete Order
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    patch:
+      security:
+        - bearerAuth: []
+      description: hit this route for duplicate this order by id
+      tags:
+        - Orders
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '201':
+          description: Successfully clone order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 201
+                  message: 
+                    type: string
+                    example: Successfully delete Order
+                  data:
+                    anyOf:
+                     -  $ref: '#/components/schemas/order'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+  '/productions':
+      get:
+        description: Get 'Productions
+        security:
+          - bearerAuth: []
+        tags:
+          - Production
+          
+        parameters:
+          - $ref: '#/components/parameters/pageParams'
+          - $ref: '#/components/parameters/limitParams'
+          - $ref: '#/components/parameters/expandParam'
+          - $ref: '#/components/parameters/sortTypeParams'
+          - $ref: '#/components/parameters/sortKey'
+          - $ref: '#/components/parameters/search'
+          - $ref: '#/components/parameters/searchBy'
+        responses:
+          '200':
+            description: Get Productions
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data:
+                      $ref: '#/components/schemas/production'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500' 
+      post:
+        description: create production
+        security:
+          - bearerAuth: []
+        tags:
+          - Production
+        requestBody:
+          content:
+            'application/json':
+              schema: 
+                $ref: '#/components/schemas/production'
+        responses:
+          '201':
+            description: Successfully create Production
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data: 
+                      $ref: '#/components/schemas/production'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500'
+  '/productions/{_id}':
+    get:
+      description: get single production by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Production
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+       - $ref: '#/components/parameters/expandParam'
+
+      responses:
+        '200':
+          description: get single order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/production'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update Productions By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Production 
+        
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/production'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/production'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Production !but its danger!!!
+      tags:
+        - Production
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Production
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete Production
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+  '/receive-challan':
+      get:
+        description: Get Receive_challan
+        security:
+          - bearerAuth: []
+        tags:
+          - Receive_challan
+        parameters:
+          - $ref: '#/components/parameters/pageParams'
+          - $ref: '#/components/parameters/limitParams'
+          - $ref: '#/components/parameters/expandParam'
+          - $ref: '#/components/parameters/sortTypeParams'
+          - $ref: '#/components/parameters/sortKey'
+          - $ref: '#/components/parameters/search'
+          - $ref: '#/components/parameters/searchBy'
+        responses:
+          '200':
+            description: Get Receive_challan Challan
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data:
+                      $ref: '#/components/schemas/challan'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500' 
+      post:
+        description: create Receive Challan
+        security:
+          - bearerAuth: []
+        tags:
+          - Receive_challan
+        requestBody:
+          content:
+            'application/json':
+              schema: 
+                $ref: '#/components/schemas/challan'
+        responses:
+          '201':
+            description: Successfully create Receive Challan
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 201
+                    data: 
+                      $ref: '#/components/schemas/challan'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500'
+  '/receive-challan/{_id}':
+    get:
+      description: get single challan by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Receive_challan
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+       - $ref: '#/components/parameters/expandParam'
+      responses:
+        '200':
+          description: get single challan
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/challan'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update challan By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Receive_challan 
+        
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/challan'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/challan'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Challan !but its danger!!!
+      tags:
+        - Receive_challan
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Receive_challan Challan
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete rec Challan
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+
+  '/delivery-challan':
+      get:
+        description: Get Delivery_challan
+        security:
+          - bearerAuth: []
+        tags:
+          - Delivery_challan
+        parameters:
+          - $ref: '#/components/parameters/pageParams'
+          - $ref: '#/components/parameters/limitParams'
+          - $ref: '#/components/parameters/expandParam'
+          - $ref: '#/components/parameters/sortTypeParams'
+          - $ref: '#/components/parameters/sortKey'
+          - $ref: '#/components/parameters/search'
+          - $ref: '#/components/parameters/searchBy'
+        responses:
+          '200':
+            description: Get Delivery Challan
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data:
+                      $ref: '#/components/schemas/challan'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500' 
+      post:
+        description: create Delivery Challan
+        security:
+          - bearerAuth: []
+        tags:
+          - Delivery_challan
+        requestBody:
+          content:
+            'application/json':
+              schema: 
+                $ref: '#/components/schemas/challan'
+        responses:
+          '201':
+            description: Successfully create Delivery Challan
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data: 
+                      $ref: '#/components/schemas/challan'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500'
+  '/delivery-challan/{_id}':
+    get:
+      description: get single challan by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Delivery_challan
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+       - $ref: '#/components/parameters/expandParam'
+      responses:
+        '200':
+          description: get single challan
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/challan'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update challan By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Delivery_challan 
+        
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/challan'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/challan'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Challan !but its danger!!!
+      tags:
+        - Delivery_challan
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Delivery Challan
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete rec Challan
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+  '/Invoices':
+      get:
+        description: Get Invoices
+        security:
+          - bearerAuth: []
+        tags:
+          - Invoice
+        parameters:
+          - $ref: '#/components/parameters/pageParams'
+          - $ref: '#/components/parameters/limitParams'
+          - $ref: '#/components/parameters/expandParam'
+          - $ref: '#/components/parameters/sortTypeParams'
+          - $ref: '#/components/parameters/sortKey'
+          - $ref: '#/components/parameters/search'
+          - $ref: '#/components/parameters/searchBy'
+        responses:
+          '200':
+            description: Get Invoices
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data:
+                      $ref: '#/components/schemas/invoice'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500' 
+      post:
+        description: create Invoice
+        security:
+          - bearerAuth: []
+        tags:
+          - Invoice
+        requestBody:
+          content:
+            'application/json':
+              schema: 
+                $ref: '#/components/schemas/invoice'
+        responses:
+          '200':
+            description: Successfully create invoice
+            content:
+              'application/json':
+                schema:
+                  type: object
+                  properties:
+                    code:
+                      type: integer
+                      example: 200
+                    data: 
+                      $ref: '#/components/schemas/invoice'
+          '400': 
+            $ref: '#/components/responses/400'
+          '401': 
+            $ref: '#/components/responses/401'
+          '500': 
+            $ref: '#/components/responses/500'
+  '/invoices/{_id}':
+    get:
+      description: get single invoice by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Invoice
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+       - $ref: '#/components/parameters/expandParam'
+      responses:
+        '200':
+          description: get single Invoice
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/invoice'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update invoice By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Invoice 
+        
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/invoice'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/invoice'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any invoice !but its danger!!!
+      tags:
+        - Invoice
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete invoice
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete invoice
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+  '/payments':
+    get:
+      description: Get Payment
+      security:
+        - bearerAuth: []
+      tags:
+        - Payment
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/expandParam'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/searchBy'
+      responses:
+        '200':
+          description: Get Payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/payment'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500' 
+    post:
+      description: create Payment
+      security:
+        - bearerAuth: []
+      tags:
+        - Payment
+      requestBody:
+        content:
+          'application/json':
+            schema: 
+              $ref: '#/components/schemas/payment'
+      responses:
+        '200':
+          description: Successfully create Payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data: 
+                    $ref: '#/components/schemas/payment'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+  '/payments/{_id}':
+    get:
+      description: get single payment by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Payment
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: get single Payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/payment'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update payment By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Payment 
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/payment'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/payment'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any payment !but its danger!!!
+      tags:
+        - Payment
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete payment
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+
+  '/purchase-orders':
+    get:
+      description: Get Purchase orders / sub contractor
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/expandParam'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+      responses:
+        '200':
+          description: Get Payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchaseOrder'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500' 
+    post:
+      description: create Purchase-Orders
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders
+      requestBody:
+        content:
+          'application/json':
+            schema: 
+              $ref: '#/components/schemas/purchaseOrder'
+      responses:
+        '200':
+          description: Successfully create purchase Order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data: 
+                    $ref: '#/components/schemas/purchaseOrder'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+  '/purchase-orders/{_id}':
+    get:
+      description: get single Purchase-Order by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: get single Purchase-Order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchaseOrder'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update Purchase-Order By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders 
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/purchaseOrder'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/purchaseOrder'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Purchase-Order !but its danger!!!
+      tags:
+        - Purchase-Orders
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Purchase-Order
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete Purchase-Order
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+  '/purchase-order-invoices':
+    get:
+      description: Get Purchase-Orders-invoice
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders-invoice
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/expandParam'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+      responses:
+        '200':
+          description: Get Purchase-Orders-invoice Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchaseOrderInvoice'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500' 
+    post:
+      description: create Purchase-Orders-invoice
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders-invoice
+      requestBody:
+        content:
+          'application/json':
+            schema: 
+              $ref: '#/components/schemas/purchaseOrderInvoice'
+      responses:
+        '201':
+          description: Successfully create Purchase-Orders-invoice
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data: 
+                    $ref: '#/components/schemas/purchaseOrderInvoice'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+  '/purchase-order-invoices/{_id}':
+    get:
+      description: get single Purchase-Orders-invoice by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders-invoice
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: get single Purchase-Orders-invoice
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchaseOrderInvoice'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update Purchase-Orders-invoice By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Orders-invoice
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/purchaseOrderInvoice'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/purchaseOrderInvoice'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Purchase-Orders-invoice !but its danger!!!
+      tags:
+        - Purchase-Orders-invoice
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Purchase-Orders-invoice
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete Purchase-Orders-invoice
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+
+  '/purchase-payments':
+    get:
+      description: Get Purchase-payments
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Payments
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/limitParams'
+        - $ref: '#/components/parameters/expandParam'
+        - $ref: '#/components/parameters/sortTypeParams'
+        - $ref: '#/components/parameters/sortKey'
+        - $ref: '#/components/parameters/search'
+      responses:
+        '200':
+          description: Get Purchase-payment Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchase_payments'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500' 
+    post:
+      description: create Purchase-Orders-invoice
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Payments
+      requestBody:
+        content:
+          'application/json':
+            schema: 
+              $ref: '#/components/schemas/purchase_payments'
+      responses:
+        '201':
+          description: Successfully create Purchase-payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  data: 
+                    $ref: '#/components/schemas/purchase_payments'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'
+  '/purchase-payments/{_id}':
+    get:
+      description: get single Purchase-payment by _id (details)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Payments
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: get single Purchase-payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/purchase_payments'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    put:
+      description: Update Purchase-payment By _id (only admin can update)
+      security:
+        - bearerAuth: []
+      tags:
+        - Purchase-Payments
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/purchase_payments'
+      responses:
+        '200':
+          description: update Successful
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  data:
+                   anyOf:
+                     -  $ref: '#/components/schemas/purchase_payments'
+        '400':   
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+    delete:
+      security:
+        - bearerAuth: []
+      description: only admin can Delete any Purchase-payment !but its danger!!!
+      tags:
+        - Purchase-Payments
+      parameters:
+       - $ref: '#/components/parameters/pathParameters_id'
+      responses:
+        '200':
+          description: Successfully Delete Purchase-payment
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: Successfully delete Purchase-payment
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '500': 
+          $ref: '#/components/responses/500'  
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        email:
+          type: string
+          format: email
+        user_name:
+          type: string
+          example: example user name
+        roll: 
+          type: string
+          enum:
+            - user
+            - customer
+            - supplier
+            - admin
+            - super-admin
+          default: user
+        password:
+          type: string
+          description: hashed password
+          example: abcs#5790
+        contact_details:
+          type: object
+          properties:
+            address: 
+              type: string
+              example: 123 Main Street, apt 4B San Diego CA, 91911
+            phone:
+              type: string
+              example: '+8801607876255'
+        createdAt: 
+          type: string
+          format: date-time
+        updatedAt: 
+          type: string
+          format: date-time
+        self_link:
+          type: string
+          example: /user/507f1f77bcf86cd799439011
+      # required: [_id, email, roll, createdAt, updatedAt, self_link]
+    order:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        customer:
+          type: string
+          example: 64f73e42ed6c56653b211c65
+        order_name:
+          type: string
+          example: abcs
+        program_no:
+          type: string
+          example: 23-0001
+        qty:
+          type: integer
+          example: 5000
+        rate: 
+          type: integer
+          format: float
+          example: 0.5
+        currency: 
+          type: string
+          enum:
+            - USD
+            - BDT
+          example: USD
+        unit: 
+          type: string
+          example: Dzn
+        stitching:
+          type: integer
+          format: int32
+          example: 2200
+        category: 
+          type: string
+          example: t-shirt
+        tags:
+          type: array
+          items:
+            type: string
+            example: time-out, t-shirt, us-polo
+        description:
+          type: string
+          example: we need 2.56 cone emb thread for complete this order
+        order_date:
+          type: string
+          format: date-time
+        shipment_date: 
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - develop
+            - pending
+            - processing
+            - completed
+            - shipped
+        image_gallery:
+          type: array
+          items:
+            type: string
+            example: 64f73e42ed6c56653b211c65
+        cover_photo:
+          type: string
+          example: 64f73e42ed6c56653b211c65
+      required: [_id, customer, order_name, program_no, qty, rate, currency, Stitching, order_date, status, cover_photo]
+    production:
+      type: object  
+      properties:
+        date: 
+          type: string
+          format: date-time
+        shift:
+          type: string
+          enum:
+            - 1st shift
+            - 2nd shift
+            - 3rd shift
+          example: 1st shift
+        total_amount:
+          type: integer
+          format: int32
+          example: 2545.05
+        production_data:
+          $ref: '#/components/schemas/production_data'
+        
+      required:
+        - date
+        - shift
+        - machine_no
+        - production_data
+        - order
+    production_data:
+       type: object
+       properties:
+            order:
+              type: string
+              example: 507f1f77bcf86cd799439011
+            qty: 
+              type: integer
+              format: int32
+              example: 520
+            machine_no:
+              type: integer
+              example: 1
+            operator:
+              type: string
+              example: 507f1f77bcf86cd799439011
+            assistant_operator:
+              type: string
+              example: 507f1f77bcf86cd799439011
+            helper:
+              type: string
+              example: 507f1f77bcf86cd799439011
+            remarks: 
+              type: string
+              example: electricity problem - 2h off
+       required:
+         - order
+         - qty
+         - operator
+    challan:
+      type: object
+      properties:
+        customer:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        date:
+          type: string
+          format: date-time
+        challan_no:
+          type: string
+          example: 2105
+        bag_qty:
+          type: integer
+          example: 1
+        remarks:
+          type: string
+          example: its urgent
+        items:
+          $ref: '#/components/schemas/challan_items'
+      required:
+        - customer
+        - date
+        - challan_no
+        - items
+    challan_items:
+      type: array
+      items:
+       type: object
+       properties:
+          order:
+            type: string
+            example: 507f1f77bcf86cd799439011 
+          qty:
+            type: integer
+            format: int32
+            example: 501
+          emb_reject_qty:
+            type: integer
+            example: 0
+          fabric_reject_qty:
+            type: integer
+            example: 0
+          remarks:
+            type: string
+            example: example remarks
+      required:
+        - qty
+        - order
+    invoice:
+      type: object
+      properties:
+        customer:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        date:
+          type: string
+          format: date-time
+        invoice_no:
+          type: string
+          example: 23-0115
+        customer_bill_no:
+          type: integer
+          example: 1
+        discount:
+          type: integer
+          example: 0
+        amount: 
+          type: integer
+          example: 5000463.052
+        status: 
+          type: string
+          example: sent
+        customer_prev_deu:
+          type: integer
+          example: 5000
+        items:
+          type: array
+          items:
+           type: string
+           example: 507f1f77bcf86cd799439011
+        remarks:
+          type: string
+          example: ''
+    
+      required:
+        - customer
+        - date
+        - invoice_no
+        - customer_bill_no
+        - amount
+        - customer_prev_deu
+        - items
+    payment:
+      type: object
+      properties:
+        customer:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        date: 
+          type: string
+          format: date-time
+        receipt_no:
+          type: string
+          example: 506
+        invoice:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        received_by:
+          type: string
+          example: john doe
+        amount: 
+          type: integer
+          example: 10000
+        payment_mode:
+          type: string
+          enum:
+            - cash
+            - cheque
+            - lc
+            - mobile-banking
+            - settlement
+        customer_prev_deu:
+          type: integer
+          example: 0000
+        description:
+          type: string
+          example: example description
+        cheque_info:
+          description: if payment_mode = cheque
+          type: object
+          properties:
+            cheque_date:
+              type: string
+              format: date-time
+            bank_name:
+              type: string
+              example: ABC Bank
+            brach_name:
+              type: string
+              example: Demo branch
+            cheque_no:
+              type: string
+              example: EX23723498P-57934
+    purchaseOrder:
+      type: 
+        object
+      properties:
+        supplier:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        order: 
+          type: string
+          example : 507f1f77bcf86cd799439011
+        qty: 
+          type: integer
+          example: 500
+        rate: 
+          type: integer
+          example: 15
+        description: 
+          type: string
+          example: example description
+        order_date: 
+          type: string
+          format: date-time
+        shipment_date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - develop
+            - processing
+            - delivered
+            - complete
+            - invoiced
+    
+    purchaseOrderInvoice:
+      type: object
+      properties:
+        supplier:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        date:
+          type: string
+          format: date-time
+        invoice_no:
+          type: string
+          example: 23-0115
+        supplier_bill_no:
+          type: integer
+          example: 1
+        discount:
+          type: integer
+          example: 0
+        amount: 
+          type: integer
+          example: 5000463.052
+        status: 
+          type: string
+          example: sent
+        supplier_prev_deu:
+          type: integer
+          example: 5000
+        items:
+          type: array
+          items:
+           type: string
+           example: 507f1f77bcf86cd799439011
+        remarks:
+          type: string
+          example: ''
+    
+      required:
+        - supplier
+        - date
+        - invoice_no
+        - supplier_bill_no
+        - amount
+        - supplier_prev_deu
+        - items
+
+
+    purchase_payments:
+      type: object
+      properties:
+        supplier:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        date: 
+          type: string
+          format: date-time
+        receipt_no:
+          type: string
+          example: 506
+        invoice:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        received_by:
+          type: string
+          example: john doe
+        amount: 
+          type: integer
+          example: 10000
+        payment_mode:
+          type: string
+          enum:
+            - cash
+            - cheque
+            - lc
+            - mobile-banking
+            - settlement
+        supplier_prev_deu:
+          type: integer
+          example: 0000
+        description:
+          type: string
+          example: example description
+        cheque_info:
+          description: if payment_mode = cheque
+          type: object
+          properties:
+            cheque_date:
+              type: string
+              format: date-time
+            bank_name:
+              type: string
+              example: ABC Bank
+            brach_name:
+              type: string
+              example: Demo branch
+            cheque_no:
+              type: string
+              example: EX23723498P-57934
+    gallery:
+      type: object
+      properties:
+        tags: 
+          type: array
+          items:
+            type: string
+            example: time-out, t-shirt, us-polo
+        href:
+          type: string
+          example: https://res.cloudinary.com/dbu76a0wo/image/upload/v1692510855/tecojikp3kvckprpxjit.png
+        name:
+          type: string
+          example: Barcelona
+    pagination:
+      type: object
+      properties:
+        nextPage:
+          type: integer
+          example: 3
+        prevPage:
+          type: integer
+          example: 1
+        currentPage:
+          type: integer
+          example: 2
+        totalPage:
+          type: integer
+          example: 5
+  responses:
+    '500':
+      description: Internal server error
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              message:
+                type: string
+                example: We are sorry for this convenience, Please try again later
+            required:
+              - "code"
+    '400':
+      description: Bad Request
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              code: 
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: 'Bad Request'
+              data:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    field: 
+                      type: string
+                      example: john
+                    value: 
+                      type: string
+                      example: doe
+            required: [code, message]
+    '401':
+      description: Unauthorized
+      content:
+        'application/json':
+          schema:
+            type: 
+              object
+            properties:
+              code:
+                type: integer
+                example: 401
+              message: 
+                type: string
+                example: Access denied
+    '403':
+      description: Bad Request
+      content:
+        'application/json':
+          schema:
+            type: 
+              object
+            properties:
+              code:
+                type: integer
+                example: 401
+              message: 
+                type: string
+                example: Invalid Credential
+  parameters:
+    pathParameters_id:
+          in: path
+          name: _id
+          required: true
+          schema:
+            type: string
+            example: 507f1f77bcf86cd799439011
+    pageParams:
+      in: query
+      name: page
+      description: current page number
+      schema:
+        type: integer
+        example: 1
+      required: true
+    rollParams:
+      in: query
+      name: roll
+      description: filter by roll
+      schema:
+        type: string
+        example: user
+      required: false
+          
+    expandParam:
+      in: query
+      name: expand
+      description: possible expended version
+      schema:
+        type: boolean
+        example: false
+    filterKey:
+      in: query
+      name: filter_key
+      description: filter data by this Property
+      schema:
+        type: string
+        example: status
+    filterValue:
+      in: query
+      name: filter_value
+      description: filter data with this value convert to array by spacing
+      schema:
+        type: string
+        example: Invoiced Reject
+    
+    limitParams:
+      in: query
+      name: limit
+      description: maximum items to be returned
+      schema:
+        type: integer
+        example: 5
+    sortTypeParams:
+      in: query
+      name: sort_type
+      description: the type of sort (asc or desc)
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+    sortKey:
+      in: query
+      name: sort_key
+      description: sort_key
+      schema:
+        type: string
+        example: createdAt
+    search:
+      in: query
+      name: search
+      description: search terms
+      schema:
+        type: string
+        example: ''
+    searchBy:
+      in: query
+      name: search_by
+      description: search field name
+      schema:
+        type: string
+        example: 'order_name'
+  requestBodies:
+    createUser:
+      content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  example: john
+                email:
+                  type: string
+                  format: email
+                password: 
+                  type: string
+                  example: abcs#5790
+                roll:
+                  type: string
+                  enum:
+                  - user
+                  - customer
+                  - supplier
+                  - admin
+                  - super-admin
+                  example: customer
+                contact_details:
+                  type: object
+                  properties:
+                    address: 
+                      type: string
+                      example: 123 Main Street, apt 4B San Diego CA, 91911
+                    phone:
+                      type: string
+                      example: '+8801607876255'
+                      required: [email, password]
+                    contactParsonName: 
+                      type: string
+                      example: john
+                  required:
+                    - address
+              required:
+                - email
+                - user_name
+                - contact_details
+    authSignup:
+      content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  example: john
+                email:
+                  type: string
+                  format: email
+                password: 
+                  type: string
+                  example: abcs#5790
+              required: [email, password]
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      

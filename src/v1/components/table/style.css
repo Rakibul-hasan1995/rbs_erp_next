@@ -1,0 +1,96 @@
+.ag-row .ag-cell {
+  /* display: flex !important; */
+  /* justify-content: center; align horizontal */
+  align-items: center !important;
+}
+.ag-header-cell-label {
+  justify-content: center;
+}
+.ag-theme-alpine {
+  --ag-background-color: #fff;
+  --ag-header-foreground-color: #222;
+  --ag-header-background-color: rgb(245, 245, 245);
+  --ag-header-foreground-color: #6200ee;
+
+  --ag-odd-row-background-color: #f3f3f3;
+
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 0.5px;
+  --ag-row-border-color: rgba(206, 195, 195, 0.842);
+
+  --ag-card-shadow: 0 3px 4px rgba(0, 0, 0, 0.082);
+  --ag-popup-shadow: 0 3px 4px rgba(0, 0, 0, 0.295);
+
+  transition: all;
+  transition-duration: 500ms;
+}
+.ag-theme-alpine-dark {
+  --ag-background-color: #222;
+  --ag-header-background-color: #222;
+  --ag-header-foreground-color: #7ee2ff;
+
+  --ag-odd-row-background-color: #272626;
+
+  /* disable all borders */
+  /* --ag-borders: none; */
+  /* then add back a border between rows */
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 0.5px;
+  --ag-row-border-color: rgb(105, 105, 105);
+
+  --ag-card-radius: 10px;
+  --ag-card-shadow: 0 10px 40px rgba(96, 91, 97, 0.459);
+  --ag-popup-shadow: var(--ag-card-shadow);
+  --ag-tab-min-width: 350px;
+
+  transition: all;
+  transition-duration: 500ms;
+}
+.ag-theme-alpine {
+  --ag-borders-input: none;
+}
+
+.status-Completed {
+  background-color: rgba(0, 128, 0, 0.678) !important;
+}
+.status-Shipped {
+  background-color: rgba(8, 189, 8, 0.678) !important;
+}
+
+.status-Created {
+  background-color: rgba(255, 240, 23, 0.877) !important;
+}
+.status-Placed {
+  background-color: rgba(255, 240, 23, 0.877) !important;
+}
+
+.status-Processing {
+  background-color: #0d6cd179 !important;
+}
+
+.status-Pending {
+  background-color: rgba(255, 166, 0, 0.829) !important;
+}
+.status-Hold {
+  background-color: rgba(255, 166, 0, 0.829) !important;
+}
+
+.status-Invoiced {
+  background-color: #00b336 !important;
+  color: #000000;
+}
+
+.status-Reject,
+.status-Draft {
+  background-color: rgba(231, 0, 0, 0.829) !important;
+}
+.status-Sub-Contact {
+  background-color: rgba(170, 60, 60, 0.829) !important;
+}
+.status-Sent {
+  background-color: rgba(170, 60, 60, 0.829) !important;
+}
+.status-Approved {
+  background-color: #00b336 !important;
+  color: #000000;
+}

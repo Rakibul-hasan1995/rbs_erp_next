@@ -1,0 +1,11 @@
+.link-text:hover{
+   color: #7ee2ff;
+   font-weight: 600;
+   transition: all 0.2s;
+   
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar::-webkit-scrollbar { width: 0 !important }
+.element { overflow: -moz-scrollbars-none; }
