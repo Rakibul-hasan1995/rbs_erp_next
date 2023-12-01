@@ -49,59 +49,59 @@ export default function useOrderSocket(query?: string) {
       }
    }
 
-   const handleSocket = async (socket: any) => {
-      socket.on("changes", (data: any) => {
-         const oldData: any = state[data._id]
-         if (oldData) {
-            const newData = { ...oldData, ...data }
-            // setState((prev: any) => {
-            //    return { ...prev, [newData._id]: newData }
-            // })
+   // const handleSocket = async (socket: any) => {
+   //    socket.on("changes", (data: any) => {
+   //       const oldData: any = state[data._id]
+   //       if (oldData) {
+   //          const newData = { ...oldData, ...data }
+   //          // setState((prev: any) => {
+   //          //    return { ...prev, [newData._id]: newData }
+   //          // })
 
-            setState((prevState: any) => ({
-               ...prevState,
-               [newData._id]: newData
-            }));
-         }
-      });
-      socket.on("fetch", async (_id: any) => {
-         try {
-            const { data } = await Axios.get(`/api/v1/orders/${_id}?expand=true`)
-            if (data.code == 200) {
-               // orderActions.add(data.data)
-            }
-         } catch (error) {
-            console.log(error)
-         }
-         // orderActions.add(data)
-         // console.log('insert', data);
-      });
-      socket.on("fetch-all", async () => {
-         // orderActions.fetch(query ? query : '&expand=true')
-      });
-      socket.on("delete", (_id: string) => {
-         console.log('delete', _id);
+   //          setState((prevState: any) => ({
+   //             ...prevState,
+   //             [newData._id]: newData
+   //          }));
+   //       }
+   //    });
+   //    socket.on("fetch", async (_id: any) => {
+   //       try {
+   //          const { data } = await Axios.get(`/api/v1/orders/${_id}?expand=true`)
+   //          if (data.code == 200) {
+   //             // orderActions.add(data.data)
+   //          }
+   //       } catch (error) {
+   //          console.log(error)
+   //       }
+   //       // orderActions.add(data)
+   //       // console.log('insert', data);
+   //    });
+   //    socket.on("fetch-all", async () => {
+   //       // orderActions.fetch(query ? query : '&expand=true')
+   //    });
+   //    socket.on("delete", (_id: string) => {
+   //       console.log('delete', _id);
 
-      });
+   //    });
 
-   }
+   // }
 
 
-   React.useEffect(() => {
-      const socket = io(`${serverUrl}/api/v1/orders`);
-      handleSocket(socket)
-      return () => {
-         socket.disconnect()
-         //  setState([]), setPagination({
-         //    nextPage: null,
-         //    prevPage: null,
-         //    currentPage: 1,
-         //    totalPages: 0,
-         //    totalDocuments: 0,
-         //    limit: 25
-         // })
-      }
-   }, [state])
+   // React.useEffect(() => {
+   //    const socket = io(`${serverUrl}/api/v1/orders`);
+   //    handleSocket(socket)
+   //    return () => {
+   //       socket.disconnect()
+   //       //  setState([]), setPagination({
+   //       //    nextPage: null,
+   //       //    prevPage: null,
+   //       //    currentPage: 1,
+   //       //    totalPages: 0,
+   //       //    totalDocuments: 0,
+   //       //    limit: 25
+   //       // })
+   //    }
+   // }, [state])
 
 
 

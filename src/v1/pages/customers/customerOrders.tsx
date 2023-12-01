@@ -132,7 +132,6 @@ const CustomerOrders = () => {
       }
    ]
 
-   // const { fetch, rowData, pagination, setPagination, handleUpdateOrder } = useOrderSocket('&filter_key=status&filter_value=Invoiced&expand=true')
 
    React.useEffect(() => {
       fetch(``)

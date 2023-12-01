@@ -66,7 +66,7 @@ const page = () => {
 
   const fetch = async (str: string) => {
     try {
-      const { data } = await Axios.get(`/api/v1/receive-challan?${str}&limit=${pagination.limit}`)
+      const { data } = await Axios.get(`/api/v1/receive-challans?${str}&limit=${pagination.limit}`)
       setRowData(data.data)
       setPagination((prev) => ({ ...data.pagination, limit: prev.limit }))
     } catch (error) {

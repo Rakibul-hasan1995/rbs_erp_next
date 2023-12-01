@@ -15,12 +15,11 @@ export const findOrder = async (url: string) => {
       const sortKey = getQueryParams(url as string, 'sort_key', 'user_name')
       const searchTerm = getQueryParams(url as string, 'search', undefined)
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
-      const isExpand = getQueryParams(url as string, 'expand', false)
+      const expand = getQueryParams(url as string, 'expand', false)
       const filterKey = getQueryParams(url as string, 'filter_key', '')
       const filterValue = getQueryParams(url as string, 'filter_value', '')
 
       const skip = (page - 1) * limit;
-      const expand = isExpand === 'true'; // Convert the query parameter to a boolean
 
       const regex = new RegExp(searchTerm, 'i')
       let query = {}

@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 // Define the TypeScript interface for the item within items array
@@ -79,8 +80,8 @@ const challanSchema = new Schema<ChallanDocument>({
 
 
 
-const ReceiveChallan = mongoose.models.ReceiveChallan || mongoose.model('ReceiveChallan', challanSchema);
-const DeliveryChallan = mongoose.models.DeliveryChallan || mongoose.model('DeliveryChallan', challanSchema);
+const ReceiveChallan = mongoose.models.Receive_challan || mongoose.model('Receive_challan', challanSchema);
+const DeliveryChallan = mongoose.models.Delivery_challan || mongoose.model('Delivery_challan', challanSchema);
 
 
 
