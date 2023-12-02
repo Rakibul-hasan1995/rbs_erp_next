@@ -57,7 +57,6 @@ const Page = () => {
       }
    ]
 
-
    const [rowData, setRowData] = React.useState([])
    const [pagination, setPagination] = React.useState<Pagination>({
       nextPage: null,

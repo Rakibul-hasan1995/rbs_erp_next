@@ -12,6 +12,7 @@ import { FaArrowAltCircleRight } from 'react-icons/fa';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import ChartLoading from '@/v1/components/loading/ChartLoading';
 
 interface FetchArgument {
    start: string;
@@ -125,62 +126,66 @@ const XYChart = ({ title = 'Title', path = 'invoices' }) => {
    const [state, setState] = React.useState(false);
 
    return (
-      <Box>
-         <div>
-            <Drawer
-               anchor={'right'}
-               open={state}
-               onClose={() => setState(false)}
-            >
-               <Box width={'20vw'} p={3} mt={10} textAlign={'center'}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                     <DatePicker label="From"
-                        minDate={moment('2021')}
-                        maxDate={moment().add(1, 'month')}
-                        slotProps={{
-                           textField: { size: 'small' },
-                           actionBar: {
-                              actions: ['today', 'cancel', 'accept'],
-                           },
-                        }}
-                        value={moment(startDate)}
-                        onChange={(value) => setStartDate(moment(value?.toString()).format('DD-MMM-YY'))}
-                     />
-                     <Typography my={3} variant="body1" >to</Typography>
-                     <DatePicker label="To"
-                        minDate={moment(startDate)}
-                        maxDate={moment().add(1, 'month')}
-                        slotProps={{
-                           textField: { size: 'small' },
-                           actionBar: {
-                              actions: ['today', 'cancel', 'accept'],
-                           },
-                        }}
-                        value={moment(endDate)}
-                        onChange={(value) => setEndDate(moment(value?.toString()).format('DD-MMM-YY'))}
-                     />
-                     <IconButton color='info' onClick={() => {
-                        setState(false)
-                        fetch()
-                     }}>
-                        <FaArrowAltCircleRight />
-                     </IconButton>
-                  </LocalizationProvider>
+      <>
+         {chartData.length ? <Box>
+            <div>
+               <Drawer
+                  anchor={'right'}
+                  open={state}
+                  onClose={() => setState(false)}
+               >
+                  <Box width={'20vw'} p={3} mt={10} textAlign={'center'}>
+                     <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DatePicker label="From"
+                           minDate={moment('2021')}
+                           maxDate={moment().add(1, 'month')}
+                           slotProps={{
+                              textField: { size: 'small' },
+                              actionBar: {
+                                 actions: ['today', 'cancel', 'accept'],
+                              },
+                           }}
+                           value={moment(startDate)}
+                           onChange={(value) => setStartDate(moment(value?.toString()).format('DD-MMM-YY'))}
+                        />
+                        <Typography my={3} variant="body1" >to</Typography>
+                        <DatePicker label="To"
+                           minDate={moment(startDate)}
+                           maxDate={moment().add(1, 'month')}
+                           slotProps={{
+                              textField: { size: 'small' },
+                              actionBar: {
+                                 actions: ['today', 'cancel', 'accept'],
+                              },
+                           }}
+                           value={moment(endDate)}
+                           onChange={(value) => setEndDate(moment(value?.toString()).format('DD-MMM-YY'))}
+                        />
+                        <IconButton color='info' onClick={() => {
+                           setState(false)
+                           fetch()
+                        }}>
+                           <FaArrowAltCircleRight />
+                        </IconButton>
+                     </LocalizationProvider>
+                  </Box>
+               </Drawer>
+            </div>
+            <Box component={Paper} position={'relative'}>
+               <Box m={1} position={'absolute'} zIndex={2} right={0}>
+                  <ButtonGroup variant="contained" size='small' aria-label="outlined primary button group">
+                     <Button onClick={() => { setActiveButton('day') }} color={activeButton == 'day' ? 'success' : 'info'}>Day</Button>
+                     <Button onClick={() => { setActiveButton('month') }} color={activeButton == 'month' ? 'success' : 'info'}>Month</Button>
+                     <Button onClick={() => { setActiveButton('year') }} color={activeButton == 'year' ? 'success' : 'info'}>Year</Button>
+                     <Button onClick={() => setState(true)} color={activeButton == 'day' ? 'success' : 'info'}><MdDateRange /></Button>
+                  </ButtonGroup>
                </Box>
-            </Drawer>
-         </div>
-         <Box component={Paper} position={'relative'}>
-            <Box m={1} position={'absolute'} zIndex={2} right={0}>
-               <ButtonGroup variant="contained" size='small' aria-label="outlined primary button group">
-                  <Button onClick={() => { setActiveButton('day') }} color={activeButton == 'day' ? 'success' : 'info'}>Day</Button>
-                  <Button onClick={() => { setActiveButton('month') }} color={activeButton == 'month' ? 'success' : 'info'}>Month</Button>
-                  <Button onClick={() => { setActiveButton('year') }} color={activeButton == 'year' ? 'success' : 'info'}>Year</Button>
-                  <Button onClick={() => setState(true)} color={activeButton == 'day' ? 'success' : 'info'}><MdDateRange /></Button>
-               </ButtonGroup>
+               <ChartComponent chartOptions={options} />
             </Box>
-            <ChartComponent chartOptions={options} />
-         </Box>
-      </Box>
+         </Box> :
+            <ChartLoading />
+         }
+      </>
    )
 }
 

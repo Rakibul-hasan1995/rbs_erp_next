@@ -5,9 +5,10 @@ import _groupData from "../../utils/groupData"
 import { ApexOptions } from "apexcharts"
 import { numberWithCommas } from "../../utils/numberFormater"
 import ChartComponent from '../Charts'
-import { Box, Button, ButtonGroup, Card, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, ButtonGroup, Card, Grid, Paper, Skeleton, Typography } from '@mui/material'
 import { _arrSum } from '@/v1/utils/arrSum'
 import { Statement } from '@/v1/pages/customers/customerProfile'
+import ChartLoading from '../loading/ChartLoading'
 
 const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: any, statement?: Statement }) => {
 
@@ -15,7 +16,6 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
 
    const [invoiceData, setInvoiceData] = React.useState([])
    const [paymentData, setPaymentData] = React.useState([])
-
    React.useEffect(() => {
       const df = {
          day: 'DD-MMM-YY',
@@ -85,19 +85,21 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
                <Grid item>
                   <Box component={Paper} p={3} m={2}>
                      <Typography fontSize={11}>Total Bill Amount</Typography>
-                     <Typography color={'skyblue'} variant='h6'>{numberWithCommas(statement?.debitAmount)}</Typography>
+                     {statement ? <Typography color={'skyblue'} variant='h6'>{numberWithCommas(statement?.debitAmount)}</Typography> :
+                        <Skeleton width={60} sx={{ fontSize: '24px' }} />
+                     }
                   </Box>
                </Grid>
                <Grid item>
                   <Box component={Paper} p={3} m={2}>
                      <Typography fontSize={11}>Total Pay Amount</Typography>
-                     <Typography color={'skyblue'} variant='h6'>{numberWithCommas(statement?.creditAmount)}</Typography>
+                     {statement ? <Typography color={'skyblue'} variant='h6'>{numberWithCommas(statement?.creditAmount)}</Typography> : <Skeleton width={60} sx={{ fontSize: '24px' }} />}
                   </Box>
                </Grid>
                <Grid item>
                   <Box component={Paper} p={3} m={2}>
                      <Typography fontSize={11}>Total Deu Amount</Typography>
-                     <Typography fontWeight={'bold'} color={'red'} variant='h6'>{numberWithCommas(statement?.deuAmount)}</Typography>
+                     {statement ? <Typography fontWeight={'bold'} color={'red'} variant='h6'>{numberWithCommas(statement?.deuAmount)}</Typography> : <Skeleton width={60} sx={{ fontSize: '24px' }} />}
                   </Box>
                </Grid>
             </Grid>
@@ -110,7 +112,7 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
                   <Button onClick={() => { setActiveButton('year') }} color={activeButton == 'year' ? 'success' : 'info'}>Year</Button>
                </ButtonGroup>
             </Box>
-            <ChartComponent chartOptions={options} />
+            {Object.values(invoiceData).length ? <ChartComponent chartOptions={options} /> : <ChartLoading />}
          </Box>
       </Box>
    )

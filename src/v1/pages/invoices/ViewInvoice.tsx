@@ -1,19 +1,13 @@
-'use client';
+'use client';;
 import { BlobProvider } from "@react-pdf/renderer";
 import React from "react";
-
-import { Axios, serverUrl } from "../../utils/axios-config";
-
-import { useParams } from "next/navigation";
+import { Axios } from "../../utils/axios-config";
 import InvoiceDoc from "@/v1/pdf_pages/invoicePdf";
-import useWindowDimensions from "@/v1/hooks/useWindowDimension";
 import {
    Box,
    Button,
    IconButton,
-
    InputBase,
-
    Paper,
    Table,
    TableBody,
@@ -32,33 +26,9 @@ import { MdFileDownload } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { io } from "socket.io-client";
 
 
-const ViewInvoice = () => {
-
-   const activePage = useParams();
-   const id = activePage._id || "";
-
-
-   const [data, setData] = React.useState<InvoiceExpand>()
-
-
-   React.useEffect(() => {
-      if (id) {
-         getInvoice()
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [id])
-   const getInvoice = async () => {
-      try {
-         const { data } = await Axios.get(`/api/v1/invoices/${id}?expand=true`)
-         const invoice: InvoiceExpand = data.data
-         setData(invoice)
-      } catch (error) {
-         console.log(error)
-      }
-   }
+const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {
 
    const toWords = new ToWords({
       localeCode: "en-BD",
@@ -69,27 +39,6 @@ const ViewInvoice = () => {
          doNotAddOnly: false,
       },
    });
-
-
-
-   React.useEffect(() => {
-      const socket = io(`${serverUrl}/api/v1/orders`);
-      if (data) {
-         handleSocket(socket)
-      }
-      return () => { socket.disconnect() }
-   }, [data])
-
-   const handleSocket = async (socket: any) => {
-      socket.on("changes", (SocketData: any) => {
-         const find = data?.items.find((item) => item._id == SocketData._id)
-         if (find) {
-            getInvoice()
-         }
-      });
-   }
-
-
    return (
       <Box sx={{ userSelect: 'none' }}>
          {data &&
@@ -185,7 +134,7 @@ const ViewInvoice = () => {
                         </Link>
                      )}
                   </BlobProvider>
-                  <Link href={`/v1/invoices/update/${id}`} passHref legacyBehavior>
+                  <Link href={`/v1/invoices/update/${data._id}`} passHref legacyBehavior>
                      <IconButton color='error'>
                         <TbEdit />
                      </IconButton>

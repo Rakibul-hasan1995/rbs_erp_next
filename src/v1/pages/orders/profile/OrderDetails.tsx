@@ -1,10 +1,8 @@
 import CircularProgressBar from '@/v1/components/progressBar/CircularProgressBar'
 import { OrderExpand } from '@/v1/utils/Types'
 import { numberWithCommas } from '@/v1/utils/numberFormater'
-import { Box, ButtonBase, Card, Divider, Grid, Paper, Tooltip, Typography } from '@mui/material'
+import { Box, ButtonBase, Card, CardContent, Grid, Paper, Skeleton, Tooltip, Typography } from '@mui/material';
 import Link from 'next/link'
-import React from 'react'
-import { FaLayerGroup } from 'react-icons/fa'
 import { MdPriceCheck } from 'react-icons/md'
 import { PiPlusMinusFill } from "react-icons/pi";
 import { GiSewingNeedle } from "react-icons/gi";
@@ -20,8 +18,9 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
   const productionQty = order?.production_qty || 0
 
   const receiveLink = receiveQty > 0 ? `/v1/orders/profile/${order._id}/receive` : undefined
+  const invoiceLink = order.status == 'Invoiced' ? `/v1/orders/profile/${order._id}/invoice` : undefined
   const productionLink = receiveQty > 0 ? `/v1/orders/profile/${order._id}/receive` : undefined
-  const info: CardProps[] = [
+  let info: CardProps[] = [
     {
       value: `${order.qty}`,
       title: 'Qty',
@@ -50,7 +49,7 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
       value: `${receivableQty}`,
       title: 'Receivable Qty',
       progress: receivableQty / qty * 100,
-      link: receiveLink
+      // link: receiveLink
     },
     {
       value: `${productionQty}`,
@@ -74,10 +73,30 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
   ]
 
 
+  const calculateInvoiceAmount = () => {
+
+    if (!order) {
+      return 0
+    }
+    const exchange_rate = +order?.customer?.exchange_rate || 85
+    const rate = order?.currency == 'BDT' ? order.rate : (exchange_rate * order.rate / 12)
+
+    const amm = `${(rate * order.qty)}`
+    return numberWithCommas(+amm)
+  }
+
+
+
+  if (order.status == 'Invoiced') {
+    info.push({
+      title: 'Invoice Amount', progress: 100, link: invoiceLink,
+      value: `${calculateInvoiceAmount()}`
+    })
+  }
 
 
   return (
-    <Box>
+    <Box mx={'auto'} maxWidth={'70rem'}>
       <Grid container>
         <Grid item xs={12} sm={8}>
           <Grid container>
@@ -86,7 +105,13 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
             ))}
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}></Grid>
+        <Grid item xs={12} sm={4}>
+          <Card>
+            <CardContent>
+              <img src={order.cover_photo.href} alt="img" width={'100%'} />
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </Box>
   )
@@ -121,6 +146,9 @@ const getColor = (value: number = 0) => {
   return color
 }
 
+
+
+
 const InfoCard = ({ data }: { data: CardProps }) => {
   const { title, value, progress, link, Icon } = data
   return (
@@ -130,7 +158,7 @@ const InfoCard = ({ data }: { data: CardProps }) => {
           <CircularProgressBar color={getColor(progress)} size={50} value={progress} />
         </Box>
         <Box textAlign={'center'} >
-          <Box gap={1} display={ Icon ? 'flex': "block"} sx={{ alignItems: 'center' }}>
+          <Box gap={1} display={Icon ? 'flex' : "block"} sx={{ alignItems: 'center' }}>
             {Icon && <Icon />}
             <Typography variant='body2'>{title}</Typography>
           </Box>
@@ -148,3 +176,41 @@ const InfoCard = ({ data }: { data: CardProps }) => {
 
   )
 }
+
+
+let info = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+export const OrderDetailsLoadingUi = () => {
+  return (
+    <Box mx={'auto'} maxWidth={'70rem'}>
+      <Grid container>
+        <Grid item xs={12} sm={8}>
+          <Grid container>
+            {info.map((item) => (
+              <Grid key={item} item p={1} xs={12} sm={6} md={4} >
+                <Box width={'100%'} component={Paper} p={2} justifyContent={'space-between'} display={'flex'} alignItems={'center'}>
+                  <Box >
+                    {/* <CircularProgressBar color={getColor(progress)} size={50} value={progress} /> */}
+                    <Skeleton variant='circular' width={50} height={50} />
+                  </Box>
+                  <Box textAlign={'center'} >
+                    <Box gap={1} sx={{ alignItems: 'center' }}>
+                      <Skeleton width={100} />
+                    </Box>
+                    <Skeleton variant='text' width={70} sx={{ fontSize: '24px' }} />
+                  </Box>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+        <Grid component={Card} item xs={12} sm={4}>
+          <CardContent>
+            <Skeleton sx={{ width: '100%', height: '12rem' }} />
+          </CardContent>
+        </Grid>
+      </Grid>
+    </Box>
+  )
+}
+
