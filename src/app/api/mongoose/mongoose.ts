@@ -3,10 +3,11 @@ import mongoose from 'mongoose'
 declare global {
    var mongoose: any // This must be a `var` and not a `let / const`
 }
+const uri = process.env.MONGODB_URI
 
-const MONGODB_URI = 'mongodb+srv://rakib:refatmonapy@cluster0.yjvkp.mongodb.net/RBS_ERP?retryWrites=true&w=majority'
+const MONGODB_URI = `${uri}?retryWrites=true&w=majority`
 
-if (!MONGODB_URI) {
+if (!uri) {
    throw new Error(
       'Please define the MONGODB_URI environment variable inside .env.local'
    )

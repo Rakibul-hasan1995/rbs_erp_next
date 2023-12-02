@@ -10,6 +10,7 @@ import { TbEdit } from 'react-icons/tb';
 import Link from 'next/link';
 import useOrderSocket from '@/v1/pages/orders/useOrderSocket';
 import { FaPlus } from 'react-icons/fa';
+import { useThemeContext } from '@/v1/context/themeContext';
 
 
 
@@ -136,10 +137,13 @@ const ReportsOrder = () => {
       }
    ]
 
-   const { fetch, rowData, pagination, setPagination, handleUpdateOrder } = useOrderSocket('&sort_key=program_name&filter_key=status&filter_value=Invoiced&expand=true')
+   const { fetch, rowData, pagination, setPagination, handleUpdateOrder } = useOrderSocket('&sort_key=program_name&sort_type=desc&filter_key=status&filter_value=Invoiced&expand=true')
 
+   const { setTitle } = useThemeContext()
    React.useEffect(() => {
       fetch(``)
+      setTitle('Orders')
+      return () => { setTitle('RBS') }
    }, [])
 
 

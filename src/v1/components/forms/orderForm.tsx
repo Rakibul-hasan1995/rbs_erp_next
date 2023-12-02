@@ -22,6 +22,7 @@ import { useState, useEffect } from "react";
 import useConfig from "@/v1/hooks/useConfig";
 import { RiImageAddFill } from "react-icons/ri";
 import { uploader } from "@/v1/utils/uploadFile";
+import { Axios } from "@/v1/utils/axios-config";
 
 
 export interface OrderInitialValues {
@@ -98,23 +99,14 @@ const OrderForm = ({ submit, initialValues }: Props) => {
       }
    }
 
-
-
-
-
    const onSubmit = async (formData: any) => {
       try {
-
          const fileData = new FormData()
          fileData.append('file', files)
-         fileData.append('tags', `${formData.order_name} ${formData.category}`);
-         fileData.append('name', formData.order_name);
-
          formData.customer = formData.customer.value
-
          if (!fileId) {
             const { data, success } = await toast.promise(
-               uploader(fileData, 1),
+               uploader(fileData),
                {
                   loading: 'Uploading File...',
                   success: <b>Upload Success</b>,
@@ -125,11 +117,20 @@ const OrderForm = ({ submit, initialValues }: Props) => {
             if (!success) {
                return toast.error('File Upload Failed')
             }
-            setFileId(data.data._id)
-            formData.cover_photo = data.data._id
+            const url = data.secure_url
+            const galleryObj = {
+               href: url,
+               tags: `${formData.order_name} ${formData.category}`,
+               name: `${formData.order_name}`
+            }
+            const gallery = await Axios.post('/api/v1/gallery', galleryObj)
+            const galleryId = gallery.data.data._id
+            setFileId(galleryId)
+            formData.cover_photo = galleryId
          } else {
             formData.cover_photo = fileId
          }
+       
 
          const { success, errors } = await submit(formData)
          if (!success) {

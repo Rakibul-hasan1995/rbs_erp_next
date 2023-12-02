@@ -27,7 +27,7 @@ const trashSchema = new Schema<TrashDocument>(
   }
 );
 // userSchema.index({ email: 'text' });
-const Trash: Model<TrashDocument> = mongoose.model<TrashDocument>('Trash', trashSchema);
+const Trash: Model<TrashDocument> = mongoose.models.Trash  || mongoose.model<TrashDocument>('Trash', trashSchema);
 
 
 export { Trash };

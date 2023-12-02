@@ -7,7 +7,7 @@ export const createOrder = async (body: any) => {
    try {
       const tags: string[] = []
 
-      const string = body
+      const string = body.tags
       const arr = string.split(' ')
       arr.forEach((item: string) => tags.push(item))
 

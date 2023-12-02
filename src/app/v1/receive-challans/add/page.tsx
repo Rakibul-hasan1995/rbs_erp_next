@@ -39,9 +39,8 @@ const AddProduction = () => {
    }
    const submit = async (formData: any): Promise<SubmitResponse> => {
       try {
-
          const { data } = await toast.promise(
-            Axios.post<ApiResponse>('/api/v1/receive-challan', formData),
+            Axios.post<ApiResponse>('/api/v1/receive-challans', formData),
             {
                loading: 'Saving...',
                success: <b>Data saved!</b>,
@@ -52,7 +51,7 @@ const AddProduction = () => {
          if (data.code === 400) {
             return { success: false, errors: data.data };
          } else if (data.code === 200 || data.code === 201) {
-            toast.success(`Successfully save Production`);
+            toast.success(`Successfully save Challan`);
             return { success: true, errors: null };
          }
 

@@ -354,7 +354,7 @@ const ProductionForm = ({ submit, initialValues }: Props) => {
                                              error={errors?.production_data?.[index]?.order?.message}
                                              onSelect={field.onChange}
                                              loadOption={orderLoadOption}
-                                             options={orderOptions}
+                                             options={orderOptions.filter((item)=>item.value.status !== 'Invoiced')}
                                              defaultValue={field.value}
                                           />
                                        )}

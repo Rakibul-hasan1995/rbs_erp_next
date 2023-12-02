@@ -68,10 +68,10 @@ const ListOrders = () => {
          headerName: "Status",
          filter: true,
          cellClass: (params: { value: any }) => `status-${params.value}`,
-         cellStyle: { justifyContent: "center" },
          editable: true,
          maxWidth: 150,
          sort: "desc",
+         cellStyle: { textAlign: 'center' },
          cellEditor: "agSelectCellEditor",
          cellEditorParams: {
             values: config?.orderStatus?.map((item: any) => { return item })

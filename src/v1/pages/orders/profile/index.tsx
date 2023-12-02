@@ -12,11 +12,12 @@ import Box from '@mui/material/Box';
 import OrderDetails from './OrderDetails';
 import { OrderExpand } from '@/v1/utils/Types';
 import { Axios } from '@/v1/utils/axios-config';
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Button, ButtonGroup, Typography } from '@mui/material';
 import Link from 'next/link';
 import { Link as MUILink } from '@mui/material';
 import { FaLayerGroup, FaUser } from 'react-icons/fa';
 import { BiSolidDashboard } from 'react-icons/bi';
+import CloneDialog from './clone';
 
 
 interface TabPanelProps {
@@ -92,8 +93,15 @@ export default function OrderProfile() {
       }
    }, [order])
 
+
+   const handleClone = () => {
+
+   }
+
+
+
    return (
-      <Box>
+      <Box position={'relative'}>
          <Breadcrumbs aria-label="breadcrumb">
             <MUILink component={Link} href="/v1/dashboard" underline='hover' color={'inherit'} sx={{ display: 'flex', alignItems: 'center' }}>
                <BiSolidDashboard style={{ marginRight: '5px' }} />
@@ -104,11 +112,10 @@ export default function OrderProfile() {
                Orders
             </MUILink>
             <MUILink component={Link} href="#" underline='hover' >
-               {`${order?.program_name} ${order?.order_name}`}
+               {order ? `${order?.program_name} ${order?.order_name}` : 'loading...'}
             </MUILink>
          </Breadcrumbs>
          <Box sx={{ bgcolor: 'background.paper', }}>
-
             <AppBar position="static">
                <Tabs
                   value={value}
@@ -138,8 +145,14 @@ export default function OrderProfile() {
                <TabPanel value={value} index={2} dir={theme.direction}>
                   02
                </TabPanel>
-
             </SwipeableViews>
+         </Box>
+         <Box right={0} top={0} position={'absolute'}>
+            <ButtonGroup size="small" aria-label="small button group" variant='contained' orientation='vertical'>
+               {order && <CloneDialog order={order} />}
+               <Button>Clone</Button>
+               <Button>Clone</Button>
+            </ButtonGroup>
          </Box>
       </Box>
    );
