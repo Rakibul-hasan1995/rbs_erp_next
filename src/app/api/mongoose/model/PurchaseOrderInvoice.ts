@@ -11,6 +11,7 @@ interface PurchaseOrderInvoiceDocument extends mongoose.Document {
    supplier_prev_deu?: number;
    items: string[];
    remarks?: string;
+   cover_photo: mongoose.Types.ObjectId;
 }
 
 const purchaseInvoiceSchema = new Schema<PurchaseOrderInvoiceDocument>(
@@ -47,6 +48,10 @@ const purchaseInvoiceSchema = new Schema<PurchaseOrderInvoiceDocument>(
          type: Schema.ObjectId,
          ref: 'PurchaseOrder'
       }],
+      cover_photo: {
+         type: Schema.ObjectId,
+         ref: 'Gallery'
+      },
       remarks: String
    },
    {

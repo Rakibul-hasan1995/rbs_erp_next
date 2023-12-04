@@ -10,8 +10,8 @@ export const findInvoice = async (url: any) => {
    try {
       const page = getQueryParams(url as string, 'page', 1);
       const limit = getQueryParams(url as string, 'limit', 10)
-      const sortType = getQueryParams(url as string, 'sort_type', 'asc')
-      const sortKey = getQueryParams(url as string, 'sort_key', 'user_name')
+      const sortType = getQueryParams(url as string, 'sort_type', 'desc')
+      const sortKey = getQueryParams(url as string, 'sort_key', 'invoice_no')
       const searchTerm = getQueryParams(url as string, 'search', undefined)
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
 

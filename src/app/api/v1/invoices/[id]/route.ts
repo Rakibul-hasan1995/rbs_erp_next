@@ -17,7 +17,3 @@ export async function GET(request: Request, { params }: { params: { id: string }
    const data = await getInvoiceById(id, expand)
    return Response.json(data, { status: data.code })
 }
-
-
-// router.get("/:_id", admin_checker, getInvoiceById);
-// router.delete("/:_id", admin_checker, deleteInvoice);

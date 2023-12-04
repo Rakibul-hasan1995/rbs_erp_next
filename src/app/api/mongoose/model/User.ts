@@ -56,7 +56,7 @@ const userSchema = new Schema<UserDocument>(
 
 // mongoose.deleteModel('User');
 // userSchema.index({ email: 'text' });
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User: Model<UserDocument> = mongoose.models.User || mongoose.model('User', userSchema);
 
 
 

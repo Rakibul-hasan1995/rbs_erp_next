@@ -72,7 +72,7 @@ const PurchaseOrderForm = ({ submit, initialValues }: Props) => {
 
    const handleError = (data: any) => {
       toast.error(data.message || 'error')
-      if (data.data.length) {
+      if (data?.data?.length) {
          return data.data.forEach((item: any) =>
             setError(item.field, { type: 'custom', message: item.value }),
          );

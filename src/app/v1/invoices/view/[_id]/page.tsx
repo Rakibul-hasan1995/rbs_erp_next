@@ -1,5 +1,5 @@
 'use client'
-import ViewInvoice from '@/v1/pages/invoices/ViewInvoice'
+import ViewInvoice from '@/app/v1/invoices/view/[_id]/ViewInvoice'
 import { InvoiceExpand } from '@/v1/utils/Types';
 import { Axios } from '@/v1/utils/axios-config';
 import { useParams } from 'next/navigation';

@@ -188,6 +188,7 @@ export interface Challan {
    }
 }
 export interface PurchaseOrders {
+   _id: string;
    order_date: string,
    shipment_date: string,
    supplier: {
@@ -203,7 +204,9 @@ export interface PurchaseOrders {
    status: string,
    description: string,
 }
+
 export interface PurchaseOrdersExpand {
+   _id: string;
    description: string;
    order: {
       cover_photo: {
@@ -215,14 +218,16 @@ export interface PurchaseOrdersExpand {
       qty: number;
       rate: number;
       unit: string;
-      _id: string
+      _id: string;
+      currency: string
    };
    supplier: {
       _id: string;
       user_name: string
       contact_details: {
          address: string
-      }
+      };
+      exchange_rate: number
    };
    order_date: string;
    shipment_date: string;

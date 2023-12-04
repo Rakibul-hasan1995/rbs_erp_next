@@ -1,7 +1,7 @@
-import ReportsOrder from "@/v1/pages/orders/ReportOrders";
+import { Typography } from "@mui/material";
 
 export default function page() {
    return (
-      <ReportsOrder />
+     <Typography>Report Orders</Typography>
    )
 }

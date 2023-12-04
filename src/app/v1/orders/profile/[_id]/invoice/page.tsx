@@ -1,7 +1,6 @@
 
 'use client';
-import LoadingInvoice from '@/v1/pages/invoices/LoadingInvoice'
-import ViewInvoice from '@/v1/pages/invoices/ViewInvoice';
+import ViewInvoice from '@/app/v1/invoices/view/[_id]/ViewInvoice';
 import { InvoiceExpand, Order } from '@/v1/utils/Types'
 import { Axios } from '@/v1/utils/axios-config'
 import { Breadcrumbs, Box } from '@mui/material';
@@ -13,6 +12,7 @@ import { FaFileInvoiceDollar, FaLayerGroup } from 'react-icons/fa';
 import { MdLayers } from 'react-icons/md';
 import { Link as MUILink } from '@mui/material';
 import { useThemeContext } from '@/v1/context/themeContext';
+import LoadingInvoice from '@/v1/components/loading/LoadingInvoice';
 
 export default function Page() {
    const activePage = useParams()

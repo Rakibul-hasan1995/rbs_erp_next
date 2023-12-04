@@ -60,7 +60,7 @@ const purchaseOrderSchema = new Schema<PurchaseOrderDocument>(
       id: true
    }
 );
-const PurchaseOrder = mongoose.models.PurchaseOrder || mongoose.model('PurchaseOrder', purchaseOrderSchema);
+const PurchaseOrder:  Model<PurchaseOrderDocument> = mongoose.models.PurchaseOrder || mongoose.model('PurchaseOrder', purchaseOrderSchema);
 
 
 

@@ -1,6 +1,7 @@
+import React from 'react'
 
-import { redirect } from 'next/navigation'
-
-export default function Home() {
-  redirect('/v1/dashboard')
+export default function page() {
+  return (
+    <div>page</div>
+  )
 }

@@ -4,6 +4,8 @@ import { FaArrowRight, FaFileInvoiceDollar, FaLayerGroup, FaUsers } from "react-
 import { MdOutlinePayments } from "react-icons/md";
 import { FaTruckArrowRight } from "react-icons/fa6";
 import FaTruckArrowLeft from "../customIcons";
+import { SiSublimetext } from "react-icons/si";
+
 export interface MenuItem {
    title: string;
    name: string;
@@ -88,30 +90,29 @@ const routeStructure: MenuItem[] = [
             icon: 'dot',
             link: '/v1/orders/report',
          },
+      ]
+   },
+   {
+      title: 'Purchase Orders',
+      name: 'purchase_orders',
+      link: '/v1/purchase-orders',
+      parent: true,
+      icon: SiSublimetext,
+      child: [
          {
-            title: 'Purchase Order',
-            name: 'purchaseOrder',
-            link: '/v1/purchase-orders',
-            parent: true,
+            title: 'Orders',
+            name: 'p-orders',
+            parent: false,
             icon: 'dot',
-            child: [
-               {
-                  title: 'Add',
-                  name: 'customers.add-people',
-                  parent: false,
-                  icon: 'dot',
-                  link: '/v1/purchase-orders/add',
-               },
-               {
-                  title: 'List',
-                  name: 'customers.add-people',
-                  parent: false,
-                  icon: 'dot',
-                  link: '/v1/purchase-orders',
-               },
-            ]
+            link: '/v1/purchase_orders',
          },
-
+         {
+            title: 'Invoices',
+            name: 'p-invoices',
+            parent: false,
+            icon: 'dot',
+            link: '/v1/purchase_orders/invoices',
+         }
       ]
    },
    {

@@ -1,5 +1,5 @@
 'use client';
-import ViewReceiveChallan from '@/v1/pages/challan/ViewReceiveChallan'
+import ViewReceiveChallan from '@/v1/components/challan/ViewReceiveChallan'
 import { Challan } from '@/v1/utils/Types';
 import { _arrSum } from '@/v1/utils/arrSum';
 import { Axios } from '@/v1/utils/axios-config';

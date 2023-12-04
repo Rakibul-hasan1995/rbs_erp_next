@@ -20,7 +20,7 @@ import { Collapse } from '@mui/material';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BsDot } from 'react-icons/bs';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
-import { MdKeyboardBackspace, MdWbSunny } from 'react-icons/md';
+import { MdKeyboardBackspace, MdOutlineLogout, MdWbSunny } from 'react-icons/md';
 import { RiSunLine } from 'react-icons/ri';
 import Link from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
@@ -28,6 +28,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import styles from './style.module.css';
 import { MenuItem, routeStructure } from './sideMenuItems';
+import { FaLongArrowAltUp } from 'react-icons/fa';
+import { signOut } from 'next-auth/react';
 
 const CustomScrollbarBox = styled(Box)({
    '&::-webkit-scrollbar': {
@@ -109,10 +111,10 @@ const CustomDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 
 const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: string }) => {
 
-//   window.addEventListener("beforeunload", (ev) => {
-//       ev.preventDefault();
-//       return ev.returnValue = 'Are you sure you want to close?';
-//    });
+   //   window.addEventListener("beforeunload", (ev) => {
+   //       ev.preventDefault();
+   //       return ev.returnValue = 'Are you sure you want to close?';
+   //    });
 
    const router = useRouter();
 
@@ -226,9 +228,6 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
 
    const { toggleDarkMode, isDarkMode, title } = useThemeContext();
 
-
-
-
    return (
       <Box sx={{ display: 'flex' }}>
          <AppBar position="fixed" open={open}>
@@ -257,7 +256,13 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
                <Typography variant="h6" noWrap component="div">
                   {title}
                </Typography>
+               <Box ml={'auto'}>
+                  <IconButton onClick={() => signOut()}>
+                     <MdOutlineLogout />
+                  </IconButton>
+               </Box>
             </Toolbar>
+
          </AppBar>
          <CustomDrawer variant="permanent" open={open}>
             <DrawerHeader>

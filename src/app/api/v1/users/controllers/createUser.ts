@@ -32,8 +32,7 @@ export const createUser = async (user: UserDocument): Promise<Response> => {
       return value
     }
     const data = new User(user)
-    // const data = await User.create(user)
-    // res.status(201).json({ code: 201, data, links: [{ self: `/api/v1/users/${data.id}` }] })
+    await data.save()
 
     const value = {
       code: 201,

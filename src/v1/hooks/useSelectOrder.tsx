@@ -17,7 +17,7 @@ export default function useSelectOrder() {
             return
          }
          const { data } = await Axios.get(
-            `/api/v1/orders?filter_key=status&filter_value=Invoiced&expand=true&limit=10${searchValue ? `&search=${searchValue}` : ''}`
+            `/api/v1/orders?filter_key=status&filter_value=Invoiced&expand=true&limit=10&sort_key=program_name&sort_type=desc${searchValue ? `&search=${searchValue}` : ''}`
          );
          const items: AsyncSelectOptionOption[] = data.data.map((item: any) => ({
             label: `${item.program_name} ${item.order_name} (${item.status[0]})`,

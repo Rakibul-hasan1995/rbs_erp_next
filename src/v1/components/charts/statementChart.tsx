@@ -7,8 +7,8 @@ import { numberWithCommas } from "../../utils/numberFormater"
 import ChartComponent from '../Charts'
 import { Box, Button, ButtonGroup, Card, Grid, Paper, Skeleton, Typography } from '@mui/material'
 import { _arrSum } from '@/v1/utils/arrSum'
-import { Statement } from '@/v1/pages/customers/customerProfile'
 import ChartLoading from '../loading/ChartLoading'
+import { Statement } from '@/app/v1/customers/profile/[_id]/page'
 
 const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: any, statement?: Statement }) => {
 
@@ -26,18 +26,18 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
       setInvoiceData(_groupData(invoice, 'x', 'y', activeButton, df[activeButton]))
    }, [activeButton, payments])
 
-
    const options: ApexOptions = {
-      series: [
-         {
-            data: Object.values(invoiceData),
-            name: 'Invoice'
-         },
-         {
-            data: Object.values(paymentData),
-            name: 'Payments'
-         },
-      ],
+         series: [
+            {
+               data: Object.values(invoiceData),
+               name: 'Invoice'
+            },
+            {
+               data: Object.values(paymentData),
+               name: 'Payments'
+            },
+         ],
+
 
       chart: {
          type: 'bar',
@@ -62,6 +62,26 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
             }
          }
       },
+      plotOptions: {
+         bar: {
+            borderRadius: 2,
+            dataLabels: {
+               position: 'top', // top, center, bottom
+            },
+         }
+      },
+      dataLabels: {
+         enabled: Boolean(activeButton !== 'day'),
+         formatter: function (val) {
+            return numberWithCommas(+val / 100000);
+         },
+         offsetY: -20,
+         style: {
+            fontSize: '12px',
+            colors: undefined,
+            fontFamily: 'roboto'
+         }
+      },
       tooltip: {
          y: {
             formatter: function (val: any) {
@@ -73,11 +93,9 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
          },
       },
       // title: {
-      //    text:`Total = ${numberWithCommas(_arrSum(Object.values(data), 'y'))}`
+      //    text:`Total =`
       // }
    };
-
-
    return (
       <Box>
          <Box>
