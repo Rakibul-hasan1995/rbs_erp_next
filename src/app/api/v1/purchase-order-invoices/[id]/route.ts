@@ -5,8 +5,9 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { updatePurchaseOrderInvoice } from "../controllers/updateInvoice"
 import { getPurchaseOrderInvoiceById } from "../controllers/getInvoiceById"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+
 import { NextResponse } from "next/server"
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
    await dbConnect()
@@ -20,7 +21,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
    if (!session) {
       return NextResponse.json({message: 'unauthorized'}, {status: 401})
    }
-   
+
    await dbConnect()
    const id = params.id
    const data = await getPurchaseOrderInvoiceById(id)

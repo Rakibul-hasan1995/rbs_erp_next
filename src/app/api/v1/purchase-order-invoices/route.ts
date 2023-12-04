@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import dbConnect from "../../mongoose/mongoose"
 import { findPurchaseOrderInvoice } from "./controllers/findPurchaseInvoice"
 import { createPurchaseOrderInvoice } from "./controllers/createPurchaseOrderInvoice"
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/authOptions';
 
 export const GET = async (req: Request) => {
    const session = await getServerSession(authOptions)
