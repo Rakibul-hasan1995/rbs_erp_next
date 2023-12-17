@@ -18,6 +18,7 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
   const productionQty = order?.production_qty || 0
 
   const receiveLink = receiveQty > 0 ? `/v1/orders/profile/${order._id}/receive` : undefined
+  const deliveryLink = deliveryQty > 0 ? `/v1/orders/profile/${order._id}/delivery` : undefined
   const invoiceLink = order.status == 'Invoiced' ? `/v1/orders/profile/${order._id}/invoice` : undefined
   const productionLink = receiveQty > 0 ? `/v1/orders/profile/${order._id}/receive` : undefined
   let info: CardProps[] = [
@@ -61,7 +62,7 @@ export default function OrderDetails({ order }: { order: OrderExpand }) {
       value: `${deliveryQty}`,
       title: 'Delivery Qty',
       progress: deliveryQty / qty * 100,
-      // link: receiveLink
+      link: deliveryLink
     },
     {
       value: `${deliveryQty}`,

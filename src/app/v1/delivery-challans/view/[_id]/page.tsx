@@ -20,7 +20,7 @@ export default function page() {
   }, [id])
   const getInvoice = async () => {
     try {
-      const { data } = await Axios.get(`/api/v1/delivery-challans/${id}?expand=true`)
+      const { data } = await Axios.get(`/api/v1/delivery-challan/${id}?expand=true`)
       const resData = data.data
       const qty = _arrSum(resData.items || [], 'qty')
       const emb_reject_qty = _arrSum(resData.items || [], 'emb_reject_qty')
