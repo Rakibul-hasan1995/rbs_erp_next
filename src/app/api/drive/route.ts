@@ -27,10 +27,12 @@ export const GET = async (req: Request) => {
       });
 
 
-      return NextResponse.json({ response }, { status: 200 }).blob()
+      return NextResponse.json({ response }, { status: 200 })
 
    } catch (error: any) {
       console.error('Error downloading file:', error.message);
+      return NextResponse.json({ message: 'something went wrong' }, { status: 500 })
+
       // return res.status(500).json({ error: 'Internal Server Error' });
    }
 }
