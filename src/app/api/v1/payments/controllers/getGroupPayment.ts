@@ -19,7 +19,7 @@ export const getGroupPayment = async (url: string,) => {
       const groupData = await Payment.aggregate(pipeline);
       return {
          code: 200,
-         data: groupData,
+         data: groupData.filter((data) => data.payment_mode !== 'Settlement')
       }
    } catch (error: any) {
       return { code: 500, message: error.message, error }
