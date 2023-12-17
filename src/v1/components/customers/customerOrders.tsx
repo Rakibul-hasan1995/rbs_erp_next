@@ -155,8 +155,9 @@ const CustomerOrders = () => {
    }, [])
 
    const fetch = async (payload: any) => {
+    
       try {
-         const { data } = await Axios.get(`/api/v1/users/${id}/orders?limit=${pagination.limit}&${payload}&expand=true`)
+         const { data } = await Axios.get(`/api/v1/users/${id}/orders?sort_key=program_name&limit=${pagination.limit}&${payload}&expand=true`)
          setData(data.data)
          setPagination((prev) => ({ ...prev, ...data.pagination }))
       } catch (error) {
@@ -164,9 +165,6 @@ const CustomerOrders = () => {
       }
 
    }
-
-
-
 
    const fetchData = async (str: string) => {
       fetch(`${str}`)

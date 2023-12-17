@@ -3,6 +3,7 @@ import { Box, Grid } from '@mui/material';
 import XYChart from '@/v1/components/charts/XYChart'
 import SetTitle from './setTitle';
 export default async function Dashboard() {
+
    return (
       <Box>
          <SetTitle />

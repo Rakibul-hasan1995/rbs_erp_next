@@ -33,7 +33,7 @@ Axios.interceptors.response.use(undefined, error => {
       // Get the history object from React Router
       console.log(error)
       // redirect("/auth/signin");
-      window.location.replace('/')
+      window.location.replace('/api/auth/signin')
 
    }
 

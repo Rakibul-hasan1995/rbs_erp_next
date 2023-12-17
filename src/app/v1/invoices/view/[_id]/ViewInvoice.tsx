@@ -1,6 +1,6 @@
 'use client';;
-import { BlobProvider } from "@react-pdf/renderer";
-import React from "react";
+import ReactPDF, { BlobProvider } from "@react-pdf/renderer";
+import React, { useEffect } from "react";
 import { Axios } from "../../../../../v1/utils/axios-config";
 import InvoiceDoc from "@/v1/pdf_pages/invoicePdf";
 import {
@@ -26,9 +26,53 @@ import { MdFileDownload } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 
 const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {
+
+
+
+   // useEffect(() => {
+   //    if (data) {
+   //       xxx()
+   //    }
+   // }, [data])
+
+
+   const xxx = async (blob: any) => {
+      const formData = new FormData();
+      formData.append('file', blob, 'filename.pdf');
+
+      const response = await axios.post('/api/drive', formData, {
+         headers: {
+            'Content-Type': 'multipart/form-data', // Important for sending files
+         },
+      });
+      console.log('Server response:', response.data);
+   }
+
+
+   const downloadFileFromDrive = async () => {
+      try {
+         const response = await axios.get(`/api/drive`, {
+            responseType: 'blob', // Use 'blob' to handle binary data
+         });
+         console.log(response.data)
+         // Example: Save the file or open it in the browser
+         const url = window.URL.createObjectURL(new Blob([response.data]));
+         const link = document.createElement('a');
+         link.href = url;
+         link.setAttribute('download', 'x.pdf'); // Set the desired filename
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+      } catch (error: any) {
+         console.error('Error downloading file:', error.message);
+      }
+   };
+
+
 
    const toWords = new ToWords({
       localeCode: "en-BD",
@@ -43,6 +87,13 @@ const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {
       <Box sx={{ userSelect: 'none' }}>
          {data &&
             <>
+               <BlobProvider document={<InvoiceDoc showHeader pageData={data} />}>
+                  {({ blob, url, loading, error }) => {
+                     // Do whatever you need with blob here
+                     return <button onClick={() => { xxx(blob) }}>click</button>;
+                  }}
+               </BlobProvider>
+               <button onClick={downloadFileFromDrive}>Download</button>
                <Box component={Paper} width={'220mm'} height={'290mm'} mx={'auto'} sx={{ color: 'black' }} position={'relative'} pt={2} bgcolor={'white'}>
                   <img src="https://res.cloudinary.com/dbu76a0wo/image/upload/v1663769776/padTop_yluxqh.png" width={'100%'} />
                   <Box p={8} >

@@ -108,7 +108,7 @@ const ListPurchaseOrders = () => {
       cellRenderer: (params: any) => {
         return (
           <Box sx={{ width: '100%', display: 'flex', justifyItems: 'center', justifyContent: 'center', gap: 1 }}>
-            <Link href={`/v1/invoices/view/${params.value}`} passHref legacyBehavior>
+            <Link href={`/v1/purchase_orders/invoices/view/${params.value}`} passHref legacyBehavior>
               <IconButton size='small' color='primary'>
                 <BsEye />
               </IconButton>

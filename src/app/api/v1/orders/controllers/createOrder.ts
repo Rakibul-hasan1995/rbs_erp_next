@@ -50,10 +50,17 @@ export const createOrder = async (body: any) => {
          return { code: 400, message: 'Bad Request', data: validate.error }
       }
 
-      const clientOrderCount = await Order.countDocuments({ customer })
+      // const clientOrderCount = await Order.countDocuments({ customer })
+      // const lastOrder = await Order.findOne({}).sort({ _id: -1 })
+      // const lastProgramSl = lastOrder?.program_name?.split('-')[0] || 0
+      // order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}-${landingZeros(clientOrderCount + 1, 2)}`
+
       const lastOrder = await Order.findOne({}).sort({ _id: -1 })
       const lastProgramSl = lastOrder?.program_name?.split('-')[0] || 0
-      order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}-${landingZeros(clientOrderCount + 1, 2)}`
+      order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}`
+
+
+
 
       const data = await Order.create(order)
       return { code: 201, data, links: [{ self: `/api/v1/orders/${data._id}` }] }

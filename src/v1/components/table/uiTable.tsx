@@ -78,8 +78,6 @@ const UiTable = ({ colDef, rowData, paginationInfo, setPaginationInfo, fetch, on
       }
    }
 
-
-
    const defaultColDef = React.useMemo(() => {
       return {
          flex: 1,

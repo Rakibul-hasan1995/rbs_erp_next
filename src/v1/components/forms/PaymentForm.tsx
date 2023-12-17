@@ -9,7 +9,6 @@ import {
    FormControl,
    FormHelperText,
    Grid,
-   IconButton,
    InputLabel,
    MenuItem,
    Paper,
@@ -18,11 +17,10 @@ import {
 } from "@mui/material";
 import useConfig from "@/v1/hooks/useConfig";
 import AsynchronousSelect, { AsyncSelectOptionOption } from "../inputs/asyncSelect";
-import moment from "moment";
-import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import * as React from 'react'
 import useSelectCustomer from "@/v1/hooks/useSelectCustomer";
 import { BANK_LIST } from "@/v1/utils/bankLIst";
+import DateInput from "../inputs/dateInput";
 
 
 export interface PaymentInitialValues {
@@ -51,9 +49,6 @@ interface Props {
 }
 
 
-
-
-
 const PaymentsForm = ({ submit, initialValues }: Props) => {
 
    const {
@@ -61,7 +56,7 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
       setError,
       handleSubmit,
       reset,
-      // setValue,
+      setValue,
 
       formState: { errors },
    } = useForm({
@@ -97,7 +92,8 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
          if (!success) {
             handleError(errors)
          } else {
-            reset(initialValues)
+            // reset(initialValues)
+            setValue('receipt_no', `${+formData.receipt_no + 1}`)
          }
       } catch (error: any) {
          if (error.response) {
@@ -112,22 +108,12 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
 
    const { config } = useConfig()
 
-   const handlePlus = (value: string, onChange: (arg: any) => void) => {
-      const newDate = moment(`${value}`).add(1, 'day').format('yy-MM-DD')
-      onChange(newDate)
-   }
-   const handleMinus = (value: string, onChange: (arg: any) => void) => {
-      const newDate = moment(`${value}`).subtract(1, 'day').format('yy-MM-DD')
-      onChange(newDate)
-   }
    const { userLoadOption, userOptions } = useSelectCustomer('roll=customer')
-
    return (
       <Container >
          <Paper sx={{ p: 3 }}>
             <Box component='form' noValidate width={'100%'} onSubmit={handleSubmit(onSubmit)}>
                <Grid container spacing={3}>
-
                   <Grid item xs={12} sm={6}>
                      <Controller
                         rules={{
@@ -139,26 +125,7 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
                         control={control}
                         name="date"
                         render={({ field }) => (
-
-                           <Box position={'relative'}>
-                              <TextField
-                                 {...field}
-                                 type="date"
-                                 error={Boolean(errors.date)}
-                                 helperText={errors.date?.message}
-                                 label="Date"
-                                 size="small"
-                                 fullWidth
-                              />
-                              <Box position={'absolute'} top={7} right={50}>
-                                 <IconButton onClick={() => handleMinus(field.value, field.onChange)} color="error" size="small">
-                                    <FaMinusCircle />
-                                 </IconButton>
-                                 <IconButton onClick={() => handlePlus(field.value, field.onChange)} color="primary" size="small">
-                                    <FaPlusCircle />
-                                 </IconButton>
-                              </Box>
-                           </Box>
+                           <DateInput value={field.value} onChange={field.onChange} error={errors.date?.message} />
                         )}
                      />
                   </Grid>
@@ -233,7 +200,7 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
                      <Controller
                         rules={{
                            required: {
-                              value: true,
+                              value: false,
                               message: "this field is required",
                            },
                         }}
@@ -379,26 +346,11 @@ const PaymentsForm = ({ submit, initialValues }: Props) => {
                            control={control}
                            name="cheque_info.cheque_date"
                            render={({ field }) => (
-
-                              <Box position={'relative'}>
-                                 <TextField
-                                    {...field}
-                                    type="date"
-                                    error={Boolean(errors.cheque_info?.cheque_date)}
-                                    helperText={errors.cheque_info?.cheque_date?.message}
-                                    label="Cheque Date"
-                                    size="small"
-                                    fullWidth
-                                 />
-                                 <Box position={'absolute'} top={7} right={50}>
-                                    <IconButton onClick={() => handleMinus(field.value, field.onChange)} color="error" size="small">
-                                       <FaMinusCircle />
-                                    </IconButton>
-                                    <IconButton onClick={() => handlePlus(field.value, field.onChange)} color="primary" size="small">
-                                       <FaPlusCircle />
-                                    </IconButton>
-                                 </Box>
-                              </Box>
+                              <DateInput
+                                 value={field.value}
+                                 onChange={field.onChange}
+                                 error={errors.cheque_info?.cheque_date?.message}
+                              />
                            )}
                         />
                      </Grid>

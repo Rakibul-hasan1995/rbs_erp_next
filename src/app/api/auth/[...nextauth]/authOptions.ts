@@ -6,9 +6,10 @@ export const authOptions: NextAuthOptions = {
    session: {
       strategy: 'jwt', // Adjust based on your requirements
    },
-   pages: {
-      signIn: '/auth/signin',
-   },
+   // pages: {
+   //    signIn: '/auth/signin',
+   // },
+   
    providers: [
       Credentials({
          name: 'Credentials',
@@ -36,8 +37,8 @@ export const authOptions: NextAuthOptions = {
                return null; // Handle errors appropriately
             }
          },
-
       }),
    ],
    secret: process.env.NEXT_AUTH_SECRET,
 };
+

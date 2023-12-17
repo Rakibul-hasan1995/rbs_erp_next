@@ -183,7 +183,18 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
       const pathName = usePathname()
       const arr = item.name.split('.');
       const itemName = arr[arr.length - 1];
-      const isActive = pathName.includes(itemName);
+      // const isActive = pathName.includes(itemName);
+      const isActive = Boolean(item.child?.find((child) => child.link == pathName))
+      // const find = item.child?.find((child)=> child.link == pathName)
+      // console.log(find)
+
+
+
+
+
+
+
+
 
       return (
          <React.Fragment>

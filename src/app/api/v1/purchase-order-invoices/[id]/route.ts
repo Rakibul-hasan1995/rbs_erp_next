@@ -16,6 +16,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
    const data = await updatePurchaseOrderInvoice(id, body)
    return Response.json(data, { status: data.code })
 }
+
+
 export async function GET(request: Request, { params }: { params: { id: string } }) {
    const session = await getServerSession(authOptions)
    if (!session) {
@@ -24,6 +26,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
    await dbConnect()
    const id = params.id
-   const data = await getPurchaseOrderInvoiceById(id)
+   const data = await getPurchaseOrderInvoiceById(id, true)
    return Response.json(data, { status: data.code })
 }

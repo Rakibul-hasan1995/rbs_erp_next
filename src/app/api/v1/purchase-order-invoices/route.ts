@@ -1,17 +1,15 @@
-import { getServerSession } from 'next-auth';
 import { NextResponse } from "next/server"
 import dbConnect from "../../mongoose/mongoose"
 import { findPurchaseOrderInvoice } from "./controllers/findPurchaseInvoice"
 import { createPurchaseOrderInvoice } from "./controllers/createPurchaseOrderInvoice"
-import { authOptions } from '../../auth/[...nextauth]/authOptions';
+import { checkLogger } from '../../auth/[...nextauth]/checkLogger';
 
 export const GET = async (req: Request) => {
-   const session = await getServerSession(authOptions)
-   if (!session) {
-      return NextResponse.json({ message: 'unauthorized' }, { status: 401 })
+
+   const user = await checkLogger()
+   if (!user) {
+      return NextResponse.json({ message: 'access denied' }, { status: 401 })
    }
-
-
    await dbConnect()
    const res = await findPurchaseOrderInvoice(req.url)
    return NextResponse.json(res, { status: res.code })

@@ -16,6 +16,3 @@ export const POST = async (req: Request) => {
    const res = await createChallan(DeliveryChallan, body)
    return NextResponse.json(res, { status: res.code })
 }
-
-
-

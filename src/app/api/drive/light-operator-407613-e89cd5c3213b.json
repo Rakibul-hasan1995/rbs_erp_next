@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "light-operator-407613",
+  "private_key_id": "e89cd5c3213b0040926f3cb603f46f4b871bec2e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCb3om4LUH0HudG\n27rw8I4aU7pT+t4qSLZmOtE1eHgjKmaMb/yzmAUfCTiId7A2OD2GisWunvVVZ2nx\nvQbW61ZPazDF9UMsKmVkukpyHaoAEpGmXSMFkQHw/KY3t4abps/j3NYIXS9tg8+f\nXgagFhI0koNJduCNi911HSQQVppRI+lkzKgHzM4zHOTnpmcPfBmrXwGPdXd1ME70\n718aAYvsd9+XmYpbwn4tJZLnAwpkVTGc6yyTbw10hnQF9A4dCZjLOEO05NoSHWok\nf4iSKf168fOXfydIAVZBeE2j7hR5v0WWFkuQbKSmC4IZ3MsxBvQRIxBmVF705a2/\nTabJ2ff5AgMBAAECggEAAaOe6wlmYEibaexLqiSqVHi5wn24w34bp6gsJ03aJSZi\nTair5rv0HoxGOPni0SrdtKDqbz46l9vh9bZ3hO2wGrErQiet1JJf7EXOnJQAPzkO\nMk8qd4eJaOLZ3GvjdykKOvUpckP2v48skRXaR+By+Jk9xJlQfh0laMm4gOxEgzdO\nu528D5W6/2dbIWswO0C8P7lygrLPciBcV+vIiBHv9l7TL5QbbZeWza3NQkH/SXbe\nuvR0ES8uSKfw3GgAroFHTxCov0WQpWXSmlDWU0KHu8ZF/HRHlTTSP7dfs5N1N6Pu\nIu1nJpbKwrPzuDipP9MIKGLsvOj73tSkocsngHjP8QKBgQDXqm/BIFUd2iKamrJi\nf+sidBUP6i9gBReriMak0ZfPl20Me71Xfx+vssZx7z0vP3jA+dj+RkiL2W427OV+\nea3lZ8ghXLNAultc8S0MfoVkoQi6ZystXSZH1CGRgFgWyVI4LlZMr6+W2ZkiMTz/\nX2xF4qar7Va21esd52+1FaB/yQKBgQC5BTA6udSc4gr/z0W4XqCPJWm8GmLOIjy4\nQGTd3RON9Z6c92p0LQBe0zAeD3T/IQI6kEjVyT9nssVEWfizA/7jYhH7fNTGPfXv\nP2Bw7+Kay1RE54FaG4Y7AbZ+IEABOKHvDyiTTO4xoA86H100jWYglZ/rQamPHgMP\nMYm90E+usQKBgQCl49Egoek3FDKn77SldbX9g4MsAbw9RM2HQadi4mG+6cCU6J2l\nLwDFmmNxAlBzBoSxE75pINDu2eogT6rb1WcA3gqgNvkfIfnjDRTU1oFu/TuEfpVE\nyLEIcVD85ddcd7FJy8LQLBeJlolnNq6v1MupGgWQm/imnPfEweA4T5FsmQKBgHpy\nuZmUFOcDHn5wQdckISS7gP+xgsSjmgXi8B55SpDABoohoH1krwMSx5yNZEPZJ610\ngg+i0eiiQrXayaJIOa9o3zfORM8ygIonKn9z80e423uCr3PgFXUFzC4qz9E/FsSt\nBpB98II9SPaRfVDjZ7yW6bB702jZVvL+OQe7TpDxAoGBANXe3qf43oD0W4roU1po\nyN1d+VfX+3TbhTAocTKyCaPBri3zjs1IeyZPH65KP9tPQ1zQRnmM3nyah+X9jXjf\n9RkSidyCeRJdZPP5mShufTNOR0qFQ1BsayHabk+4pczVXCUtcvfeTDhDJjuJZetv\n2Xkxh+gZDAr7KRdXJTA35KeH\n-----END PRIVATE KEY-----\n",
+  "client_email": "rbs-erp@light-operator-407613.iam.gserviceaccount.com",
+  "client_id": "113063064411893937431",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rbs-erp%40light-operator-407613.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

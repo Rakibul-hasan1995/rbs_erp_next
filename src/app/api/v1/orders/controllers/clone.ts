@@ -17,7 +17,7 @@ export const cloneOrder = async (id: string) => {
       const clientOrderCount = await Order.countDocuments({ customer: order?.customer })
       const lastOrder = await Order.findOne({}).sort({ _id: -1 })
       const lastProgramSl = lastOrder?.program_name?.split('-')[0] || 0
-      order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}-${landingZeros(clientOrderCount + 1, 2)}`
+      order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}`
       order.qty = 1
       order.order_date = new Date().toISOString()
       order.isNew = true

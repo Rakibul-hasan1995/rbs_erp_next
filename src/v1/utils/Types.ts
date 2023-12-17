@@ -236,3 +236,53 @@ export interface PurchaseOrdersExpand {
    status: string,
 
 }
+
+interface Cover_photoExpand {
+   _id: string;
+   href: string
+}
+
+
+export interface PurchaseOrderInvoiceExpandItem {
+   _id: string;
+   cover_photo: {
+      _id: string;
+      href: string
+   };
+   program_name: string;
+   order_name: string;
+   unit: 'Pcs' | "Dzn";
+   currency: "USD" | "BDT";
+   qty: number;
+   rate: number;
+   challan_no?: string
+   totalUsd: number;
+   totalBdt: number;
+   order_date: string;
+}
+
+export interface PurchaseOrderInvoiceExpand {
+   _id: string
+   amount: number;
+   cover_photo: Cover_photoExpand;
+   date: string;
+   discount: number;
+   invoice_no: string;
+   items: PurchaseOrderInvoiceExpandItem[];
+   supplier: {
+      _id: string;
+      user_name: string,
+      exchange_rate: number;
+      contact_details: {
+         address: string
+      }
+   };
+   supplier_bill_no: number;
+   status: string;
+   supplier_prev_deu: number;
+   remarks: string;
+   totalAmountBDT: number;
+   totalAmountUSD: number;
+   discountAmount: number;
+   totalQty: number;
+}

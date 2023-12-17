@@ -146,12 +146,6 @@ const styles = StyleSheet.create({
 // eslint-disable-next-line react-refresh/only-export-components
 function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, pageData: InvoiceExpand }) {
 
-
-
-   const tableHeader = ["Style", "Design", "CH-No", "Qty", "Rate", "Total(USD)", "Total(BDT)"]
-   // const tableFooter = ["-", "Total", numberWithCommas(pageData?.debitAmount), numberWithCommas(pageData?.creditAmount)]
-   // const tableDueRow = ["-", "-", "Deu", '-', numberWithCommas(pageData?.deuAmount)]
-
    return (
       <Document>
          {pageData &&
