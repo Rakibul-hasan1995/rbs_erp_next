@@ -56,7 +56,7 @@ const InvoiceForm = ({ submit, initialValues }: Props) => {
 
    const fetchOrders = async (id: string) => {
       try {
-         const { data } = await Axios.get(`/api/v1/users/${id}/orders?limit=50&search_by=status&search=Completed`)
+         const { data } = await Axios.get(`/api/v1/users/${id}/orders?limit=50&search_by=status&search=Shipped`)
          setOrders(data.data)
         
       } catch (error) {
