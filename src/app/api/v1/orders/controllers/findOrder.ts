@@ -5,14 +5,10 @@ import mongoose from "mongoose";
 import { queryOrder } from "./helpers/queryOrder";
 export const findOrder = async (url: string) => {
    try {
-      const page = getQueryParams(url as string, 'page', 1);
-      const limit = getQueryParams(url as string, 'limit', 10)
       const searchTerm = getQueryParams(url as string, 'search', undefined)
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
       const filterKey = getQueryParams(url as string, 'filter_key', '')
       const filterValue = getQueryParams(url as string, 'filter_value', '')
-
-      const skip = (page - 1) * limit;
 
       const regex = new RegExp(searchTerm, 'i')
       let query = {}

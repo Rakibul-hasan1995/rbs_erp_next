@@ -5,19 +5,34 @@ import { createPurchaseOrderInvoice } from "./controllers/createPurchaseOrderInv
 import { checkLogger } from '../../auth/[...nextauth]/checkLogger';
 
 export const GET = async (req: Request) => {
-
    const user = await checkLogger()
    if (!user) {
       return NextResponse.json({ message: 'access denied' }, { status: 401 })
    }
-   await dbConnect()
-   const res = await findPurchaseOrderInvoice(req.url)
-   return NextResponse.json(res, { status: res.code })
+   if (user.roll == 'customer') {
+      return NextResponse.redirect(new URL(`/api/v1/users/orders/${user.id}`, req.url))
+   }
+   if (user.roll == 'admin') {
+      await dbConnect()
+      const res = await findPurchaseOrderInvoice(req.url)
+      return NextResponse.json(res, { status: res.code })
+   }
+   return NextResponse.json({ message: 'access denied' }, { status: 401 })
 }
 
 export const POST = async (req: Request) => {
-   await dbConnect()
-   const body = await req.json()
-   const res = await createPurchaseOrderInvoice(body)
-   return NextResponse.json(res, { status: res.code })
+   const user = await checkLogger()
+   if (!user) {
+      return NextResponse.json({ message: 'access denied' }, { status: 401 })
+   }
+   if (user.roll == 'customer') {
+      return NextResponse.redirect(new URL(`/api/v1/users/orders/${user.id}`, req.url))
+   }
+   if (user.roll == 'admin') {
+      await dbConnect()
+      const body = await req.json()
+      const res = await createPurchaseOrderInvoice(body)
+      return NextResponse.json(res, { status: res.code })
+   }
+   return NextResponse.json({ message: 'access denied' }, { status: 401 })
 }

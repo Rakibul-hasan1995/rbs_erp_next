@@ -1,71 +1,65 @@
-// import { NextFunction, Request, Response } from "express"
-// import { User } from "../../../../model/User"
 
-// import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
-// import { userSignupValidate } from "../../../../lib/user/createUserValidation"
+import { userSignupValidate } from '@/app/api/lib/validation/userValidateion'
+import { User } from '@/app/api/mongoose/model/User'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
-// export const signup = async (req: Request, res: Response, next: NextFunction) => {
-//    try {
-//       const email: string = req.body.email
-//       const password: string = req.body.password
-//       const user_name: string = req.body.user_name || email.split('@')[0]
+export const signup = async (body: any,) => {
+   try {
+      const email: string = body.email
+      const password: string = body.password
+      const user_name: string = body.user_name || email?.split('@')[0]
 
-//       const existUser = await User.findOne({ email })
-//       if (existUser) {
-//          return res.status(400).json({ code: 400, message: 'Bad Request', data: [{ field: 'email', value: 'User already Registered' }] })
-//       }
-//       const validate = userSignupValidate({ email, password })
-//       if (!validate.isValid) {
-//          return res.status(400).json({ code: 400, message: 'Bad Request', data: validate.error })
-//       }
-//       const count = await User.countDocuments({})
+      const existUser = await User.findOne({ email })
+      if (existUser) {
+         return { code: 400, message: 'Bad Request', data: [{ field: 'email', value: 'User already Registered' }] }
+      }
 
-//       const hashedPassword = await bcrypt.hash(password, 5);
-//       const user = {
-//          email,
-//          user_name,
-//          password: hashedPassword,
-//          roll: count === 0 ? 'admin' : 'user'
-//       }
+      const validate = userSignupValidate({ email, password })
+      if (!validate.isValid) {
 
-//       const auth = new User(user)
+         return { code: 400, message: 'Bad Request', data: validate.error }
+      }
+      const count = await User.countDocuments({})
 
-//       await auth.save()
+      const hashedPassword = await bcrypt.hash(password, 5);
+      const user = {
+         email,
+         user_name,
+         password: hashedPassword,
+         roll: count === 0 ? 'admin' : 'user'
+      }
 
-//       const secret = process.env.JWT_SECRET
+      const auth = new User(user)
 
-//       const access_token = jwt.sign({
-//          user_name: auth.user_name,
-//          user_id: auth._id,
-//          roll: auth.roll,
-//       }, `${secret}`, {
-//          expiresIn: '30d'
-//       });
+      await auth.save()
 
-//       const response = {
-//          code: 201,
-//          message: 'Signup Successful',
-//          data: {
-//             access_token
-//          },
-//          links: {
-//             signup: `/api/v1/auth/signup`,
-//             self: `/api/v1/user/${auth._id}`,
-//             signin: '/api/v1/auth/signin'
-//          }
-//       }
-//       res.status(201).json(response)
+      const secret = process.env.JWT_SECRET
 
-//    } catch (error: any) {
-//       if (error && error.code === 11000) {
-//          let err = {
-//             code: 400,
-//             message: 'Bad Request',
-//             data: [{ email: `${req.body.email}: already exists` }]
-//          }
-//          return res.status(400).json(err)
-//       }
-//       next(error)
-//    }
-// }
+      const access_token = jwt.sign({
+         user_name: auth.user_name,
+         user_id: auth._id,
+         roll: auth.roll,
+      }, `${secret}`, {
+         expiresIn: '30d'
+      });
+
+      const response = {
+         code: 201,
+         message: 'Signup Successful',
+         data: {
+            access_token
+         },
+         links: {
+            signup: `/api/v1/auth/signup`,
+            self: `/api/v1/user/${auth._id}`,
+            signin: '/api/v1/auth/signin'
+         }
+      }
+      return response
+
+
+   } catch (error: any) {
+      return { code: 500, message: error.message }
+   }
+}

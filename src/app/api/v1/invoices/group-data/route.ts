@@ -1,14 +1,19 @@
 import dbConnect from "@/app/api/mongoose/mongoose"
 import { NextResponse } from "next/server"
-import {  getGroupInvoice } from "../controllers/getGroupInvoice"
+import { getGroupInvoice } from "../controllers/getGroupInvoice"
+import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
 
 export async function GET(req: Request) {
-   try {
+
+
+   const user = await checkLogger()
+   if (!user) {
+      return NextResponse.json({ message: 'access denied' }, { status: 401 })
+   }
+   if (user.roll == 'admin') {
       await dbConnect()
       const response = await getGroupInvoice(req.url)
       return NextResponse.json(response, { status: 200 })
-   } catch (error) {
-      console.log(error)
-      return NextResponse.json({ error }, { status: 500 })
    }
+   return NextResponse.json({ message: 'access denied' }, { status: 401 })
 }

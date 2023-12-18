@@ -2,21 +2,35 @@ import { NextResponse } from "next/server"
 import dbConnect from "../../mongoose/mongoose"
 import { findProductions } from "./controllers/findProductions"
 import { createProduction } from "./controllers/createProduction"
+import { checkLogger } from "../../auth/[...nextauth]/checkLogger"
 
-export async function GET(req: Request) {
-   try {
-      await dbConnect()
-      const response = await findProductions(req.url)
-      return NextResponse.json(response, { status: 200 })
-   } catch (error) {
-      console.log(error)
-      return NextResponse.json({ error }, { status: 500 })
+
+export const GET = async (request: Request) => {
+   const user = await checkLogger()
+   if (!user) {
+      return NextResponse.json({ message: 'access denied' }, { status: 401 })
    }
+   if (user.roll == 'admin') {
+      await dbConnect()
+      const response = await findProductions(request.url)
+      return NextResponse.json(response, { status: 200 })
+   }
+   return NextResponse.json({ message: 'access denied' }, { status: 401 })
 }
 
 
+
+
 export async function POST(request: Request,) {
-   const res = await request.json()
-   const data = await createProduction(res)
-   return Response.json(data, { status: data.code })
+   const user = await checkLogger()
+   if (!user) {
+      return NextResponse.json({ message: 'access denied' }, { status: 401 })
+   }
+   if (user.roll == 'admin') {
+      await dbConnect()
+      const res = await request.json()
+      const data = await createProduction(res)
+      return Response.json(data, { status: data.code })
+   }
+   return NextResponse.json({ message: 'access denied' }, { status: 401 })
 }

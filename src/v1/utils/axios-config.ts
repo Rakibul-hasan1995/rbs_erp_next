@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 export interface ApiResponse {
    code: number;
    data: any;
@@ -28,12 +29,12 @@ Axios.interceptors.request.use(async (config) => {
 
 Axios.interceptors.response.use(undefined, error => {
    const statusCode = error.response ? error.response.status : null;
-
    if (statusCode === 401) {
       // Get the history object from React Router
       console.log(error)
       // redirect("/auth/signin");
-      window.location.replace('/api/auth/signin')
+      // window.location.replace('/auth/signin')
+      toast.error('access denied')
 
    }
 
