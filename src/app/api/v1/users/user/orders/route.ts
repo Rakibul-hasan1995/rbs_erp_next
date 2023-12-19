@@ -1,4 +1,4 @@
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 import { NextResponse } from "next/server"
 import { findOrder } from "../../../orders/controllers/findOrder"
 import dbConnect from "@/app/api/mongoose/mongoose"

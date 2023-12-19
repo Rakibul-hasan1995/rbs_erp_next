@@ -1,7 +1,7 @@
 import dbConnect from "@/app/api/mongoose/mongoose"
 import { NextResponse } from "next/server"
 import { getGroupPayment } from "../controllers/getGroupPayment"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 export async function GET(req: Request) {
    try {

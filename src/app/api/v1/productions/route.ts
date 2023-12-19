@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import dbConnect from "../../mongoose/mongoose"
 import { findProductions } from "./controllers/findProductions"
 import { createProduction } from "./controllers/createProduction"
-import { checkLogger } from "../../auth/[...nextauth]/checkLogger"
+import { checkLogger } from "../../auth/checkLogger"
 
 
 export const GET = async (request: Request) => {

@@ -2,7 +2,7 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { updatePurchaseOrder } from "../controllers/updatePurchaseOrder"
 import { getPurchaseOrderById } from "../controllers/getPurchaseOrderById"
 import { deletePurchaseOrder } from "../controllers/deletePurchaseOrder"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 import { NextResponse } from "next/server"
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {

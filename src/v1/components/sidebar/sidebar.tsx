@@ -3,7 +3,7 @@
 'use client'
 
 import * as React from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -28,8 +28,6 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import styles from './style.module.css';
 import { MenuItem, routeStructure } from './sideMenuItems';
-import { FaLongArrowAltUp } from 'react-icons/fa';
-import { signOut } from 'next-auth/react';
 
 const CustomScrollbarBox = styled(Box)({
    '&::-webkit-scrollbar': {
@@ -268,7 +266,7 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
                   {title}
                </Typography>
                <Box ml={'auto'}>
-                  <IconButton onClick={() => signOut()}>
+                  <IconButton onClick={() => alert('please add function in sidebar:271')}>
                      <MdOutlineLogout />
                   </IconButton>
                </Box>

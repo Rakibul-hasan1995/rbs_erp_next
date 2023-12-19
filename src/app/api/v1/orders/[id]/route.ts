@@ -4,7 +4,7 @@ import { getOrderById } from "../controllers/getOrderById"
 import { updateOrder } from "../controllers/updateOrder"
 import dbConnect from "@/app/api/mongoose/mongoose"
 import { deleteOrder } from "../controllers/deleteOrder"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 import { NextResponse } from "next/server"
 
 

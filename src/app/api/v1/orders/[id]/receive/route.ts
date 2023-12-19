@@ -2,7 +2,7 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { findChallanByOrder } from "../../../receive-challans/controllers/findChallanByOrderId"
 import { ReceiveChallan } from "@/app/api/mongoose/model/Challan"
 import { NextResponse } from "next/server"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 
 

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import dbConnect from "../../mongoose/mongoose"
 import { findPurchaseOrder } from "./controllers/findPurchaseOrders"
 import { createPurchaseOrder } from "./controllers/createPurchaseOrder"
-import { checkLogger } from "../../auth/[...nextauth]/checkLogger"
+import { checkLogger } from "../../auth/checkLogger"
 
 export const GET = async (req: Request) => {
    const user = await checkLogger()

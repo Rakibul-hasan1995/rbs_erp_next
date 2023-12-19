@@ -3,7 +3,7 @@ import { getQueryParams } from "@/app/api/lib/getQueryParams"
 import mongoose from 'mongoose'
 import { queryOrder } from "../../../orders/controllers/helpers/queryOrder"
 import { NextResponse } from "next/server"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
    const user = await checkLogger()

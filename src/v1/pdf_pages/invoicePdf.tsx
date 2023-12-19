@@ -190,7 +190,7 @@ function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, page
                               style={styles.img}
                               src={item.cover_photo.href} />
                         </View>
-                        <Text style={[styles.cell, styles.textRight, { width: '14%' }]}>{item.challan_no}</Text>
+                        <Text style={[styles.cell,  { width: '14%' }]}>{item.challan_no}</Text>
                         <Text style={[styles.cell, styles.textCenter, { width: '12%' }]}>{item.qty}</Text>
                         <Text style={[styles.cell, styles.textRight, { width: '12%' }]}>{item.currency} {numberWithCommas(item.rate)}</Text>
                         <Text style={[styles.cell, styles.textRight, { width: '14%' }]}>{numberWithCommas(item.totalUsd)}</Text>

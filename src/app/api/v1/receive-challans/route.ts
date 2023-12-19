@@ -4,7 +4,7 @@ import dbConnect from "../../mongoose/mongoose"
 import { findChallans } from "./controllers/findChallans"
 import { ReceiveChallan } from "../../mongoose/model/Challan"
 import { createChallan } from "./controllers/createChallan"
-import { checkLogger } from "../../auth/[...nextauth]/checkLogger"
+import { checkLogger } from "../../auth/checkLogger"
 
 export const GET = async (req: Request) => {
    const user = await checkLogger()

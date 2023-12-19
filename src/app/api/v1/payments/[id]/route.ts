@@ -2,7 +2,7 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { updatePayment } from "../controllers/updatePayment"
 import { getPaymentById } from "../controllers/getPaymentById"
 import { deletePayment } from "../controllers/deletePayment"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 import { NextResponse } from "next/server"
 
 

@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { Avatar, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";
-import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
+import { Axios } from "@/v1/utils/axios-config";
 
 
 
@@ -43,11 +43,13 @@ const SigninForm = () => {
 
    const router = useRouter()
    const onSubmit = async (formData: any) => {
-      const { email, password } = formData
-      const response = await signIn('credentials', { email, password, redirect: false, })
-      console.log({ response })
+      const response = await Axios.post('/api/auth/signin', formData)
+
+
+      console.log(response.data.data.access_token)
 
       if (response?.status == 200) {
+         localStorage.setItem('access_token', response.data.data.access_token)
          toast.success('login success')
          router.push('/v1/dashboard')
       } else {

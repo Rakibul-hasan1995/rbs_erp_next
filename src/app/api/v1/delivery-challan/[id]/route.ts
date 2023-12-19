@@ -5,7 +5,7 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { getChallanById } from "../../receive-challans/controllers/getChallanById"
 import { updateChallan } from "../../receive-challans/controllers/updateChallan"
 import { deleteChallanById } from "../../receive-challans/controllers/deleteChallan"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
@@ -43,7 +43,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       return NextResponse.json(data, { status: data.code })
    }
    return NextResponse.json({ message: 'access denied' }, { status: 401 })
-
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {

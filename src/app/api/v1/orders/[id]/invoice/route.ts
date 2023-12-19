@@ -2,7 +2,7 @@ import dbConnect from "@/app/api/mongoose/mongoose"
 import { Invoice } from "@/app/api/mongoose/model/Invoice"
 import { NextResponse } from "next/server"
 import { getInvoiceById } from "../../../invoices/controllers/getInvoiceById"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {

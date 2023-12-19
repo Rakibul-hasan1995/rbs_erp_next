@@ -5,7 +5,7 @@ import { NextResponse } from "next/server"
 import { updateProduction } from "../controllers/updateProduction"
 import dbConnect from "@/app/api/mongoose/mongoose"
 import { deleteProduction } from "../controllers/deleteProduction"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
    const user = await checkLogger()

@@ -6,7 +6,7 @@ import { updatePurchaseOrderInvoice } from "../controllers/updateInvoice"
 import { getPurchaseOrderInvoiceById } from "../controllers/getInvoiceById"
 
 import { NextResponse } from "next/server"
-import { checkLogger } from "@/app/api/auth/[...nextauth]/checkLogger"
+import { checkLogger } from "@/app/api/auth/checkLogger"
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
    const user = await checkLogger()

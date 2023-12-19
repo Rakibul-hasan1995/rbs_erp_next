@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { Gallery } from "../../mongoose/model/Gallery"
 import dbConnect from "../../mongoose/mongoose"
 import { findGallery } from "./controllers/findGallery"
-import { checkLogger } from "../../auth/[...nextauth]/checkLogger"
+import { checkLogger } from "../../auth/checkLogger"
 
 
 
