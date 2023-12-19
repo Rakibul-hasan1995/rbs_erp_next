@@ -102,11 +102,13 @@ const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {
                            <Typography >To</Typography>
                            <Typography fontWeight={'bold'}>{data?.customer.user_name}.</Typography>
                            <Typography>{data?.customer.contact_details.address}.</Typography>
+
                         </div>
                         <div>
                            <Typography>Invoice Date : {moment(data?.date).format('DD-MMM-YY')}</Typography>
                            <Typography>Invoice No   : <strong>{data?.invoice_no}</strong></Typography>
                            <Typography>Bill No      : {data?.customer_bill_no}</Typography>
+
                         </div>
                      </Box>
                      <Typography my={1} fontWeight={'bold'}>Sub: Bill For Embroider Work</Typography>
@@ -151,6 +153,8 @@ const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {
                         </TableHead>
                      </Table>
                      <Typography my={1}>in words : {toWords.convert(data?.totalAmountBDT || 0)}</Typography>
+                     <Typography my={1} fontSize={13} >Remarks: {data?.remarks}</Typography>
+
                      <Typography fontStyle={'italic'} my={3}>Early Payment Will Be Appreciated </Typography>
                      <Typography fontStyle={'italic'} my={2}>Thanks</Typography>
                      <Box p={3} display={'flex'} justifyContent={'space-between'}>

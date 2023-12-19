@@ -167,6 +167,7 @@ function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, page
                         <Text>Invoice Date : {moment(pageData?.date).format("DD-MMM-YY")}</Text>
                         <Text style={{ paddingVertical: "5px" }}>Invoice No    :  {pageData?.invoice_no}</Text>
                         <Text>Bill No           :  {pageData?.customer_bill_no}</Text>
+
                      </View>
                   </View>
 
@@ -189,11 +190,11 @@ function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, page
                               style={styles.img}
                               src={item.cover_photo.href} />
                         </View>
-                        <Text style={[styles.cell,  styles.textRight ,{width: '14%'}]}>{item.challan_no}</Text>
-                        <Text style={[styles.cell,  styles.textCenter , {width: '12%'}]}>{item.qty}</Text>
-                        <Text style={[styles.cell,  styles.textRight, {width: '12%'}]}>{item.currency} {numberWithCommas(item.rate)}</Text>
-                        <Text style={[styles.cell,  styles.textRight, {width: '14%'}]}>{numberWithCommas(item.totalUsd)}</Text>
-                        <Text style={[styles.cell,  styles.textRight, {width: '14%'}]}>{numberWithCommas(item.totalBdt)}</Text>
+                        <Text style={[styles.cell, styles.textRight, { width: '14%' }]}>{item.challan_no}</Text>
+                        <Text style={[styles.cell, styles.textCenter, { width: '12%' }]}>{item.qty}</Text>
+                        <Text style={[styles.cell, styles.textRight, { width: '12%' }]}>{item.currency} {numberWithCommas(item.rate)}</Text>
+                        <Text style={[styles.cell, styles.textRight, { width: '14%' }]}>{numberWithCommas(item.totalUsd)}</Text>
+                        <Text style={[styles.cell, styles.textRight, { width: '14%' }]}>{numberWithCommas(item.totalBdt)}</Text>
                      </View>)
                      ) : <></>}
 
@@ -205,14 +206,15 @@ function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, page
 
                      <View style={styles.headerRow} >
                         <Text style={[styles.cell, styles.tableHeader, { width: '48%' }]} >Total</Text>
-                        <Text style={[styles.cell, styles.tableHeader, {width: '12%'}]} > {pageData?.totalQty}</Text>
-                        <Text style={[styles.cell, styles.tableHeader, {width: '12%'}]} > --</Text>
-                        <Text style={[styles.cell, styles.tableHeader,styles.textRight, {width: '14%'}]} >{numberWithCommas(pageData?.totalAmountUSD)}</Text>
-                        <Text style={[styles.cell, styles.tableHeader, styles.textRight,{width: '14%'}]} >{numberWithCommas(pageData?.totalAmountBDT)}</Text>
+                        <Text style={[styles.cell, styles.tableHeader, { width: '12%' }]} > {pageData?.totalQty}</Text>
+                        <Text style={[styles.cell, styles.tableHeader, { width: '12%' }]} > --</Text>
+                        <Text style={[styles.cell, styles.tableHeader, styles.textRight, { width: '14%' }]} >{numberWithCommas(pageData?.totalAmountUSD)}</Text>
+                        <Text style={[styles.cell, styles.tableHeader, styles.textRight, { width: '14%' }]} >{numberWithCommas(pageData?.totalAmountBDT)}</Text>
                      </View>
 
                   </View>
                   <Text style={{ paddingTop: '10px', fontFamily: 'Roboto' }}>In Word : {toWords.convert(Number(pageData?.totalAmountBDT || 0))}</Text>
+                  <Text style={{ paddingTop: '5px', fontFamily: 'Roboto' }}>Remarks: {pageData?.remarks}</Text>
 
                   <Text style={[styles.fontItalic, { fontSize: '9px', paddingTop: '35px' }]}>
                      Early Payment Will Be Appreciated
