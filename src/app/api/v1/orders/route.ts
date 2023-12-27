@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../mongoose/mongoose";
-import { findOrder } from "./controllers/findOrder";
 import { createOrder } from "./controllers/createOrder";
 import { checkLogger } from "../../auth/checkLogger";
+import { findOrder } from "./controllers/findOrder";
 
 
 export async function GET(req: Request) {
    try {
       const user = await checkLogger()
+
       if (!user) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
       }
       if (user.roll == 'user') {
-         console.log(user.roll)
-        const query = req.url.split('?')
-         return NextResponse.redirect(new URL(`/api/v1/users/user/orders?${query[1]}`, req.url))
-
+         const query = req.url.split('?')
+         const userRoute = new URL(`/user-routes?${query[1]}`, req.url)
+         return NextResponse.redirect(userRoute)
       }
       if (user.roll == 'admin') {
          await dbConnect()

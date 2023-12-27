@@ -2,7 +2,8 @@
 import { getQueryParams } from "@/app/api/lib/getQueryParams";
 import { User } from "@/app/api/mongoose/model/User";
 import mongoose from "mongoose";
-import { queryOrder } from "./helpers/queryOrder";
+import { queryOrder } from "../../controllers/helpers/queryOrder";
+
 export const findOrder = async (url: string) => {
    try {
       const searchTerm = getQueryParams(url as string, 'search', undefined)
@@ -39,7 +40,7 @@ export const findOrder = async (url: string) => {
          const customersIds = customers.map((item) => { return new mongoose.Types.ObjectId(item._id) })
          query = { customer: { $in: customersIds }, }
       }
-       return await queryOrder(url, query)
+      return await queryOrder(url, query)
 
    } catch (error: any) {
       return { code: 500, message: error?.message }

@@ -1,26 +1,32 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import jwt from 'jsonwebtoken'
 export const checkLogger = async () => {
    try {
       const headersList = headers()
-      const authHeader = headersList.get('Authorization')
+      let authHeader: any = headersList.get('Authorization')
 
       if (!authHeader) {
-         return null
+         const cookie = cookies().get('Authorization')
+         if (cookie) {
+            authHeader = `cookie ${cookie}`
+         } else {
+            return null
+         }
       }
 
+
       const tokenParts = authHeader.split(" ");
-     
+
       if (tokenParts.length !== 2) {
 
          return null
       }
       const token = tokenParts[1];
 
-      console.log(token)
+
 
       const validToken: any = jwt.verify(token, `${process.env.JWT_SECRET}`);
-      console.log(3)
+
 
 
       if (validToken) {

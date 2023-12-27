@@ -64,5 +64,5 @@ export async function middleware(request: NextApiRequest) {
 }
 
 export const config = {
-   matcher: ['/api/v1/:path*'],
+   matcher: ['/api/:path*'],
 };

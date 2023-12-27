@@ -1,21 +1,23 @@
-import { checkLogger } from "@/app/api/auth/checkLogger"
-import { NextResponse } from "next/server"
-import { findOrder } from "../../../orders/controllers/findOrder"
-import dbConnect from "@/app/api/mongoose/mongoose"
+import { checkLogger } from "@/app/api/auth/checkLogger";
+import dbConnect from "@/app/api/mongoose/mongoose";
+import { NextResponse } from "next/server";
+import { findOrder } from './controllers/findOrder'
+
 
 export async function GET(req: Request) {
+   console.log('headers', req.headers)
    try {
-      console.log('hit')
       const user = await checkLogger()
+      console.log(user)
       if (!user) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
       }
       if (user.roll == 'user') {
          await dbConnect()
-         const data: any = await findOrder(req.url)
-        
+         const data = await findOrder(req.url)
          return NextResponse.json(data, { status: data.code })
       }
+
       return NextResponse.json({ message: 'access denied' }, { status: 401 })
 
    } catch (error) {
