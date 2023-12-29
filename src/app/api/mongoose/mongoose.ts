@@ -3,9 +3,8 @@ import mongoose from 'mongoose'
 declare global {
    var mongoose: any // This must be a `var` and not a `let / const`
 }
-const uri = process.env.MONGODB_URI
+const MONGODB_URI = process.env.MONGODB_URI
 
-const MONGODB_URI = `${uri}/RBS_ERP?retryWrites=true&w=majority`
 
 if (!uri) {
    throw new Error(
