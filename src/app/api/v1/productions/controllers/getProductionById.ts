@@ -1,4 +1,6 @@
 import { Production } from "@/app/api/mongoose/model/Production";
+import "@/app/api/mongoose/model/User";
+import "@/app/api/mongoose/model/Gallery";
 
 export const getProductionById = async (id: string, expand: boolean) => {
    try {

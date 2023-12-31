@@ -1,6 +1,6 @@
 import productionValidate from "@/app/api/lib/validation/createProductionValidation"
+import { History } from "@/app/api/mongoose/model/OrderHistory"
 import { Production } from "@/app/api/mongoose/model/Production"
-
 
 export const createProduction = async (body: any,) => {
    try {
@@ -24,6 +24,20 @@ export const createProduction = async (body: any,) => {
       }
 
       const data = await Production.create(body)
+
+      const history: any[] = []
+      const productionRow = data?.production_data
+      productionRow?.forEach((element: any) => {
+         const obj = {
+            parentId: new mongoose.Types.ObjectId(element.order),
+            title: 'Production',
+            massage: `Make production in "${data?.shift}"`,
+            data: { production: `${element.qty} Pcs` }
+         }
+         history.push(obj)
+      })
+      await History.insertMany(history)
+
       return { code: 201, data, links: [{ self: `/api/v1/productions/${data._id}` }] }
    } catch (error: any) {
       return { code: 500, message: error.message, error }

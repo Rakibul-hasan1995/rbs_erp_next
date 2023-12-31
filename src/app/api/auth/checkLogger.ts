@@ -1,6 +1,13 @@
 import { cookies, headers } from "next/headers";
 import jwt from 'jsonwebtoken'
-export const checkLogger = async () => {
+export interface AuthUser {
+   name: string;
+   email: string;
+   roll: string;
+   id: string
+}
+
+export const checkLogger = async (): Promise<AuthUser | null> => {
    try {
       const headersList = headers()
       let authHeader: any = headersList.get('Authorization')
@@ -30,7 +37,7 @@ export const checkLogger = async () => {
 
 
       if (validToken) {
-         const user = {
+         const user: AuthUser = {
             id: validToken.id,
             name: validToken.name,
             roll: validToken.roll,
