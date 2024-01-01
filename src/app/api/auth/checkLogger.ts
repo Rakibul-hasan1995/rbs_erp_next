@@ -15,7 +15,7 @@ export const checkLogger = async (): Promise<AuthUser | null> => {
       if (!authHeader) {
          const cookie = cookies().get('Authorization')
          if (cookie) {
-            authHeader = `cookie ${cookie}`
+            authHeader = `cookie ${cookie.value}`
          } else {
             return null
          }

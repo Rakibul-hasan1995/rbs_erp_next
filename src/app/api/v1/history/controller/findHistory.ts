@@ -1,10 +1,9 @@
-import { APIControllerFunction } from './../../../../../../../mobile/src/utils/Types';
 import { checkLogger } from "@/app/api/auth/checkLogger";
 import { History } from "@/app/api/mongoose/model/OrderHistory";
 import dbConnect from '@/app/api/mongoose/mongoose';
 import mongoose from "mongoose";
 
-export const findHistory = async (parentId = ''): Promise<APIControllerFunction> => {
+export const findHistory = async (parentId = ''): Promise<any> => {
    try {
       const user = await checkLogger()
       if (!user) {
