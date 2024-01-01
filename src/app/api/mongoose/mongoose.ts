@@ -5,7 +5,7 @@ declare global {
 }
 const uri = process.env.MONGODB_URI
 
-const MONGODB_URI = `${uri}?retryWrites=true&w=majority`
+const MONGODB_URI = `${uri}`
 
 if (!uri) {
    throw new Error(
@@ -42,3 +42,4 @@ async function dbConnect() {
 }
 
 export default dbConnect
+
