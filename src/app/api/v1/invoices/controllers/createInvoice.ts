@@ -2,6 +2,7 @@
 import invoiceValidation from "@/app/api/lib/validation/createInvoiceValidation";
 import { Invoice } from "@/app/api/mongoose/model/Invoice";
 import { Order } from "@/app/api/mongoose/model/Order";
+import { History } from "@/app/api/mongoose/model/OrderHistory";
 import { landingZeros } from "@/v1/utils/addLandingZero";
 import moment from "moment";
 import mongoose from "mongoose";
@@ -70,7 +71,20 @@ export const createInvoice = async (body: any) => {
          invoice.cover_photo = new mongoose.Types.ObjectId(`${order.cover_photo}`)
       }
 
-      await invoice.save()
+      const inv = await invoice.save()
+
+      const history: any[] = []
+      const invRow = inv.items
+      invRow?.forEach((element: any) => {
+         const obj = {
+            parentId: new mongoose.Types.ObjectId(element.order),
+            title: 'Invoiced',
+            massage: `Make Invoice  "${inv.invoice_no}"`,
+            data: {}
+         }
+         history.push(obj)
+      })
+      await History.insertMany(history)
 
       return { code: 201, data: invoice, links: { self: `/api/v1/invoice/${invoice._id}` } }
 

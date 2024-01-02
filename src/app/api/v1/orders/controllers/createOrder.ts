@@ -1,15 +1,12 @@
 import orderValidator from "@/app/api/lib/validation/createOrderValidation"
 import { Order } from "@/app/api/mongoose/model/Order"
+import { User } from "@/app/api/mongoose/model/User"
 import { landingZeros } from "@/v1/utils/addLandingZero"
 import moment from "moment"
-
+import mongoose from "mongoose"
 export const createOrder = async (body: any) => {
    try {
-      const tags: string[] = []
 
-      const string = body.tags
-      const arr = string.split(' ')
-      arr.forEach((item: string) => tags.push(item))
 
       const {
          customer,
@@ -27,6 +24,21 @@ export const createOrder = async (body: any) => {
          cover_photo = '6505d20104fb8dcbd396ab6c',
          image_gallery = [cover_photo],
       } = body
+
+
+      const tags: string[] = []
+
+      const string = body?.tags || ""
+      const arr = string.split(' ')
+      arr.forEach((item: string) => tags.push(item))
+      const customerData = await User.findById(new mongoose.Types.ObjectId(customer))
+      if (!customerData) {
+         return { code: 400, data: { field: 'customer', value: '! customer is required' } }
+      }
+
+      tags.push(customerData.user_name)
+      tags.push(order_name)
+
       let order = {
          customer,
          order_name,
@@ -57,8 +69,9 @@ export const createOrder = async (body: any) => {
 
       const lastOrder = await Order.findOne({}).sort({ _id: -1 })
       const lastProgramSl = lastOrder?.program_name?.split('-')[0] || 0
-      order.program_name = `${landingZeros(+lastProgramSl + 1, 2)}`
-
+      const programName = `${landingZeros(+lastProgramSl + 1, 2)}`
+      order.program_name = programName
+      tags.push(programName)
 
 
 

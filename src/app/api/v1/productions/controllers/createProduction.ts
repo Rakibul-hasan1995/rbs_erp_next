@@ -1,7 +1,7 @@
 import productionValidate from "@/app/api/lib/validation/createProductionValidation"
 import { History } from "@/app/api/mongoose/model/OrderHistory"
 import { Production } from "@/app/api/mongoose/model/Production"
-
+import mongoose from "mongoose"
 export const createProduction = async (body: any,) => {
    try {
       const {
@@ -40,6 +40,7 @@ export const createProduction = async (body: any,) => {
 
       return { code: 201, data, links: [{ self: `/api/v1/productions/${data._id}` }] }
    } catch (error: any) {
+      console.log(error)
       return { code: 500, message: error.message, error }
    }
 }
