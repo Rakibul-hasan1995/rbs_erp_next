@@ -66,6 +66,3 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
 
 
-
-
-// router.delete("/:_id", admin_checker, deleteProduction);

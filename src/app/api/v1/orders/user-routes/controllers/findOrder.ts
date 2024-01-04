@@ -6,7 +6,7 @@ import { queryOrder } from "../../controllers/helpers/queryOrder";
 
 export const findOrder = async (url: string) => {
    try {
-      const searchTerm = getQueryParams(url as string, 'search', undefined)
+      const searchTerm : any = getQueryParams(url as string, 'search', undefined)
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
       const filterKey = getQueryParams(url as string, 'filter_key', '')
       const filterValue = getQueryParams(url as string, 'filter_value', '')

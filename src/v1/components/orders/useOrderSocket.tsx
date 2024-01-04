@@ -18,6 +18,7 @@ export default function useOrderSocket(query?: string) {
    },)
 
    const fetch = async (str: string) => {
+      console.log('fetching')
       try {
          const { data } = await Axios.get(`/api/v1/orders?${query}&${str}&limit=${pagination.limit}`)
          const obj = _arrToObjBy_id(data.data)

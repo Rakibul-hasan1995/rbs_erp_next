@@ -14,7 +14,9 @@ export interface UserDocument extends mongoose.Document {
   password?: string;
   contact_details: Contact;
   opening_balance?: number;
-  exchange_rate?: number
+  exchange_rate?: number;
+  status: 'Pending' | 'Approved' | 'Decline' | 'Block'
+
 }
 
 
@@ -46,6 +48,10 @@ const userSchema = new Schema<UserDocument>(
     exchange_rate: {
       type: Number,
       default: 85
+    },
+    status: {
+      type: String,
+      default: 'Pending'
     }
   },
   {

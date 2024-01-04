@@ -7,27 +7,12 @@ export interface AuthUser {
    id: string
 }
 
-export const checkLogger = async (): Promise<AuthUser | null> => {
+export const checkLoggerMiddleware = async (token: string): Promise<AuthUser | null> => {
    try {
-      const headersList = headers()
-      let authHeader: any = headersList.get('Authorization')
-
-      if (!authHeader) {
-         const cookie = cookies().get('Authorization')
-         if (cookie) {
-            authHeader = `cookie ${cookie.value}`
-         } else {
-            return null
-         }
-      }
-      const tokenParts = authHeader.split(" ");
-      if (tokenParts.length !== 2) {
-         return null
-      }
-      const token = tokenParts[1];
+     
 
       const validToken: any = jwt.verify(token, `${process.env.JWT_SECRET}`);
-
+console.log({validToken})
       if (validToken) {
          const user: AuthUser = {
             id: validToken.id,

@@ -28,16 +28,16 @@ export async function PATCH(_request: Request, { params }: { params: { id: strin
 
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
-
    const user = await checkLogger()
    if (!user) {
       return NextResponse.json({ message: 'access denied' }, { status: 401 })
    }
    if (user.roll == 'admin') {
+      const expand = getQueryParams(request.url as string, 'expand', false)
       await dbConnect()
       const body = await request.json()
       const id = params.id
-      const data = await updateOrder(id, body)
+      const data = await updateOrder(id, body, expand)
       return NextResponse.json(data, { status: data.code })
    }
    return NextResponse.json({ message: 'access denied' }, { status: 401 })

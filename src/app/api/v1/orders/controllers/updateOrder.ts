@@ -1,9 +1,11 @@
+import { getQueryParams } from "@/app/api/lib/getQueryParams";
 import { updateOrderValidation } from "@/app/api/lib/validation/updateOrderValidation";
 import { Order } from "@/app/api/mongoose/model/Order";
+import { getOrderById } from "./getOrderById";
 
-export const updateOrder = async (id: string, body: any) => {
+export const updateOrder = async (id: string, body: any, expand = false) => {
    try {
-      const order = await Order.findById(id)
+      let order = await Order.findById(id)
       if (!order) {
          return {
             code: 400,
@@ -20,6 +22,9 @@ export const updateOrder = async (id: string, body: any) => {
       }
       Object.assign(order, validate.updates)
       await order.save()
+      if (expand) {
+         order = (await getOrderById(id, expand)).data
+      }
       return { code: 200, data: order, links: [{ self: `/api/v1/orders/${order?._id}` }] }
    } catch (error: any) {
       return { code: 500, message: error.message }

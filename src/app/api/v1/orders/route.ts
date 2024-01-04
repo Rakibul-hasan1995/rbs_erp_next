@@ -15,8 +15,10 @@ export async function GET(req: Request) {
       if (user.roll == 'user') {
          const query = req.url.split('?')
          const userRoute = new URL(`/user-routes?${query[1]}`, req.url)
+
          return NextResponse.redirect(userRoute)
       }
+
       if (user.roll == 'admin') {
          await dbConnect()
          const data = await findOrder(req.url)

@@ -5,14 +5,16 @@ import { findOrder } from './controllers/findOrder'
 
 
 export async function GET(req: Request) {
+
    console.log('headers', req.headers)
    try {
       const user = await checkLogger()
-      console.log(user)
+ 
       if (!user) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
       }
       if (user.roll == 'user') {
+         
          await dbConnect()
          const data = await findOrder(req.url)
          return NextResponse.json(data, { status: data.code })
