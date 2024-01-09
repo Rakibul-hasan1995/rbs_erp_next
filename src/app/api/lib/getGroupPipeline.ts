@@ -3,7 +3,12 @@
 interface Pipeline {
    start_date: string;
    end_date: string;
-   group_by: 'day' | 'month' | 'year'
+   group_by: 'day' | 'month' | 'year';
+   filter?: {
+      key: string;
+      value: string
+
+   }
 }
 interface Response {
    pipeline: any;
@@ -14,13 +19,13 @@ interface Response {
 
 export const getGroupPipeline: (arg: Pipeline) => Response = (arg) => {
 
-   const { start_date, end_date, group_by } = arg
+   const { start_date, end_date, group_by, filter } = arg
    // Parse dates
    const startDate = new Date(start_date as string);
    const endDate = new Date(end_date as string);
 
    // Match stage for date range
-   const matchStage: any = {
+   let matchStage: any = {
       $match: {
          date: {
             $gte: startDate,
@@ -28,6 +33,22 @@ export const getGroupPipeline: (arg: Pipeline) => Response = (arg) => {
          }
       }
    };
+
+   if (filter) {
+      matchStage = {
+         $match: {
+            date: {
+               $gte: startDate,
+               $lte: endDate
+            },
+            [filter.key]: {
+               $ne: filter.value
+            }
+         }
+      };
+   }
+
+
 
    // Group stage based on the selected grouping
    let groupStage: any = {};

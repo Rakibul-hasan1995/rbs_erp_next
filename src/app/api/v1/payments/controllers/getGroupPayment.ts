@@ -8,10 +8,13 @@ export const getGroupPayment = async (url: string,) => {
       const start_date: any = getQueryParams(url as string, 'start_date', '');
       const end_date = getQueryParams(url as string, 'end_date', '');
       const group_by = getQueryParams(url as string, 'group_by', 'month');
+      const filter = {
+         key: 'payment_mode',
+         value: 'Settlement'
+      }
 
 
-
-      const { success, pipeline, error } = getGroupPipeline({ start_date, end_date, group_by })
+      const { success, pipeline, error } = getGroupPipeline({ start_date, end_date, group_by, filter })
       if (!success) {
          return error
       }
@@ -25,3 +28,8 @@ export const getGroupPayment = async (url: string,) => {
       return { code: 500, message: error.message, error }
    }
 };
+
+
+
+
+
