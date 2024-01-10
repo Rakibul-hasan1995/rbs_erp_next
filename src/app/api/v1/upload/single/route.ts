@@ -7,7 +7,6 @@ import { Order } from "@/app/api/mongoose/model/Order"
 
 export const POST = async (req: Request) => {
    try {
-
       const user = await checkLogger()
       if (!user) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
@@ -33,7 +32,6 @@ export const POST = async (req: Request) => {
                const gallery = order.image_gallery
                gallery?.push(data._id)
                await order.save()
-               console.log(2, order)
             }
          }
 
@@ -44,4 +42,7 @@ export const POST = async (req: Request) => {
    } catch (error: any) {
       return NextResponse.json({ code: 500, message: error.message, error }, { status: 500 })
    }
+}
+export const GET = async (req: Request) => {
+   return NextResponse.json({ message: 'hello , this is get method, this method not allow' }, { status: 200 })
 }
