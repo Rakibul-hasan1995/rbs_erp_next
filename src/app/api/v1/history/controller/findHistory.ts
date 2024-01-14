@@ -14,15 +14,19 @@ export const findHistory = async (parentId = ''): Promise<any> => {
          return { message: '"parent_id" not found', code: 400 }
       }
       const history = History.find({ parentId: new mongoose.Types.ObjectId(parentId) }).sort({ createdAt: -1 })
+      const data = await history.exec()
+      return { data, code: 200 }
 
-      if (user.roll == 'admin') {
-         const data = await history.exec()
 
-         return { data, code: 200 }
-      } else {
-         const data = await history.select('-snapshot -data').exec()
-         return { data, code: 200 }
-      }
+      
+      // if (user.roll == 'admin') {
+      //    const data = await history.exec()
+
+      //    return { data, code: 200 }
+      // } else {
+      //    const data = await history.select('-snapshot -data').exec()
+      //    return { data, code: 200 }
+      // }
    } catch (error: any) {
       return { code: 500, message: error.message, error }
    }

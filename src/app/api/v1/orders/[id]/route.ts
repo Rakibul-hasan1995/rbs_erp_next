@@ -49,7 +49,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
    if (!user) {
       return NextResponse.json({ message: 'access denied' }, { status: 401 })
    }
-   if (user.roll == 'admin') {
+   if (user.roll == 'admin' || user.roll == 'user') {
       await dbConnect()
       const isExpand = getQueryParams(request.url as string, 'expand', false)
       const id = params.id
