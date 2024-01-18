@@ -1,7 +1,8 @@
-import { dbConnect } from '@/app/api/mongoose/mongoose';
+
 import { cookies, headers } from "next/headers";
 import jwt from 'jsonwebtoken'
 import { User } from "../mongoose/model/User";
+import dbConnect from "../mongoose/mongoose";
 export interface AuthUser {
    name: string;
    email: string;
