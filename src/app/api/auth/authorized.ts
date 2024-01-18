@@ -1,3 +1,4 @@
+import { dbConnect } from '@/app/api/mongoose/mongoose';
 import { cookies, headers } from "next/headers";
 import jwt from 'jsonwebtoken'
 import { User } from "../mongoose/model/User";
@@ -11,6 +12,7 @@ export interface AuthUser {
 export const authorized = async (roles = ['admin']) => {
 
    try {
+      await dbConnect()
       const headersList = headers()
       let authHeader: any = headersList.get('Authorization')
 
@@ -37,7 +39,8 @@ export const authorized = async (roles = ['admin']) => {
             email: validToken.email
          }
          if (roles.includes(user.roll)) {
-            const userData = await User.findOne({ email: validToken.email })
+            const userData = await User.findById(validToken.id).select('status')
+            console.log({ userData })
             if (userData?.status !== 'Approved') {
                return null
             } else {

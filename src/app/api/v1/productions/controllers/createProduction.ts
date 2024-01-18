@@ -32,7 +32,8 @@ export const createProduction = async (body: any,) => {
             parentId: new mongoose.Types.ObjectId(element.order),
             title: 'Production',
             massage: `Make production in "${data?.shift}"`,
-            data: { production: `${element.qty} Pcs` }
+            data: { production: `${element.qty} Pcs` },
+            time: data.date
          }
          history.push(obj)
       })
