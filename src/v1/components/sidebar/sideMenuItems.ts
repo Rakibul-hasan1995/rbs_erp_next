@@ -1,7 +1,7 @@
 import { BiSolidDashboard } from "react-icons/bi";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { FaArrowRight, FaFileInvoiceDollar, FaLayerGroup, FaUsers } from "react-icons/fa";
-import { MdOutlinePayments } from "react-icons/md";
+import { MdOutlineManageAccounts, MdOutlinePayments } from "react-icons/md";
 import { FaTruckArrowRight } from "react-icons/fa6";
 import FaTruckArrowLeft from "../customIcons";
 import { SiSublimetext } from "react-icons/si";
@@ -135,6 +135,29 @@ const routeStructure: MenuItem[] = [
             parent: false,
             icon: 'dot',
             link: '/v1/productions',
+         },
+      ]
+   },
+   {
+      title: "Accountant",
+      name: "accountant",
+      parent: true,
+      icon: MdOutlineManageAccounts,
+      // link: '/v1/invoices',
+      child: [
+         {
+            title: 'Add',
+            name: 'invoice.add',
+            parent: false,
+            icon: 'dot',
+            link: '/v1/chart_of_accounts/add',
+         },
+         {
+            title: 'Chart of Accounts',
+            name: '',
+            parent: false,
+            icon: 'dot',
+            link: '/v1/chart_of_accounts/list',
          },
       ]
    },

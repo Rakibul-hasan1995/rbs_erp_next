@@ -1,3 +1,4 @@
+import { sendNewNewOrderEmail } from "@/app/api/email/email/sendOrderEmail"
 import orderValidator from "@/app/api/lib/validation/createOrderValidation"
 import { Order } from "@/app/api/mongoose/model/Order"
 import { User } from "@/app/api/mongoose/model/User"
@@ -76,6 +77,7 @@ export const createOrder = async (body: any) => {
 
 
       const data = await Order.create(order)
+      sendNewNewOrderEmail(data)
       return { code: 201, data, links: [{ self: `/api/v1/orders/${data._id}` }] }
    } catch (error: any) {
       return { code: 500, message: error.message, error }

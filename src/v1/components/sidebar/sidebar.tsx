@@ -3,7 +3,7 @@
 'use client'
 
 import * as React from 'react';
-import { styled, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -188,12 +188,6 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
 
 
 
-
-
-
-
-
-
       return (
          <React.Fragment>
             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -236,10 +230,10 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
    };
 
    const { toggleDarkMode, isDarkMode, title } = useThemeContext();
-
+const theme = useTheme()
    return (
       <Box sx={{ display: 'flex' }}>
-         <AppBar position="fixed" open={open}>
+         <AppBar position="fixed"  open={open} >
             <Toolbar>
                <IconButton
                   color="inherit"

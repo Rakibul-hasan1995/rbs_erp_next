@@ -8,7 +8,7 @@ import Link from "next/link"
 import { FaPrint } from "react-icons/fa"
 
 const Statements = ({ data }: { data?: Statement }) => {
-   console.log(data)
+
    return (
       <Box sx={{ userSelect: 'none' }}>
          <Box position={'sticky'} right={0} top={100}>

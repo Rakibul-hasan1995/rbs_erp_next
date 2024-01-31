@@ -1,5 +1,5 @@
 
-'use client';;
+'use client';
 import StatementChart from '@/v1/components/charts/statementChart';
 import { useThemeContext } from '@/v1/context/themeContext';
 import { Axios } from '@/v1/utils/axios-config';

@@ -7,6 +7,7 @@ import { authorized } from "../../auth/authorized";
 
 
 export async function GET(req: Request) {
+   console.log('first')
    try {
       const user = await authorized(['admin', 'user'])
       if (!user) {

@@ -8,8 +8,8 @@ export interface ApiResponse {
 
 // export const serverUrl = dev ? 'http://localhost:4000' : 'https://rbs-erp-server.vercel.app';
 // export const serverUrl = 'https://rbs-erp-brown.vercel.app'
-// export const serverUrl = 'http://localhost:4000'
-export const serverUrl = '/'
+export const serverUrl = 'http://localhost:4000'
+// export const serverUrl = '/'
 
 export const Axios = axios.create({
    baseURL: serverUrl,
