@@ -50,5 +50,8 @@
     "@types/react-dom": "^18",
     "@types/react-swipeable-views": "^0.13.5",
     "typescript": "^5"
+  },
+  "browser": {
+    "fs": false
   }
 }

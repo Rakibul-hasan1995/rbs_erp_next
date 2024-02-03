@@ -8,7 +8,7 @@ import ChartComponent from '../Charts'
 import { Box, Button, ButtonGroup, Card, Grid, Paper, Skeleton, Typography } from '@mui/material'
 import { _arrSum } from '@/v1/utils/arrSum'
 import ChartLoading from '../loading/ChartLoading'
-import { Statement } from '@/app/v1/customers/profile/[_id]/page'
+import { Statement } from '../customers/Statements'
 
 const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: any, statement?: Statement }) => {
 

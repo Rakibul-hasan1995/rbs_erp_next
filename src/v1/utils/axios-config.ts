@@ -6,10 +6,20 @@ export interface ApiResponse {
    message: string
 }
 
+let baseUrl = '/'
+
+
 // export const serverUrl = dev ? 'http://localhost:4000' : 'https://rbs-erp-server.vercel.app';
 // export const serverUrl = 'https://rbs-erp-brown.vercel.app'
-export const serverUrl = 'http://localhost:4000'
+// export const serverUrl = 'http://localhost:4000'
 // export const serverUrl = '/'
+
+if (process.env.NODE_ENV == 'development') {
+   baseUrl = 'http://localhost:4000'
+}
+
+
+export const serverUrl = baseUrl
 
 export const Axios = axios.create({
    baseURL: serverUrl,

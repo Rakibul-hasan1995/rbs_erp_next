@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../mongoose/mongoose";
 import { createOrder } from "./controllers/createOrder";
-import { checkLogger } from "../../auth/checkLogger";
 import { findOrder } from "./controllers/findOrder";
 import { authorized } from "../../auth/authorized";
 

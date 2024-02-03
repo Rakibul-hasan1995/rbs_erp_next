@@ -4,7 +4,35 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Pagination } from '../components/table/paginationBar';
 import { _arrToObjBy_id } from '../utils/arrToObjBy_id';
 import { Axios } from '../utils/axios-config';
-import toast from 'react-hot-toast';
+import { objToQueryString } from '../utils/queryString';
+
+
+type Query = {
+   limit?: number;
+   sort_by?: string;
+   sort_type?: string;
+   start_date?: string;
+   end_date?: string;
+   page?: number;
+};
+
+type Transaction = {
+   _id: string;
+   type: string;
+   date: Date;
+   account_id: string;
+   customer_id: string;
+   ref_id: string; //customer id , supplier id ,  user id, employee id
+   supplier_id: string;
+   description?: string;
+   debit_amount?: number;
+   credit_amount?: number;
+   transaction_details: string;
+   date_formatted?: string
+   debit_amount_formatted?: string
+   credit_amount_formatted?: string
+
+}
 
 interface AccountDocument {
    _id: string;
@@ -14,15 +42,21 @@ interface AccountDocument {
    is_system_account: boolean;
    status: 'active' | 'inactive';
    description?: string;
-   createdBy: string
+   createdBy: string;
+
 }
 
 
+type ExpandTransaction = {
+   closing_balance: number;
+   transactions?: Transaction[],
+   dateRange: string,
 
+}
 
 type State = {
    accounts?: AccountDocument[];
-   account?: AccountDocument & { closing_balance: number; transactions: any[] };
+   account?: AccountDocument & ExpandTransaction;
    loadingAccount: boolean;
    loadingAccounts: boolean;
 }
@@ -34,7 +68,7 @@ export type Type = {
    pagination: Pagination;
    setPagination: (arg: Pagination | any) => void;
    handleUpdateOrder: (arg: any) => any;
-   fetchDataById: (arg: string) => any
+   fetchDataById: (arg: string, query?: Query) => any
 };
 
 export const COAContext = createContext<Type | undefined>(undefined);
@@ -71,17 +105,21 @@ export const ChartOfAccountProvider = ({ children }: { children: any }) => {
       } catch (error) {
          console.log(error)
       } finally {
-         setState((prev) => ({ ...prev, loadingAccount: false }))
+         setState((prev) => ({ ...prev, loadingAccounts: false }))
 
       }
    }
 
 
 
-   const fetchDataById = async (id: string) => {
+   const fetchDataById = async (id: string, query?: Query) => {
+
+
+      const queryStr = objToQueryString(query)
+
       setState((prev) => ({ ...prev, loadingAccount: true }))
       try {
-         const { data } = await Axios.get(`/api/v1/accounts/${id}`)
+         const { data } = await Axios.get(`/api/v1/accounts/${id}?${queryStr}`)
          setState((prev) => ({ ...prev, account: data.data }))
       } catch (error) {
          console.log(error)

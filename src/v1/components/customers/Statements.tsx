@@ -1,4 +1,3 @@
-import { Statement } from "@/app/v1/customers/profile/[_id]/page"
 import CustomerStatementPDF from "@/v1/pdf_pages/statementPDF"
 import { numberWithCommas } from "@/v1/utils/numberFormater"
 import { Box, Paper, Typography, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from "@mui/material"
@@ -6,6 +5,21 @@ import { BlobProvider } from "@react-pdf/renderer"
 import moment from "moment"
 import Link from "next/link"
 import { FaPrint } from "react-icons/fa"
+
+export interface Statement {
+   debitAmount: number;
+   creditAmount: number;
+   deuAmount: number;
+   customer: string;
+   data: StatementData[]
+}
+export interface StatementData {
+   date: string | Date;
+   particulars: string;
+   page: string;
+   debit: number;
+   credit: number,
+}
 
 const Statements = ({ data }: { data?: Statement }) => {
 

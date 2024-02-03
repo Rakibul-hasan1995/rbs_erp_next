@@ -1,7 +1,6 @@
 'use client';;
-import ReactPDF, { BlobProvider } from "@react-pdf/renderer";
-import React, { useEffect } from "react";
-import { Axios } from "../../../../../v1/utils/axios-config";
+import { BlobProvider } from "@react-pdf/renderer";
+import React from "react";
 import InvoiceDoc from "@/v1/pdf_pages/invoicePdf";
 import {
    Box,
@@ -27,6 +26,7 @@ import { TbEdit } from "react-icons/tb";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Axios } from "@/v1/utils/axios-config";
 
 
 const ViewInvoice = ({ data }: { data: InvoiceExpand }) => {

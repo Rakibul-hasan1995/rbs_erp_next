@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { Axios } from '@/v1/utils/axios-config';
 import { numberWithCommas } from '@/v1/utils/numberFormater';
 import useWindowDimensions from '@/v1/hooks/useWindowDimension';
-import { Statement } from '@/app/v1/customers/profile/[_id]/page';
+import { Statement } from '../components/customers/Statements';
 
 
 Font.register({

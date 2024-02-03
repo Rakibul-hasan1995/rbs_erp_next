@@ -13,23 +13,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import CustomerOrders from '@/v1/components/customers/customerOrders';
-import Statements from '@/v1/components/customers/Statements';
+import Statements, { Statement } from '@/v1/components/customers/Statements';
 
 
-export interface Statement {
-  debitAmount: number;
-  creditAmount: number;
-  deuAmount: number;
-  customer: string;
-  data: StatementData[]
-}
-export interface StatementData {
-  date: string | Date;
-  particulars: string;
-  page: string;
-  debit: number;
-  credit: number,
-}
 
 
 

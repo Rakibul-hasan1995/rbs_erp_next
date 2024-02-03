@@ -1,6 +1,5 @@
 // pages/api/send-email.js
 import nodemailer from "nodemailer";
-import { renderToStaticMarkup } from 'react-dom/server';
 
 export default async function emailHandler(file: FormData) {
    try {
