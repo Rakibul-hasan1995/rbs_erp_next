@@ -69,7 +69,7 @@ export const createJournal: CreateJournal = async (body) => {
          debit_amount: +amount,
          type,
          customer_id: drType.includes(body.type) ? body.customer_id : null,
-         supplier_id: body.type == 'Expanse' ? body.supplier_id : null
+         supplier_id: body.type !== 'Expanse' ? body.supplier_id : null
       })
 
       const creditTransaction = new Transaction({
@@ -81,7 +81,7 @@ export const createJournal: CreateJournal = async (body) => {
          credit_amount: +amount,
          type,
          customer_id: !drType.includes(body.type) ? body.customer_id : null,
-         supplier_id: body.type !== 'Expanse' ? body.supplier_id : null,
+         supplier_id: body.type == 'Expanse' ? body.supplier_id : null,
 
 
          // relative_id: debitTransaction._id

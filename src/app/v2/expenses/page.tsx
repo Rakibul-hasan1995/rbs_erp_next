@@ -20,7 +20,7 @@ import DotMenu from '@/v1/components/menu/dotMenu';
 import { useSearchParams } from 'next/navigation';
 import useSearchParamsHook from '@/v1/hooks/useSearchParams';
 import { MdOutlineFileUpload } from 'react-icons/md';
-import {useUploadTransactionFile} from './useUploadFile';
+import { useUploadTransactionFile } from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
 
@@ -32,7 +32,7 @@ export default function Page() {
   const { setTitle } = useThemeContext()
 
   useEffect(() => {
-    fetchData({ limit: 100, search: 'Expense', search_by: "type", is_debit: 'true', sort_by: "createdAt", sort_type: "asc" })
+    fetchData({ limit: 100, search: 'Expense', search_by: "type", is_debit: 'true', sort_key: "createdAt", sort_type: "asc" })
   }, [])
   useEffect(() => {
     setTitle("Expenses")
@@ -59,6 +59,7 @@ export default function Page() {
   const isSelected = (id: string) => {
     return Boolean(id == selected_id)
   }
+
   return (
     <Box>
       <Grid container spacing={0.5} >
@@ -105,9 +106,9 @@ export default function Page() {
                         secondary={
                           <Typography color={theme.palette.text.secondary} variant='caption'>{`${item.date_formatted} | ${item.paid_from_account?.account_name}`}
                             < br />
-                            {item.supplier_id &&<Typography  color={theme.palette.text.secondary} variant='caption'>Supplier: {item.supplier_id?.user_name} </Typography>}
+                            {item.supplier_id && <Typography color={theme.palette.text.secondary} variant='caption'>Supplier: {item.supplier_id?.user_name} </Typography>}
                             <Typography ml={2} variant='caption'>{item.reference && '| # '}{item.reference}</Typography>
-                          
+
                           </Typography>}
 
                       />
@@ -182,14 +183,20 @@ export default function Page() {
                             </Typography>
                             <Typography>on {selected.date_formatted}</Typography>
                           </Box>
-                          <Typography mb={5}>Paid</Typography>
+                          <Typography mb={5}>{selected.status}</Typography>
+                          {selected.description && <Typography >Descriptions: {selected.description}</Typography>}
                           <Box display={'inline'}>
-                            <Typography variant='subtitle1' sx={{ bgcolor: theme.palette.background.default, px: 3, p: 2, my: 5 }}>{selected.account_id.account_name}</Typography>
+                            <Typography variant='subtitle1' sx={{ bgcolor: theme.palette.background.default, px: 3, p: 2, my: 5 }}>{selected.paid_to_account.account_name}</Typography>
                           </Box>
                           <Box>
                             <Typography >Paid Thought</Typography>
                             <Typography >{selected.paid_from_account?.account_name}</Typography>
                           </Box>
+                          <Divider sx={{ my: 2 }} />
+                          {selected.supplier_id && <Box>
+                            <Typography >Supplier</Typography>
+                            <Typography >{selected.supplier_id?.user_name}</Typography>
+                          </Box>}
 
                         </Box>
                       </Grid>

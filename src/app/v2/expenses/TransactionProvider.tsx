@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 type Query = {
    limit?: number;
-   sort_by?: string;
+   sort_key?: string;
    search_by?: string;
    search?: string;
    sort_type?: string;
