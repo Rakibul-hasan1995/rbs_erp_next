@@ -41,7 +41,7 @@ export const authorized = async (roles = ['admin']) => {
          }
          if (roles.includes(user.roll)) {
             const userData = await User.findById(validToken.id).select('status')
-            console.log({ userData })
+
             if (userData?.status !== 'Approved') {
                return null
             } else {

@@ -34,7 +34,7 @@ export default function Page() {
       setError,
       handleSubmit,
       reset,
-      // setValue,
+      setValue,
 
       formState: { errors },
    } = useForm<InitialValue>({
@@ -74,10 +74,10 @@ export default function Page() {
 
 
    const handleError = (data: any) => {
-      console.log(data)
+      console.log(data.errors)
       toast.error(data.message || 'error')
-      if (data?.length) {
-         return data.data.forEach((item: any) =>
+      if (data?.errors?.length) {
+         return data.errors.forEach((item: any) =>
             setError(item.field, { type: 'custom', message: item.value }),
          );
       }
@@ -106,6 +106,8 @@ export default function Page() {
             handleError(data.errors)
 
          } else if (data.code === 200 || data.code === 201) {
+            setValue('amount', 0)
+            setValue('reference','')
             toast.success(`Successfully save order - ${data.data.order_name}`);
          }
 

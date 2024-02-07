@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export type TransactionRaw = {
-   date: Date;
+   date: any
    account_id?: string;
    _id: string;
    customer_id?: string;
@@ -36,8 +36,7 @@ export type TransactionFormatted = TransactionRaw & {
    paid_from_account?: {
       account_name: string;
       _id: string
-   }
-   relative_id?: string;
+   } | any;
    customer_id?: {
       user_name: string;
       _id: string | any
@@ -46,9 +45,10 @@ export type TransactionFormatted = TransactionRaw & {
       user_name: string;
       _id: string | any
    }
-   reference: string
    transaction_details?: string;
    debit_amount_formatted?: string;
    credit_amount_formatted?: string;
+   relative_id?: string
+
 
 }

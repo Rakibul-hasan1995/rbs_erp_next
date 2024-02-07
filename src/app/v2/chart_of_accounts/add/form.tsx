@@ -91,6 +91,7 @@ export default function AccountForm() {
             handleError(data)
 
          } else if (data.code === 200 || data.code === 201) {
+            
             toast.success(`Successfully save order - ${data.data.order_name}`);
          }
 
@@ -184,12 +185,6 @@ export default function AccountForm() {
 
                      <Box>
                         <Controller
-                           rules={{
-                              required: {
-                                 value: true,
-                                 message: "this field is required",
-                              },
-                           }}
                            control={control}
                            name="is_debit"
                            render={({ field }) => (

@@ -15,7 +15,8 @@ let baseUrl = '/'
 // export const serverUrl = '/'
 
 if (process.env.NODE_ENV == 'development') {
-   baseUrl = 'http://localhost:4000'
+   baseUrl = '/'
+   // baseUrl = 'http://localhost:4000'
 }
 
 
