@@ -1,10 +1,12 @@
+
+// router.get("/:_id", authentication, authorize(['admin']), getTransactionById);
+
+
 import { NextResponse } from "next/server"
 import { authorized } from "../../auth/authorized"
 import dbConnect from "../../mongoose/mongoose"
-import { createAccount } from "./controllers/createAccount"
-import { findAccounts } from "./controllers/findAccounts"
-
-
+import { createTransaction } from "./controllers/createTransaction"
+import { findTransactions } from "./controllers/findTransaction"
 
 export async function POST(req: Request) {
    try {
@@ -14,7 +16,7 @@ export async function POST(req: Request) {
       }
       await dbConnect()
       const body = await req.json()
-      const data = await createAccount(body, user.id)
+      const data = await createTransaction(body)
       return NextResponse.json(data, { status: data.code })
 
    } catch (error) {
@@ -24,6 +26,7 @@ export async function POST(req: Request) {
 }
 
 
+
 export async function GET(req: Request) {
    try {
       const user = await authorized(['admin'])
@@ -31,7 +34,7 @@ export async function GET(req: Request) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
       }
       await dbConnect()
-      const data = await findAccounts(req.url)
+      const data = await findTransactions(req.url)
       return NextResponse.json(data, { status: data.code })
 
    } catch (error) {
