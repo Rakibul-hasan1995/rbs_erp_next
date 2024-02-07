@@ -16,7 +16,7 @@ export const ThemeContext = createContext<Theme | undefined>(undefined);
 
 
 export const ThemeProvider = ({ children }: { children: any }) => {
-   const [isDarkMode, setDarkMode] = useState(false);
+   const [isDarkMode, setDarkMode] = useState(true);
    const [title, setTitle] = useState('RBS');
 
    const toggleDarkMode = () => {
