@@ -1,8 +1,7 @@
-'use client'
+'use client';
 import { Box, Button, ButtonBase, CircularProgress, Link, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from '@mui/material'
 
 import React, { useEffect, useState } from 'react'
-import { IoLockClosedOutline, IoLockOpenOutline } from "react-icons/io5";
 import { GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
@@ -10,7 +9,6 @@ import searchImg from '@/v1/assets/img/search.png'
 import Image from 'next/image';
 import { RiCloseLine, RiImageAddFill } from 'react-icons/ri';
 import { BiLock, BiPencil } from 'react-icons/bi';
-import { IconContext } from "react-icons";
 import { TiAttachment } from "react-icons/ti";
 
 import { IoIosArrowDown, IoMdRefreshCircle } from 'react-icons/io';
@@ -22,7 +20,7 @@ import DotMenu from '@/v1/components/menu/dotMenu';
 import { useSearchParams } from 'next/navigation';
 import useSearchParamsHook from '@/v1/hooks/useSearchParams';
 import { MdOutlineFileUpload } from 'react-icons/md';
-import useUploadTransactionFile from './useUploadFile';
+import {useUploadTransactionFile} from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
 

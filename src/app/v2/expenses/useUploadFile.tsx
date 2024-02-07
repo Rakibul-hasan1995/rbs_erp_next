@@ -4,7 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useTransactionContext } from "./TransactionProvider";
 
-export default function useUploadTransactionFile() {
+export  function useUploadTransactionFile() {
    const [imgUrl, setImgUrl] = useState('');
    const searchParams = useSearchParams()
    const id = searchParams.get('selected')

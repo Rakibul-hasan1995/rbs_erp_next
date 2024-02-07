@@ -28,7 +28,7 @@ type InitialValue = {
    image?: string;
 }
 
-export default function Page({ initialValues }: { initialValues: InitialValue }) {
+export default function Page() {
    const {
       control,
       setError,
@@ -37,9 +37,9 @@ export default function Page({ initialValues }: { initialValues: InitialValue })
       // setValue,
 
       formState: { errors },
-   } = useForm({
+   } = useForm<InitialValue>({
       defaultValues: {
-         ...initialValues,
+         // ...initialValues,
          date: moment().format('yyyy-MM-DD'),
          amount:0
 
