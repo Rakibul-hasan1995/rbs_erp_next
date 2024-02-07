@@ -1,5 +1,6 @@
-import { ChartOfAccountProvider } from '@/v1/context/chartOfAccountProvider';
+
 import React from 'react';
+import { ChartOfAccountProvider } from './chartOfAccountProvider';
 
 export default async function RootLayout({
    children,

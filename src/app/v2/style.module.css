@@ -1,0 +1,5 @@
+.collapseIcon {
+  transform: rotate(90deg);
+  transition: all 3sec;
+}
+.element::-webkit-scrollbar {display:none;}

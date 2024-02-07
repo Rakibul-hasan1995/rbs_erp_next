@@ -11,6 +11,22 @@ const getQueryStringParams = (query: any) => {
       : {}
 };
 
+function queryStringToJSON(queryString: string) {
+   if (queryString.indexOf('?') > -1) {
+      queryString = queryString.split('?')[1];
+   }
+   var pairs = queryString.split('&');
+   var result: any = {};
+   pairs.forEach(function (pair: any) {
+      pair = pair.split('=');
+      result[pair[0]] = decodeURIComponent(pair[1] || '');
+   });
+   return result;
+}
+
+
+
+
 const objToQueryString = function (obj: any) {
    const str: any = [];
    for (const p in obj)
@@ -23,4 +39,4 @@ const objToQueryString = function (obj: any) {
 
 
 
-export { getQueryStringParams, objToQueryString }
+export { getQueryStringParams, objToQueryString, queryStringToJSON }

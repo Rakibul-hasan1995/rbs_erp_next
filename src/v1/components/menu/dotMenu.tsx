@@ -48,9 +48,10 @@ export default function DotMenu({ itemJson }: Props) {
                      item.onClick()
                   }}
                >
-                  {item.icon && <ListItemIcon>
-                     {item.icon}
-                  </ListItemIcon>}
+                  {item.icon &&
+                     <ListItemIcon>
+                        {item.icon}
+                     </ListItemIcon>}
 
                   {item.title}</MenuItem>
             ))}

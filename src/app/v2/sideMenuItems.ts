@@ -3,8 +3,9 @@ import { BsFillBarChartFill } from "react-icons/bs";
 import { FaArrowRight, FaFileInvoiceDollar, FaLayerGroup, FaUsers } from "react-icons/fa";
 import { MdOutlineManageAccounts, MdOutlinePayments } from "react-icons/md";
 import { FaTruckArrowRight } from "react-icons/fa6";
-import FaTruckArrowLeft from "../customIcons";
+
 import { SiSublimetext } from "react-icons/si";
+import FaTruckArrowLeft from "@/v1/components/customIcons";
 
 export interface MenuItem {
    title: string;
@@ -140,7 +141,7 @@ const routeStructure: MenuItem[] = [
    },
    {
       title: "Accountant",
-      name: "accountant",
+      name: "chart_of_accounts",
       parent: true,
       icon: MdOutlineManageAccounts,
       // link: '/v1/invoices',

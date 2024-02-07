@@ -1,10 +1,11 @@
 
 'use client'
+
+import { TransactionFormatted } from '@/types/transaction';
+import { Pagination } from '@/v1/components/table/paginationBar';
+import { Axios } from '@/v1/utils/axios-config';
+import { objToQueryString } from '@/v1/utils/queryString';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { Pagination } from '../components/table/paginationBar';
-import { _arrToObjBy_id } from '../utils/arrToObjBy_id';
-import { Axios } from '../utils/axios-config';
-import { objToQueryString } from '../utils/queryString';
 
 
 type Query = {
@@ -17,28 +18,12 @@ type Query = {
    expand?: 'true' | 'false'
 };
 
-type Transaction = {
-   _id: string;
-   type: string;
-   date: Date;
-   account_id: string;
-   customer_id: string;
-   ref_id: string; //customer id , supplier id ,  user id, employee id
-   supplier_id: string;
-   description?: string;
-   debit_amount?: number;
-   credit_amount?: number;
-   transaction_details: string;
-   date_formatted?: string
-   debit_amount_formatted?: string
-   credit_amount_formatted?: string
 
-}
 
 interface AccountDocument {
    _id: string;
    account_name: string;
-   account_type: "Cash" | 'Expenses' | 'Income' | 'Liability' | "Asset";
+   account_type: string;
    is_debit: boolean;
    is_system_account: boolean;
    status: 'active' | 'inactive';
@@ -49,7 +34,7 @@ interface AccountDocument {
 
 type ExpandTransaction = {
    closing_balance: number;
-   transactions?: Transaction[],
+   transactions?: TransactionFormatted[],
    dateRange: string,
 
 }
@@ -65,23 +50,11 @@ export type Type = {
    state: State
    setState: React.Dispatch<React.SetStateAction<State>>;
    fetchData: (arg: string) => void;
-   pagination: Pagination;
-   setPagination: (arg: Pagination | any) => void;
    handleUpdateOrder: (arg: any) => any;
    fetchDataById: (arg: string, query?: Query) => any
 };
 
 export const COAContext = createContext<Type | undefined>(undefined);
-
-const initialPagination = {
-   nextPage: null,
-   prevPage: null,
-   currentPage: 1,
-   totalPages: 0,
-   totalDocuments: 0,
-   limit: 25,
-
-}
 
 
 export const ChartOfAccountProvider = ({ children }: { children: any }) => {
@@ -89,8 +62,6 @@ export const ChartOfAccountProvider = ({ children }: { children: any }) => {
       loadingAccount: false,
       loadingAccounts: false
    });
-   const [pagination, setPagination] = React.useState<Pagination>(initialPagination)
-
 
    // useEffect(() => {
    //    fetchData('')
@@ -100,9 +71,8 @@ export const ChartOfAccountProvider = ({ children }: { children: any }) => {
    const fetchData = async (str: string) => {
       setState((prev) => ({ ...prev, loadingAccounts: true }))
       try {
-         const { data } = await Axios.get(`/api/v1/accounts?limit=${pagination.limit}&${str}`)
+         const { data } = await Axios.get(`/api/v2/accounts?limit=200&${str}`)
          setState((prev) => ({ ...prev, accounts: data.data }))
-         setPagination((prev) => ({ ...data.pagination, limit: prev.limit }))
       } catch (error) {
          console.log(error)
       } finally {
@@ -111,23 +81,18 @@ export const ChartOfAccountProvider = ({ children }: { children: any }) => {
       }
    }
 
-
-
    const fetchDataById = async (id: string, query?: Query) => {
 
-
-
       const queryStr = objToQueryString(query)
-      console.log(queryStr)
+      
       setState((prev) => ({ ...prev, loadingAccount: true }))
       try {
-         const { data } = await Axios.get(`/api/v1/accounts/${id}?${queryStr}`)
+         const { data } = await Axios.get(`/api/v2/accounts/${id}?${queryStr}`)
          setState((prev) => ({ ...prev, account: data.data }))
       } catch (error) {
          console.log(error)
       } finally {
          setState((prev) => ({ ...prev, loadingAccount: false }))
-
       }
    }
 
@@ -154,8 +119,7 @@ export const ChartOfAccountProvider = ({ children }: { children: any }) => {
       state,
       setState,
       fetchData,
-      pagination,
-      setPagination,
+
       handleUpdateOrder,
       fetchDataById
    }

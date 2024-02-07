@@ -1,4 +1,5 @@
 
+import { createJournal } from "@/app/api/lib/transactions/createJournal";
 import invoiceValidation from "@/app/api/lib/validation/createInvoiceValidation";
 import { Invoice } from "@/app/api/mongoose/model/Invoice";
 import { Order } from "@/app/api/mongoose/model/Order";
@@ -72,6 +73,19 @@ export const createInvoice = async (body: any) => {
       }
 
       const inv = await invoice.save()
+      await createJournal({
+         amount: invoice.amount,
+         date: invoice.date,
+         paid_from_account: "65c0c17289eed83404adf657",
+         paid_to_account: "65b88a8880a3b3419a5804ea",
+         type: "Invoice",
+         customer_id: invoice.customer,
+         reference: `${invoice.invoice_no}`
+      })
+
+
+
+
 
       const history: any[] = []
       const invRow = inv.items

@@ -12,24 +12,44 @@ import {
 } from '@mui/material';
 import Header from './header'
 
-import { useChartOfAccountContext } from '@/v1/context/chartOfAccountProvider';
 import Link from 'next/link';
 import { CustomScrollbarBox } from '@/v1/components/CustomScrollBox';
-import { TransactionNotFound } from '../../list/TrnsactionNotFound';
-
+import { TransactionNotFound } from '../../list/[...query]/TransactionNotFound';
+import { useChartOfAccountContext } from '../../chartOfAccountProvider';
+import { useEffect } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import { thisMonthRange } from '@/v1/utils/dateRanges';
 
 function Page() {
+   const { state, fetchDataById } = useChartOfAccountContext()
+   const activePage = useParams()
+   const id = activePage.id
 
-   const { state } = useChartOfAccountContext()
+   const searchParams = useSearchParams()
+   const xy: any = {
+      limit: searchParams.get('limit') || 100,
+      page: searchParams.get('page') || 1,
+      sort_by: searchParams.get('sort_by'),
+      sort_type: searchParams.get('sort_type'),
+      end_date: searchParams.get('end_date') || thisMonthRange.end_date,
+      start_date: searchParams.get('start_date') || thisMonthRange.start_date
+   }
+
+   const date_range_name = searchParams.get('date_range_name')
+   const page = searchParams.get('page')
+
+   useEffect(() => {
+      fetchDataById(`${id}`, { ...xy, expand: 'true' })
+   }, [date_range_name, page])
 
    const theme = useTheme()
    return (
-      <CustomScrollbarBox height={`calc(100vh - 97px)`} bgcolor={theme.palette.background.paper} >
+      <CustomScrollbarBox height={`calc(100vh - 64px)`} bgcolor={theme.palette.background.paper} >
          {/* header =============>>>>> */}
          <Header />
          {/* header =============<<<< */}
          <Box height={`calc(100vh - 105px)`} textAlign={'center'} >
-            <Typography fontSize={22} pt={5}>Monapy Embroider</Typography>
+            <Typography fontSize={22} pt={5}>Monapy Embroidery</Typography>
             <Typography fontSize={30}>Account Transactions</Typography>
 
             <Typography fontSize={22} fontWeight={"600"} color={'Highlight'}>{state.account?.account_name}</Typography>
@@ -38,7 +58,7 @@ function Page() {
 
             {state.account?.transactions?.length ?
 
-               <CustomScrollbarBox sx={{ maxHeight: `calc(100vh - 160px)` }} >
+               <CustomScrollbarBox sx={{ maxHeight: `calc(100vh - 135px)` }} >
                   <Table stickyHeader sx={{ bgcolor: theme.palette.background.paper }} >
                      <TableHead   >
                         <TableRow>
@@ -51,10 +71,14 @@ function Page() {
                            <TableCell>
                               Type
                            </TableCell>
-                           <TableCell>
+                           <TableCell
+                              align='right'
+                           >
                               Debit
-                           </TableCell>
-                           <TableCell>
+                           </TableCell >
+                           <TableCell
+                              align='right'
+                           >
                               Credit
                            </TableCell>
                         </TableRow>
@@ -72,17 +96,20 @@ function Page() {
                               <TableCell>
                                  {item.type}
                               </TableCell>
-                              <TableCell>
+                              <TableCell
+                                 align='right'
+                              >
                                  {item.type ?
-                                    <Link href={'#'} >
+                                    <Link href={item.type == 'Expense' ? `/v2/expenses?selected=${item._id}` : '#'} >
                                        {item.debit_amount_formatted}
                                     </Link>
-
                                     : item.debit_amount_formatted}
                               </TableCell>
-                              <TableCell>
+                              <TableCell
+                                 align='right'
+                              >
                                  {item.type ?
-                                    <Link href={'#'} >
+                                    <Link href={item.type == 'Expense'? `/v2/expenses?selected=${item._id}`: '#'} >
                                        {item.credit_amount_formatted}
                                     </Link>
 
@@ -93,11 +120,13 @@ function Page() {
 
                      </TableBody>
                   </Table>
+
                </CustomScrollbarBox>
                :
                <TransactionNotFound />
             }
          </Box>
+
       </CustomScrollbarBox>
    )
 }

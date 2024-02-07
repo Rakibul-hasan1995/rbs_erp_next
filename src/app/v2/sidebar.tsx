@@ -1,9 +1,6 @@
-
-
 'use client'
-
 import * as React from 'react';
-import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -233,7 +230,7 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
 
    return (
       <Box sx={{ display: 'flex' }}>
-         <AppBar position="fixed"  open={open} >
+         <AppBar position="fixed" open={open} >
             <Toolbar>
                <IconButton
                   color="inherit"
@@ -291,7 +288,7 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
                </IconButton>
             </Box>
          </CustomDrawer>
-         <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
+         <Box component="main" sx={{ flexGrow: 1 }}>
             <DrawerHeader />
             {children}
          </Box>
