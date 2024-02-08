@@ -10,7 +10,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 type Query = {
    limit?: number;
-   sort_by?: string;
+   sort_key?: string;
    sort_type?: string;
    start_date?: string;
    end_date?: string;

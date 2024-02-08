@@ -9,10 +9,11 @@ import {
    TableRow,
    Typography,
    useTheme,
+   Link
 } from '@mui/material';
 import Header from './header'
 
-import Link from 'next/link';
+import NextLink from 'next/link';
 import { CustomScrollbarBox } from '@/v1/components/CustomScrollBox';
 import { TransactionNotFound } from '../../list/[...query]/TransactionNotFound';
 import { useChartOfAccountContext } from '../../chartOfAccountProvider';
@@ -39,7 +40,7 @@ function Page() {
    const page = searchParams.get('page')
 
    useEffect(() => {
-      fetchDataById(`${id}`, { ...xy, expand: 'true' })
+      fetchDataById(`${id}`, { ...xy, expand: 'true', sort_key: 'createdAt', sort_type: "desc" })
    }, [date_range_name, page])
 
    const theme = useTheme()
@@ -69,6 +70,9 @@ function Page() {
                               Transaction Details
                            </TableCell>
                            <TableCell>
+                              Reference
+                           </TableCell>
+                           <TableCell>
                               Type
                            </TableCell>
                            <TableCell
@@ -94,13 +98,16 @@ function Page() {
                                  {item.transaction_details}
                               </TableCell>
                               <TableCell>
+                                 {item.reference}
+                              </TableCell>
+                              <TableCell>
                                  {item.type}
                               </TableCell>
                               <TableCell
                                  align='right'
                               >
-                                 {item.type ?
-                                    <Link href={item.type == 'Expense' ? `/v2/expenses?selected=${item._id}` : '#'} >
+                                 {item.type && item.debit_amount !== 0 ?
+                                    <Link component={NextLink} href={item.type == 'Expense' ? `/v2/expenses?selected=${item._id}` : '#'} >
                                        {item.debit_amount_formatted}
                                     </Link>
                                     : item.debit_amount_formatted}
@@ -108,12 +115,12 @@ function Page() {
                               <TableCell
                                  align='right'
                               >
-                                 {item.type ?
-                                    <Link href={item.type == 'Expense'? `/v2/expenses?selected=${item._id}`: '#'} >
+                                 {item.type && item.credit_amount !== 0 ?
+                                    <Link component={NextLink} href={item.type == 'Expense' ? `/v2/expenses?selected=${item._id}` : '#'} >
                                        {item.credit_amount_formatted}
                                     </Link>
-
-                                    : item.credit_amount_formatted}
+                                    : item.credit_amount_formatted
+                                 }
                               </TableCell>
                            </TableRow>
                         ))}

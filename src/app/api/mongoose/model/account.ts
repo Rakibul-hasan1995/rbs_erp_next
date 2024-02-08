@@ -20,7 +20,7 @@ const schema = new Schema<AccDocument>(
     },
     account_type: {
       type: String,
-      enum: ['Expenses', 'Income', 'Liability', "Asset"],
+      enum: ['Expense', 'Income', 'Liability', "Asset"],
       required: true,
     },
     is_system_account: {

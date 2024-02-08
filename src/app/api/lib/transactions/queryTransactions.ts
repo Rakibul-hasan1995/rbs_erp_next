@@ -72,8 +72,11 @@ const transactionFormatter = (item: any): TransactionFormatted => {
                 ${item.supplier_id?.user_name ? `Supplier: ${item.supplier_id.user_name}` : ""} 
                 `,
       date_formatted: moment(item.date).format('DD MMM YYYY'),
-      debit_amount_formatted: item.debit_amount ? numberWithCommas(item.debit_amount) : "",
-      credit_amount_formatted: item.credit_amount ? numberWithCommas(item.credit_amount) : "",
+      debit_amount_formatted: numberWithCommas(item.debit_amount),
+      credit_amount_formatted: numberWithCommas(item.credit_amount),
+
+      // debit_amount_formatted: item.debit_amount ? numberWithCommas(item.debit_amount) : "",
+      // credit_amount_formatted: item.credit_amount ? numberWithCommas(item.credit_amount) : "",
      
    }
    return formateData

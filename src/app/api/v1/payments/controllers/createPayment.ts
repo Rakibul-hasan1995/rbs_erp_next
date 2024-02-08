@@ -21,6 +21,8 @@ export const createPayment = async (body: any) => {
          customer_id: payment.customer,
          reference: `MRC_No: ${payment.receipt_no}`
       })
+
+
       return { code: 201, data: payment, links: { self: `/api/v1/payments/${payment._id}` } }
 
    } catch (error: any) {

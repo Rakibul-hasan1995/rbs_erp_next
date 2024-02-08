@@ -16,7 +16,7 @@ export const getAccountById = async (url: any, id: string) => {
       const page = getQueryParams(url as string, 'page', 1);
       const limit = getQueryParams(url as string, 'limit', 10)
       const sortType = getQueryParams(url as string, 'sort_type', 'desc')
-      const sortKey = getQueryParams(url as string, 'sort_key', 'invoice_no')
+      const sortKey = getQueryParams(url as string, 'sort_key', 'createdAt')
       const start_date = getQueryParams(url as string, 'start_date', undefined)
       const end_date = getQueryParams(url as string, 'end_date', undefined)
       const expand = getQueryParams(url as string, 'expand', false)
@@ -30,7 +30,7 @@ export const getAccountById = async (url: any, id: string) => {
 
       let data = { ...account._doc }
       const closingBalance = await getClosingAmount(data._id)
-      data.closing_balance = closingBalance
+      data.closing_balance = account.account_type == 'Income' ? -closingBalance : closingBalance
 
       const transactionFilter: mongoose.FilterQuery<TransactionRaw> = {
          account_id: data._id

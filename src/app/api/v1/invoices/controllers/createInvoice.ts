@@ -76,15 +76,15 @@ export const createInvoice = async (body: any) => {
       await createJournal({
          amount: invoice.amount,
          date: invoice.date,
-         paid_from_account: "65c0c17289eed83404adf657",
-         paid_to_account: "65b88a8880a3b3419a5804ea",
+         paid_from_account: "65b889de1cc3d73d85e8bd1b",
+         paid_to_account: "65c0c17289eed83404adf657",
+         // paid_from_account: "65c0c17289eed83404adf657",
+         // paid_to_account: "65b88a8880a3b3419a5804ea",
          type: "Invoice",
+         ref_id: inv._id,
          customer_id: invoice.customer,
-         reference: `${invoice.invoice_no}`
+         reference: `${invoice?.invoice_no}`
       })
-
-
-
 
 
       const history: any[] = []
