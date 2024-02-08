@@ -19,9 +19,11 @@ interface Props {
    label: string;
    sx?: any;
    placeholder?: string;
+   autoFocus?: boolean;
+   inputRef?: (arg: React.Ref<any>) => void
 }
 
-const AsynchronousSelect = ({
+const AsynchronousSelect = React.forwardRef(({
    onSelect,
    loadOption,
    options,
@@ -29,8 +31,10 @@ const AsynchronousSelect = ({
    error,
    label,
    sx,
+   autoFocus = false,
    placeholder = '',
-}: Props) => {
+   inputRef = () => { }
+}: Props, ref?: React.ForwardedRef<HTMLInputElement>) => {
    const [inputValue, setInputValue] = useState<string>('');
    const [selectedOption, setSelectedOption] = useState<AsyncSelectOptionOption | null>(
       defaultValue || null
@@ -45,6 +49,8 @@ const AsynchronousSelect = ({
 
    return (
       <Autocomplete
+
+         autoFocus={autoFocus}
          filterSelectedOptions
          value={selectedOption}
          options={options}
@@ -86,6 +92,8 @@ const AsynchronousSelect = ({
          )}
          renderInput={(params) => (
             <TextField
+               inputRef={(inpRef) => inputRef(inpRef)}
+               // autoFocus={autoFocus}
                {...params}
                placeholder={placeholder}
                error={Boolean(error)}
@@ -110,9 +118,9 @@ const AsynchronousSelect = ({
          )}
          clearOnBlur
          clearOnEscape
-        
+
       />
    );
-};
+})
 
 export default AsynchronousSelect;

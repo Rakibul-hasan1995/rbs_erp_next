@@ -11,7 +11,6 @@ export interface AuthUser {
 }
 
 export const authorized = async (roles = ['admin']) => {
-
    try {
       await dbConnect()
       const headersList = headers()

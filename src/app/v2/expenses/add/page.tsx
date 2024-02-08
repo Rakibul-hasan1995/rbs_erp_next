@@ -6,13 +6,14 @@ import useSelectUser from '@/v1/hooks/useSelectCustomer';
 import { Axios } from '@/v1/utils/axios-config';
 import { Box, Button, ButtonBase, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { RiImageAddFill } from 'react-icons/ri';
 import useUploadExpenseFile from './useUploadFile';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { useThemeContext } from '@/v1/context/themeContext';
 
 type InitialValue = {
    date: string,
@@ -41,7 +42,9 @@ export default function Page() {
       defaultValues: {
          // ...initialValues,
          date: moment().format('yyyy-MM-DD'),
-         amount:0
+         amount: 0,
+         reference: '',
+         description: ''
 
       },
    });
@@ -53,6 +56,15 @@ export default function Page() {
       assetAccount: []
    })
 
+   const { setTitle } = useThemeContext()
+
+   useEffect(() => {
+      setTitle("Create Expenses")
+
+      return () => {
+         setTitle("RBS")
+      }
+   }, [])
    const fetchAccounts = async () => {
       try {
          const { data } = await Axios.get(`/api/v2/accounts?limit=100`)
@@ -71,6 +83,7 @@ export default function Page() {
    const { userLoadOption, userOptions } = useSelectUser('roll=supplier')
 
    const { handleDrop, handleFileChange, imgUrl } = useUploadExpenseFile()
+   let inputRef: any
 
 
    const handleError = (data: any) => {
@@ -85,14 +98,13 @@ export default function Page() {
 
    const onSubmit = async (formData: InitialValue) => {
       try {
-
+         inputRef?.focus()
          formData.paid_from_account = formData.paid_from_account?.value
          formData.paid_to_account = formData.paid_to_account?.value
          formData.customer_id = formData.customer_id?.value
          formData.supplier_id = formData.supplier_id?.value
          formData.type = 'Expense'
 
-         console.log(formData)
          const { data } = await toast.promise(
             Axios.post('/api/v2/transactions', formData),
             {
@@ -106,9 +118,14 @@ export default function Page() {
             handleError(data.errors)
 
          } else if (data.code === 200 || data.code === 201) {
+         
             setValue('amount', 0)
-            setValue('reference','')
+            setValue('reference', '')
+            setValue('description', '')
+            setValue('supplier_id', null)
+            
             toast.success(`Successfully save order - ${data.data.order_name}`);
+
          }
 
       } catch (error: any) {
@@ -156,6 +173,11 @@ export default function Page() {
                            name="paid_to_account"
                            render={({ field }) => (
                               <AsynchronousSelect
+                                 inputRef={(input) => {
+                                    inputRef = input
+                                 }}
+
+                                 autoFocus={true}
                                  label="Expanse Account *"
                                  error={errors.paid_to_account ? errors.paid_to_account.message : ''}
                                  onSelect={field.onChange}
@@ -248,7 +270,7 @@ export default function Page() {
                         />
                         <Box >
                            <Button sx={{ mr: 2 }} type='submit' size='small' variant='contained' color='success'>Submit</Button>
-                           <Button onClick={()=>reset({paid_from_account: null, paid_to_account: null})} size='small' variant='contained' color='error'>Reset</Button>
+                           <Button onClick={() => reset({ paid_from_account: null, paid_to_account: null })} size='small' variant='contained' color='error'>Reset</Button>
                         </Box>
 
                      </Stack>
@@ -291,6 +313,7 @@ export default function Page() {
                </Grid>
             </Box>
          </Box>
+         <Button onClick={() => inputRef?.focus()}>Focus</Button>
       </Container>
    )
 }
