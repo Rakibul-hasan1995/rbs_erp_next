@@ -45,7 +45,6 @@ export const createJournal: CreateJournal = async (body) => {
       const paidAccount = await Account.findById(paid_from_account).exec()
 
       const expanseAccount = await Account.findById(paid_to_account).exec()
-      console.log({ paidAccount })
 
       if (!paidAccount) {
          return { success: false, data: undefined, errors: [{ field: 'paid_from_account', value: '! this account is not valid account for this transaction' }] }

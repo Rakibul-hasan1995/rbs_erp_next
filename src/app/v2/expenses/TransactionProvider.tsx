@@ -50,7 +50,7 @@ export const TransactionProvider = ({ children }: { children: any }) => {
 
 
    const fetchData = async (query?: Query) => {
-      setState((prev) => ({ ...prev, loadingAccounts: true }))
+      setState((prev) => ({ ...prev, loadingTransactions: true }))
       const queryStr = objToQueryString(query)
 
       try {
@@ -59,25 +59,23 @@ export const TransactionProvider = ({ children }: { children: any }) => {
       } catch (error) {
          console.log(error)
       } finally {
-         setState((prev) => ({ ...prev, loadingAccounts: false }))
+         setState((prev) => ({ ...prev, loadingTransactions: false }))
       }
    }
 
 
 
-   const fetchDataById = async (id: string, query?: Query) => {
-
-      // const queryStr = objToQueryString(query)
-      // console.log(queryStr)
-      // setState((prev) => ({ ...prev, loadingAccount: true }))
-      // try {
-      //    const { data } = await Axios.get(`/api/v1/accounts/${id}?${queryStr}`)
-      //    setState((prev) => ({ ...prev, account: data.data }))
-      // } catch (error) {
-      //    console.log(error)
-      // } finally {
-      //    setState((prev) => ({ ...prev, loadingAccount: false }))
-      // }
+   const fetchDataById = async (id: string,) => {
+      setState((prev) => ({ ...prev, loadingTransaction: true }))
+      try {
+         const { data } = await Axios.get(`/api/v2/transactions/${id}`)
+         setState((prev) => ({ ...prev, transaction: data.data }))
+         return data.data
+      } catch (error) {
+         console.log(error)
+      } finally {
+         setState((prev) => ({ ...prev, loadingTransaction: false }))
+      }
    }
    const updateTransaction = async (id: string, body?: Partial<TransactionRaw>) => {
       try {

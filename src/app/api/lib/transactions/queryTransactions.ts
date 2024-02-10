@@ -61,7 +61,7 @@ export const queryTransactions: QueryTransactions = async (query) => {
 
 
 
-const transactionFormatter = (item: any): TransactionFormatted => {
+export const transactionFormatter = (item: any): TransactionFormatted => {
    const formateData: TransactionFormatted = {
       ...item,
       transaction_details:

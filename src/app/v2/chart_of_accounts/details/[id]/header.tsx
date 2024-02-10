@@ -66,7 +66,7 @@ export default function Header() {
       },
    ]
 
-   const { state, fetchDataById } = useChartOfAccountContext()
+   const { state } = useChartOfAccountContext()
 
    return (
       <Box

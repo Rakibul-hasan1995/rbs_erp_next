@@ -57,7 +57,7 @@ export default function Page() {
 
   useEffect(() => {
     if (selected) {
-      fetchDataById(selected)
+      fetchDataById(selected, { sort_key: 'createdAt', sort_type: "asc" })
     }
   }, [selected])
 

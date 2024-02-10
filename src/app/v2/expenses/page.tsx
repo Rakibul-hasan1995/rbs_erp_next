@@ -1,5 +1,5 @@
 'use client';
-import { Box, Button, ButtonBase, CircularProgress, Link, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from '@mui/material'
+import { Box, Button, ButtonBase, CircularProgress, Link, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme, Modal } from '@mui/material'
 
 import React, { useEffect, useState } from 'react'
 import { GoPlus } from "react-icons/go";
@@ -19,13 +19,28 @@ import UiMenu from '@/v1/components/menu/UiMenu';
 import DotMenu from '@/v1/components/menu/dotMenu';
 import { useSearchParams } from 'next/navigation';
 import useSearchParamsHook from '@/v1/hooks/useSearchParams';
-import { MdOutlineFileUpload } from 'react-icons/md';
+import { MdClose, MdOutlineFileUpload } from 'react-icons/md';
 import { useUploadTransactionFile } from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
+import AddExpense from './add/add';
+import { FaClosedCaptioning } from 'react-icons/fa';
 
 
-
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '60%',
+  bgcolor: 'background.paper',
+  // border: '2px solid #000',
+  boxShadow: 24,
+  p: 2,
+  maxHeight: 'calc(100vh - 50px)',
+  overflow: 'auto',
+  borderRadius: 1,
+};
 export default function Page() {
   const { state, setState, fetchDataById, fetchData } = useTransactionContext()
   const theme = useTheme()
@@ -47,46 +62,74 @@ export default function Page() {
   const selected_id = searchParams.get('selected')
   const { pushQuery } = useSearchParamsHook()
   useEffect(() => {
+    handleSelectItem()
+  }, [selected_id, state.transactions])
+
+  const handleSelectItem = async () => {
     if (state.transactions?.length) {
       const find = state.transactions.find(item => item._id == selected_id)
       setSelected(find)
+    } else {
+      const data = await fetchDataById(`${selected_id}`)
+      setSelected(data)
     }
-  }, [selected_id, state.transactions])
-
+  }
   const { handleDrop, handleFileChange, imgUrl } = useUploadTransactionFile()
 
 
   const isSelected = (id: string) => {
     return Boolean(id == selected_id)
   }
-  
+
+  const [openFormModal, setOpenFormModal] = useState(false)
+  const handleOpenFormModal = () => {
+    setOpenFormModal((prev) => !prev)
+  }
 
   return (
     <Box>
+      <Modal
+        keepMounted
+        open={openFormModal}
+        // onClose={handleOpenFormModal}
+
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+
+        <CustomScrollbarBox sx={style}>
+          <Box display={'flex'} alignItems={"center"} justifyContent={"space-between"}>
+            <Typography>Add Account</Typography>
+            <IconButton color='error' onClick={handleOpenFormModal}>
+              <MdClose />
+            </IconButton>
+          </Box>
+          <AddExpense />
+        </CustomScrollbarBox>
+
+      </Modal>
       <Grid container spacing={0.5} >
-        <Grid item sm={4}  >
+        <Grid item sm={4} position={'relative'} >
           <Box bgcolor={theme.palette.background.default} sx={{ boxShadow: 2, display: "flex", justifyContent: "space-between", p: 2 }} >
             <Box >
               <UiMenu title='All' itemJson={[]}
                 buttonProps={{ endIcon: <IoIosArrowDown />, variant: 'outlined' }}
               />
             </Box>
-            <Box display={'flex'}>
-              <NextLink href={'/v2/expenses/add'}>
-                <Button
-                  variant='contained'
-                  color='success'
-                  startIcon={<GoPlus />}
-                  size='small'
-                >
-                  New
-                </Button>
-              </NextLink>
+            <Stack direction={'row'} spacing={2}>
+              <Button
+                variant='contained'
+                color='success'
+                startIcon={<GoPlus />}
+                size='small'
+                onClick={handleOpenFormModal}
+              >
+                New
+              </Button>
               <DotMenu itemJson={[{ title: 'Refresh', onClick: () => { fetchData(state.lastQuery) }, icon: <IoMdRefreshCircle /> }]} />
-            </Box>
-            {state.loadingTransactions && <Box display={'flex'} justifyContent={'center'} my={2}> <CircularProgress /></Box>}
+            </Stack>
           </Box>
-
+          {state.loadingTransactions && <Box position={'absolute'} top={100} zIndex={2} left={'50%'} display={'flex'} justifyContent={'center'} my={2}> <CircularProgress /></Box>}
           <CustomScrollbarBox maxHeight={`calc(100vh - 136px)`}>
             <List sx={{ bgcolor: theme.palette.background.paper, minHeight: `calc(100vh - 136px)`, overflow: 'auto' }}>
               {state.transactions?.map((item) => (
@@ -107,11 +150,9 @@ export default function Page() {
                         secondary={
                           <Typography color={theme.palette.text.secondary} variant='caption'>{`${item.date_formatted} | ${item.paid_from_account?.account_name}`}
                             < br />
-                            {item.supplier_id && <Typography color={theme.palette.text.secondary} variant='caption'>Supplier: {item.supplier_id?.user_name} </Typography>}
-                            <Typography ml={2} variant='caption'>{item.reference && '| # '}{item.reference}</Typography>
-
+                            <Typography ml={2} variant='caption'>{item.reference && '# '}{item.reference} </Typography>
+                            {item.supplier_id && <Typography color={theme.palette.text.secondary} variant='caption'>| Supplier: {item.supplier_id?.user_name} </Typography>}
                           </Typography>}
-
                       />
                       <ListItemText
                         primary={'BDT ' + item.debit_amount_formatted}
@@ -128,12 +169,11 @@ export default function Page() {
           </CustomScrollbarBox>
         </Grid>
         <Grid item sm={8}>
-
           {
             state.loadingTransactions ?
               <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", flexWrap: 'wrap' }}>
                 <CircularProgress />
-                <Typography ml={3} color={'CaptionText'}>loading...</Typography>
+                <Typography ml={3} >loading...</Typography>
               </Box>
               :
               selected ?
