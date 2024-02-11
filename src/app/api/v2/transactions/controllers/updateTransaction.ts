@@ -1,8 +1,8 @@
 import { Transaction } from "@/app/api/mongoose/model/transaction"
 
-export const updateTransaction = async (body: any,id:string) => {
+export const updateTransaction = async (body: any, id: string) => {
    try {
-      const { date, amount, status, image } = body
+      const { date, amount, status, image, reference } = body
 
       const drTransaction = await Transaction.findById(id)
       const crTransaction = await Transaction.findOne({ _id: drTransaction?.relative_id })
@@ -40,6 +40,10 @@ export const updateTransaction = async (body: any,id:string) => {
       if (image) {
          drTransaction.image = image
          crTransaction.image = image
+      }
+      if (reference) {
+         drTransaction.reference = reference
+         crTransaction.reference = reference
       }
 
       // Object.assign(drTransaction, req.body)

@@ -20,7 +20,8 @@ interface Props {
    sx?: any;
    placeholder?: string;
    autoFocus?: boolean;
-   inputRef?: (arg: React.Ref<any>) => void
+   inputRef?: (arg: React.Ref<any>) => void;
+   disabled?: boolean
 }
 
 const AsynchronousSelect = React.forwardRef(({
@@ -33,6 +34,7 @@ const AsynchronousSelect = React.forwardRef(({
    sx,
    autoFocus = false,
    placeholder = '',
+   disabled = false,
    inputRef = () => { }
 }: Props, ref?: React.ForwardedRef<HTMLInputElement>) => {
    const [inputValue, setInputValue] = useState<string>('');
@@ -49,7 +51,8 @@ const AsynchronousSelect = React.forwardRef(({
 
    return (
       <Autocomplete
-
+         disabled={disabled}
+         aria-disabled={disabled}
          autoFocus={autoFocus}
          filterSelectedOptions
          value={selectedOption}
@@ -76,7 +79,7 @@ const AsynchronousSelect = React.forwardRef(({
                onTouchStart={props.onTouchStart}
                tabIndex={props.tabIndex}
                aria-selected={props['aria-selected']}
-               aria-disabled={props['aria-disabled']}
+               // aria-disabled={props['aria-disabled']}
                id={props.id}
                data-option-index={props['data-option-index']}
             >
@@ -92,9 +95,11 @@ const AsynchronousSelect = React.forwardRef(({
          )}
          renderInput={(params) => (
             <TextField
+              
                inputRef={(inpRef) => inputRef(inpRef)}
                // autoFocus={autoFocus}
                {...params}
+               
                placeholder={placeholder}
                error={Boolean(error)}
                helperText={error}

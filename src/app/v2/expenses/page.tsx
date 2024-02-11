@@ -1,7 +1,29 @@
-'use client';
-import { Box, Button, ButtonBase, CircularProgress, Link, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme, Modal } from '@mui/material'
+'use client';;
+import {
+  Box,
+  Button,
+  ButtonBase,
+  CircularProgress,
+  Link,
+  Divider,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
@@ -19,28 +41,17 @@ import UiMenu from '@/v1/components/menu/UiMenu';
 import DotMenu from '@/v1/components/menu/dotMenu';
 import { useSearchParams } from 'next/navigation';
 import useSearchParamsHook from '@/v1/hooks/useSearchParams';
-import { MdClose, MdOutlineFileUpload } from 'react-icons/md';
+import { MdOutlineFileUpload } from 'react-icons/md';
 import { useUploadTransactionFile } from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
-import ExpenseForm from './add/ExpenseForm';
 import useAddExpense from '@/hooks/useAddExpense';
+import useUpdateExpense from '@/hooks/useUpdateExpense';
+import { AddModal } from './addModal';
+import { UpdateModal } from './updateModal';
 
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '60%',
-  bgcolor: 'background.paper',
-  // border: '2px solid #000',
-  boxShadow: 24,
-  p: 2,
-  maxHeight: 'calc(100vh - 50px)',
-  overflow: 'auto',
-  borderRadius: 1,
-};
+
 export default function Page() {
   const { state, setState, fetchDataById, fetchData } = useTransactionContext()
   const theme = useTheme()
@@ -81,37 +92,16 @@ export default function Page() {
     return Boolean(id == selected_id)
   }
 
-  const [openFormModal, setOpenFormModal] = useState(false)
-  const handleOpenFormModal = () => {
-    setOpenFormModal((prev) => !prev)
-  }
 
 
-
-  const { submit, initialValues } = useAddExpense({ successCB: () => { } })
+  const addRef = useRef<any>()
+  const updateRef = useRef<any>()
 
   return (
     <Box>
-      <Modal
-        keepMounted
-        open={openFormModal}
-        // onClose={handleOpenFormModal}
+      <AddModal ref={addRef} />
+      <UpdateModal ref={updateRef} />
 
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-
-        <CustomScrollbarBox sx={style}>
-          <Box display={'flex'} alignItems={"center"} justifyContent={"space-between"}>
-            <Typography>Add Account</Typography>
-            <IconButton color='error' onClick={handleOpenFormModal}>
-              <MdClose />
-            </IconButton>
-          </Box>
-          <ExpenseForm submit={submit} initialValues={initialValues} />
-        </CustomScrollbarBox>
-
-      </Modal>
       <Grid container spacing={0.5} >
         <Grid item sm={4} position={'relative'} >
           <Box bgcolor={theme.palette.background.default} sx={{ boxShadow: 2, display: "flex", justifyContent: "space-between", p: 2 }} >
@@ -126,7 +116,8 @@ export default function Page() {
                 color='success'
                 startIcon={<GoPlus />}
                 size='small'
-                onClick={handleOpenFormModal}
+                sx={{ maxHeight: 30, my: "auto" }}
+                onClick={() => addRef?.current?.openModal()}
               >
                 New
               </Button>
@@ -198,9 +189,11 @@ export default function Page() {
                   <CustomScrollbarBox bgcolor={theme.palette.background.paper} maxHeight={`calc(100vh - 136px)`}>
                     {/* edit row ====>>> */}
                     <Box position={'sticky'} top={0} sx={{ zIndex: 10, backdropFilter: "blur(10px)" }} bgcolor={theme.shadows}  >
+                      {/* <UpdateExpense /> */}
                       <Button
                         sx={{ m: 1 }}
                         variant='text'
+                        onClick={() => updateRef?.current?.openModal()}
                         startIcon={<BiPencil />}>
                         Edit
                       </Button>

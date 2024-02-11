@@ -28,7 +28,7 @@ type InitialValue = {
    image?: string;
 }
 
-export default function ExpenseForm({ initialValues, submit }: { initialValues?: InitialValue, submit: any }) {
+export default function ExpenseForm({ initialValues, submit, mode = 'add' }: { initialValues?: InitialValue, submit: any, mode?: 'update' | 'add' }) {
    const {
       control,
       setError,
@@ -116,7 +116,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
          } else {
             // reset(initialValues)
             setValue('amount', 0)
-            setValue('reference',"")
+            setValue('reference', "")
 
          }
 
@@ -158,7 +158,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                         <Controller
                            rules={{
                               required: {
-                                 value: true,
+                                 value: Boolean(mode == 'add'),
                                  message: "this field is required",
                               },
                            }}
@@ -166,10 +166,10 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                            name="paid_to_account"
                            render={({ field }) => (
                               <AsynchronousSelect
+                                 disabled={mode == 'update'}
                                  inputRef={(input) => {
                                     inputRef = input
                                  }}
-
                                  autoFocus={true}
                                  label="Expanse Account *"
                                  error={errors.paid_to_account ? errors.paid_to_account.message : ''}
@@ -184,7 +184,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                         <Controller
                            rules={{
                               required: {
-                                 value: true,
+                                 value: Boolean(mode == 'add'),
                                  message: "this field is required",
                               },
                            }}
@@ -205,7 +205,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                         <Controller
                            rules={{
                               required: {
-                                 value: true,
+                                 value: Boolean(mode == 'add'),
                                  message: "this field is required",
                               },
                            }}
@@ -213,6 +213,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                            name="paid_from_account"
                            render={({ field }) => (
                               <AsynchronousSelect
+                                 disabled={mode == 'update'}
                                  label="Paid Through *"
                                  error={errors.paid_from_account ? errors.paid_from_account.message : ''}
                                  onSelect={field.onChange}
@@ -228,6 +229,7 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                            name="supplier_id"
                            render={({ field }) => (
                               <AsynchronousSelect
+                                 disabled={mode == 'update'}
                                  label="Supplier"
                                  error={errors.supplier_id ? errors.supplier_id.message : ''}
                                  onSelect={field.onChange}
@@ -252,9 +254,11 @@ export default function ExpenseForm({ initialValues, submit }: { initialValues?:
                         <Controller
                            control={control}
                            name="description"
+
                            render={({ field }) => (
                               <TextField
                                  {...field}
+                                 disabled={mode == 'update'}
                                  label="Descriptions"
                                  size="small"
                                  fullWidth
