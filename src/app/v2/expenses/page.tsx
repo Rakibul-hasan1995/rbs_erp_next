@@ -23,8 +23,8 @@ import { MdClose, MdOutlineFileUpload } from 'react-icons/md';
 import { useUploadTransactionFile } from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
-import AddExpense from './add/add';
-import { FaClosedCaptioning } from 'react-icons/fa';
+import ExpenseForm from './add/ExpenseForm';
+import useAddExpense from '@/hooks/useAddExpense';
 
 
 const style = {
@@ -86,6 +86,10 @@ export default function Page() {
     setOpenFormModal((prev) => !prev)
   }
 
+
+
+  const { submit, initialValues } = useAddExpense({ successCB: () => { } })
+
   return (
     <Box>
       <Modal
@@ -104,7 +108,7 @@ export default function Page() {
               <MdClose />
             </IconButton>
           </Box>
-          <AddExpense />
+          <ExpenseForm submit={submit} initialValues={initialValues} />
         </CustomScrollbarBox>
 
       </Modal>

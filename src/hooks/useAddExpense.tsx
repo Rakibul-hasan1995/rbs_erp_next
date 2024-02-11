@@ -1,14 +1,11 @@
-import { Axios } from '@/v1/utils/axios-config';
+import { Axios } from '@/v1/utils/axios-config'
+import moment from 'moment'
 import React from 'react'
-import toast from 'react-hot-toast';
-import ExpenseForm from './ExpenseForm';
-import moment from 'moment';
-import { useTransactionContext } from '../TransactionProvider';
+import toast from 'react-hot-toast'
 
 
-export default function AddExpense() {
 
-   const {fetchData, state} = useTransactionContext()
+export default function useAddExpense({ successCB }: { successCB?: () => void }) {
    const initialValues = {
       amount: 0,
       reference: '',
@@ -33,7 +30,7 @@ export default function AddExpense() {
             return { success: false, errors: data.errors };
          } else if (data.code === 200 || data.code === 201) {
             toast.success(`Successfully save Transaction `);
-            fetchData(state.lastQuery)
+            successCB && successCB()
             return { success: true, errors: null };
          }
 
@@ -52,8 +49,5 @@ export default function AddExpense() {
       }
    }
 
-
-   return (
-      <ExpenseForm initialValues={initialValues} submit={submit} />
-   )
+   return { initialValues, submit }
 }
