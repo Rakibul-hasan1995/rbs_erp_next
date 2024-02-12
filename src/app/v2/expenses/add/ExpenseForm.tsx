@@ -117,6 +117,7 @@ export default function ExpenseForm({ initialValues, submit, mode = 'add' }: { i
             // reset(initialValues)
             setValue('amount', 0)
             setValue('reference', "")
+            setValue('supplier_id', null)
 
          }
 
