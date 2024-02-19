@@ -1,5 +1,7 @@
 import updatePaymentValidation from "@/app/api/lib/validation/updatePaymentsValidation";
 import { Payment } from "@/app/api/mongoose/model/Payment";
+import { Transaction } from "@/app/api/mongoose/model/transaction";
+import { updateTransaction } from "@/app/api/v2/transactions/controllers/updateTransaction";
 
 export const updatePayment = async (id: string, body: any) => {
    try {
@@ -25,6 +27,15 @@ export const updatePayment = async (id: string, body: any) => {
       Object.assign(payment, validate.data)
 
       await payment.save();
+
+      
+      const transaction = await Transaction.findOne({ ref_id: payment._id })
+      if (transaction) {
+         await updateTransaction({ amount: payment.amount }, transaction._id)
+      }
+
+
+
       return {
          code: 200,
          data: payment,

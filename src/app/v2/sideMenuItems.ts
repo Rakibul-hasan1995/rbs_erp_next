@@ -1,6 +1,6 @@
-import { BiSolidDashboard, BiSolidShoppingBag } from "react-icons/bi";
+import { BiSolidDashboard, BiSolidReport, BiSolidShoppingBag } from "react-icons/bi";
 import { BsFillBarChartFill } from "react-icons/bs";
-import { FaArrowRight, FaFileInvoiceDollar, FaLayerGroup, FaUsers } from "react-icons/fa";
+import { FaArrowRight, FaFileInvoiceDollar, FaLayerGroup, FaShoppingCart, FaUsers } from "react-icons/fa";
 import { MdOutlineManageAccounts, MdOutlinePayments } from "react-icons/md";
 import { FaTruckArrowRight } from "react-icons/fa6";
 
@@ -163,6 +163,29 @@ const routeStructure: MenuItem[] = [
       ]
    },
    {
+      title: "Sales",
+      name: "sales",
+      parent: true,
+      icon: FaShoppingCart,
+      // link: '/v1/invoices',
+      child: [
+         {
+            title: 'Customers',
+            name: 'customers',
+            parent: false,
+            icon: 'dot',
+            link: '/v2/customers',
+         },
+         {
+            title: 'Invoices',
+            name: '',
+            parent: false,
+            icon: 'dot',
+            link: '/v2/invoices',
+         },
+      ]
+   },
+   {
       title: "Purchase",
       name: "purchase",
       parent: true,
@@ -214,6 +237,14 @@ const routeStructure: MenuItem[] = [
       parent: false,
       icon: MdOutlinePayments,
       link: '/v1/payments',
+   },
+   {
+      title: "Reports",
+      name: "reports",
+      parent: false,
+      icon: BiSolidReport,
+      link: '/v2/reports',
+
    },
    {
       title: "Receive Challan",

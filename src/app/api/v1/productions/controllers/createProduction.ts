@@ -29,7 +29,7 @@ export const createProduction = async (body: any,) => {
       const productionRow = data?.production_data
       productionRow?.forEach((element: any) => {
          const obj = {
-            parentId: new mongoose.Types.ObjectId(element.order),
+            parentId: element.order,
             title: 'Production',
             massage: `Make production in "${data?.shift}"`,
             data: { production: `${element.qty} Pcs` },

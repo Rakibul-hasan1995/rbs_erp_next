@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/types/app/dashboard/page.tsx"
-  ],
+, "src/app/v2/reports/expenses-by-category"  ],
   "exclude": [
     "node_modules"
   ]

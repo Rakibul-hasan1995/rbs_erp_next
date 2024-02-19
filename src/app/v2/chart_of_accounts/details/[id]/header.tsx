@@ -3,11 +3,11 @@ import { Box, Button, Popover, useTheme, Pagination, Typography } from '@mui/mat
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import moment from 'moment'
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IoIosArrowDown } from 'react-icons/io'
 import { MdDateRange } from 'react-icons/md';
 import { FaPrint } from "react-icons/fa";
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useChartOfAccountContext } from '../../chartOfAccountProvider'
 import UiMenu from '@/v1/components/menu/UiMenu'
 import { objToQueryString } from '@/v1/utils/queryString';
@@ -16,14 +16,11 @@ import { prevMonthRange, prevYearRange, thisMonthRange, thisWeekRange, thisYearR
 
 const df = 'yyyy-MM-DD'
 
-export default function Header() {
+export default function Header({ pagination, right }: { pagination?: any, right?: React.JSX.Element }) {
    const router = useRouter()
    const theme = useTheme()
    const searchParams = useSearchParams()
    const date_range_name = searchParams.get('date_range_name')
-
-
-
 
    const [start_date, setStartDate] = React.useState(thisMonthRange.start_date)
    const [end_date, setEndDate] = React.useState(thisMonthRange.end_date)
@@ -65,8 +62,6 @@ export default function Header() {
          }
       },
    ]
-
-   const { state } = useChartOfAccountContext()
 
    return (
       <Box
@@ -144,28 +139,24 @@ export default function Header() {
 
 
             <Pagination
-               count={state?.account?.pagination?.totalPages || 1}
+               count={pagination?.totalPages || 1}
                showFirstButton
                showLastButton
-               page={state.account?.pagination?.currentPage || 0 + 1}
+               page={pagination?.currentPage || 0 + 1}
                onChange={(x, page) => {
                   pushTo({ page })
                   // fetchDataById(id, { page, start_date, end_date, expand: 'true' })
                }}
                size='small'
             />
-            <Typography>Total Count: {state.account?.pagination?.totalDocuments}</Typography>
+            <Typography>Total Count: {pagination?.totalDocuments}</Typography>
          </Box>
-
-
 
 
          {/* left =========<<<< */}
-         <Box >
-            <Button variant='outlined' startIcon={<FaPrint />}>Pdf</Button>
-            <Button variant='outlined' startIcon={<FaPrint />}>Pdf</Button>
-            <Button variant='outlined' >Export</Button>
-         </Box>
+
+         {right}
+
 
 
       </Box>

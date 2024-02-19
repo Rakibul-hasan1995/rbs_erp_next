@@ -6,9 +6,9 @@ import { authorized } from "../../auth/authorized";
 
 
 export async function GET(req: Request) {
-   console.log('first')
+
    try {
-      const user = await authorized(['admin', 'user'])
+      const user = await authorized(['admin'])
       if (!user) {
          return NextResponse.json({ message: 'access denied' }, { status: 401 })
       }

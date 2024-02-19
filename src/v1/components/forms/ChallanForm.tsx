@@ -19,12 +19,12 @@ import {
 import useSelectCustomer from "@/v1/hooks/useSelectCustomer";
 import AsynchronousSelect, { AsyncSelectOptionOption } from "@/v1/components/inputs/asyncSelect";
 import { useEffect, useState } from "react";
-import moment from "moment";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 
 import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import { _arrSum } from "@/v1/utils/arrSum";
 import { Axios } from "@/v1/utils/axios-config";
+import DateInput from "../inputs/dateInput";
 
 interface ChallanItem {
    order: any;
@@ -65,6 +65,9 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
          ...initialValues
       },
    });
+
+   
+
 
    const { fields, append, remove } = useFieldArray({
       control,
@@ -170,16 +173,6 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
       }
    }
 
-   const handlePlus = (value: string, onChange: (arg: any) => void) => {
-      const newDate = moment(`${value}`).add(1, 'day').format('yy-MM-DD')
-      onChange(newDate)
-   }
-   const handleMinus = (value: string, onChange: (arg: any) => void) => {
-      const newDate = moment(`${value}`).subtract(1, 'day').format('yy-MM-DD')
-      onChange(newDate)
-   }
-
-
    const [orderOptions, setOptions] = useState<AsyncSelectOptionOption[]>([]);
 
    useEffect(() => {
@@ -196,10 +189,11 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
 
          const { data } = await Axios.get(
             // `/api/v1/users/${selectedCustomer.value}/orders?expand=true&limit=10${searchValue ? `&search=${searchValue}` : ''}`
-            `/api/v1/orders?expand=true&limit=10${searchValue ? `&search=${searchValue}` : ''}`
+            `/api/v1/orders?expand=true&limit=20${searchValue ? `&search=${searchValue}` : ''}`
 
          );
-         const items: AsyncSelectOptionOption[] = data.data?.map((item: any) => ({
+        
+         const items: AsyncSelectOptionOption[] = data.data?.filter((item:any)=>item.customer._id == selectedCustomer.value).map((item: any) => ({
             // const items: AsyncSelectOptionOption[] = data.data?.filter((item: Order) => item.status !== 'Invoiced')?.map((item: any) => ({
             label: `${item.program_name} ${item.order_name} (${item.status[0]})`,
             value: item,
@@ -231,26 +225,7 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
                      control={control}
                      name="date"
                      render={({ field }) => (
-
-                        <Box position={'relative'}>
-                           <TextField
-                              {...field}
-                              type="date"
-                              error={Boolean(errors.date)}
-                              helperText={errors.date?.message}
-                              label="Date"
-                              size="small"
-                              fullWidth
-                           />
-                           <Box position={'absolute'} top={7} right={50}>
-                              <IconButton onClick={() => handleMinus(field.value, field.onChange)} color="error" size="small">
-                                 <FaMinusCircle />
-                              </IconButton>
-                              <IconButton onClick={() => handlePlus(field.value, field.onChange)} color="primary" size="small">
-                                 <FaPlusCircle />
-                              </IconButton>
-                           </Box>
-                        </Box>
+                        <DateInput value={field.value} onChange={field.onChange} error={errors.date?.message} />
                      )}
                   />
                </Grid>

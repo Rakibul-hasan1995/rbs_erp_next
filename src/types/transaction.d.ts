@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Pagination } from ".";
 
 export type TransactionRaw = {
    date: any
@@ -49,6 +50,28 @@ export type TransactionFormatted = TransactionRaw & {
    debit_amount_formatted?: string;
    credit_amount_formatted?: string;
    relative_id?: string
-
-
 }
+type TransactionsApiResponse = {
+   code: number;
+   data: TransactionFormatted[];
+   dateRange: string;
+   pagination: Pagination
+}
+
+
+export type TransactionQueryParams = {
+   limit?: string;
+   page?: string;
+   filter_key?: 'status';
+   filter_value?: string;
+   search?: string;
+   search_by?: 'type' | "debit_amount" | 'credit_amount' | "reference" | '';
+   sort_type?: "desc" | 'asc';
+   sort_key?: string;
+   start_date?: string;
+   end_date?: string;
+   expand?: 'true' | 'false';
+   is_debit?: 'true' | 'false';
+   is_credit?: 'true' | 'false';
+}
+

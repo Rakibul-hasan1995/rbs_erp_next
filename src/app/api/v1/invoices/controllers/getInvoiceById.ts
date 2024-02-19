@@ -1,5 +1,7 @@
 import { DeliveryChallan } from "@/app/api/mongoose/model/Challan";
 import { Invoice } from "@/app/api/mongoose/model/Invoice";
+import { Transaction } from "@/app/api/mongoose/model/transaction";
+import { updateTransaction } from "@/app/api/v2/transactions/controllers/updateTransaction";
 
 export const getInvoiceById = async (id: string, expand: boolean,) => {
    try {
@@ -51,7 +53,7 @@ export const getInvoiceById = async (id: string, expand: boolean,) => {
             const customer_id = data.customer._id
             const element: any = data.items[i];
             const deliveryChallan = await DeliveryChallan.find({ 'items.order': { $in: element._id }, 'customer': customer_id });
-   
+
             const challanNos = deliveryChallan?.map(challan => challan.challan_no).join(", ");
             const obj = {
                ...element.toObject(),
@@ -86,6 +88,11 @@ export const getInvoiceById = async (id: string, expand: boolean,) => {
       if (inv.amount !== inv.totalAmountBDT) {
          await Invoice.findByIdAndUpdate(inv._id, { amount: inv.totalAmountBDT })
          inv.amount = inv.totalAmountBDT
+
+         const transaction = await Transaction.findOne({ ref_id: inv._id })
+         if (transaction) {
+            await updateTransaction({ amount: inv.totalAmountBDT }, transaction._id)
+         }
       }
 
       return {
@@ -93,9 +100,9 @@ export const getInvoiceById = async (id: string, expand: boolean,) => {
          data: inv,
       }
    } catch (error: any) {
-     return {
-      code: 500, message: error.message, error
-     }
+      return {
+         code: 500, message: error.message, error
+      }
    }
 };
 

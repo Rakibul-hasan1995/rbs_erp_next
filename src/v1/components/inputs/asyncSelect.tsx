@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { CustomScrollbarBox } from '../CustomScrollBox';
 
 export interface AsyncSelectOptionOption {
    label: string;
@@ -69,6 +70,7 @@ const AsynchronousSelect = React.forwardRef(({
          sx={sx}
          inputValue={inputValue}
          onInputChange={handleInputChange}
+         ListboxComponent={CustomScrollbarBox}
          renderOption={(props: any, option) => (
             <li
                key={option.label}

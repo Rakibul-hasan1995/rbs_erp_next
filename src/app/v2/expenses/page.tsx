@@ -45,20 +45,16 @@ import { MdOutlineFileUpload } from 'react-icons/md';
 import { useUploadTransactionFile } from './useUploadFile';
 import NextLink from 'next/link';
 import { useThemeContext } from '@/v1/context/themeContext';
-import useAddExpense from '@/hooks/useAddExpense';
-import useUpdateExpense from '@/hooks/useUpdateExpense';
 import { AddModal } from './addModal';
 import { UpdateModal } from './updateModal';
 
-
-
 export default function Page() {
-  const { state, setState, fetchDataById, fetchData } = useTransactionContext()
+  const { state, fetchDataById, fetchData, setState } = useTransactionContext()
   const theme = useTheme()
   const { setTitle } = useThemeContext()
 
   useEffect(() => {
-    fetchData({ limit: 100, search: 'Expense', search_by: "type", is_debit: 'true', sort_key: "createdAt", sort_type: "asc" })
+    fetchData({ limit: 10, search: 'Expense', search_by: "type", is_debit: 'true', sort_key: "createdAt", sort_type: "asc" })
   }, [])
   useEffect(() => {
     setTitle("Expenses")
@@ -79,7 +75,14 @@ export default function Page() {
   const handleSelectItem = async () => {
     if (state.transactions?.length) {
       const find = state.transactions.find(item => item._id == selected_id)
-      setSelected(find)
+      if (find) {
+        setSelected(find)
+      } else if (selected_id) {
+        const data = await fetchDataById(`${selected_id}`)
+        state.transactions.push(data)
+        setSelected(data)
+      }
+
     } else {
       const data = await fetchDataById(`${selected_id}`)
       setSelected(data)
@@ -91,8 +94,6 @@ export default function Page() {
   const isSelected = (id: string) => {
     return Boolean(id == selected_id)
   }
-
-
 
   const addRef = useRef<any>()
   const updateRef = useRef<any>()
@@ -132,7 +133,7 @@ export default function Page() {
                   <ListItem
                     disablePadding>
                     <ListItemButton
-                      autoFocus={isSelected(item._id)}
+                      autoFocus={isSelected(item?._id)}
                       selected={isSelected(item._id)}
                       onClick={() => pushQuery({ selected: item._id })}
                       sx={{ color: theme.palette.info.light, borderLeft: isSelected(item._id) ? 5 : 0 }}
@@ -160,6 +161,8 @@ export default function Page() {
                 </React.Fragment>
               ))}
             </List>
+            <Link component={NextLink} href={'expenses/details'}>
+              <Typography textAlign={'right'} my={2}>Show More</Typography></Link>
 
           </CustomScrollbarBox>
         </Grid>

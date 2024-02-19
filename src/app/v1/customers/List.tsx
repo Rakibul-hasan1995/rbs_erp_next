@@ -1,9 +1,9 @@
 'use client'
 import { Pagination } from '@/v1/components/table/paginationBar'
 import UiTable from '@/v1/components/table/uiTable'
+import { Axios } from '@/v1/utils/axios-config'
 import { Box, Fab, IconButton } from '@mui/material'
 import { ColDef } from 'ag-grid-community'
-import axios from 'axios'
 import Link from 'next/link'
 import * as React from 'react'
 import { BsEye } from 'react-icons/bs'
@@ -90,7 +90,7 @@ const UserList = () => {
 
    const fetch = async (str: string) => {
       try {
-         const { data } = await axios.get(`/api/v1/users?roll=customer&limit=${pagination.limit}&${str}`)
+         const { data } = await Axios.get(`/api/v1/users?roll=customer&limit=${pagination.limit}&${str}`)
          console.log(data)
          setRowData(data.data)
          setPagination((prev) => ({ ...data.pagination, limit: prev.limit }))

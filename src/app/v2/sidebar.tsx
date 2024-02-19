@@ -25,6 +25,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import styles from './style.module.css';
 import { MenuItem, routeStructure } from './sideMenuItems';
+import SearchBar from './searchBar';
 
 const CustomScrollbarBox = styled(Box)({
    '&::-webkit-scrollbar': {
@@ -230,7 +231,7 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
 
    return (
       <Box sx={{ display: 'flex' }}>
-         <AppBar position="fixed" open={open} >
+         <AppBar position="fixed" open={open} sx={(theme) => ({ bgcolor: theme.palette.background.default, color: theme.palette.text.primary })} >
             <Toolbar>
                <IconButton
                   color="inherit"
@@ -256,6 +257,10 @@ const Sidebar = ({ children, active = 'people sdf' }: { children: any; active?: 
                <Typography variant="h6" noWrap component="div">
                   {title}
                </Typography>
+
+               <Box ml={3}>
+                  <SearchBar />
+               </Box>
                <Box ml={'auto'}>
                   <IconButton onClick={() => alert('please add function in sidebar:271')}>
                      <MdOutlineLogout />

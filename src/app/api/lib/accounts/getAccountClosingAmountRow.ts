@@ -15,10 +15,14 @@ type GetClosingBalanceRow = (arg: {
 
 export const getAccountClosingBalanceRow: GetClosingBalanceRow = async ({ accountId, startDate, endDate }) => {
    try {
+
       const data = await Transaction.aggregate([
          {
             $match: {
-               account_id: accountId
+               account_id: accountId,
+               date: {
+                  $lte: new Date(moment(endDate).endOf('D').toISOString())
+               }
             }
          },
          {
@@ -48,6 +52,7 @@ export const getAccountClosingBalanceRow: GetClosingBalanceRow = async ({ accoun
          credit_amount_formatted: clBalance > 0 ? numberWithCommas(clBalance) : '0.00',
          debit_amount_formatted: clBalance < 0 ? numberWithCommas(clBalance) : '0.00',
       }
+
       return row
 
 

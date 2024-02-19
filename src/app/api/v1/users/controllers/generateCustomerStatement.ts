@@ -51,6 +51,8 @@ export const getStatementByUserId = async (id: string): Promise<Response> => {
          };
          inv.push(data);
       }
+      console.log(invoices)
+
 
       for (let index = 0; index < payments.length; index++) {
          const element = payments[index];
@@ -72,7 +74,6 @@ export const getStatementByUserId = async (id: string): Promise<Response> => {
          return currentDate < min ? currentDate : min;
       }, new Date(data[0].date));
 
-
       let sortedDates = data.sort((a, b) => moment(a.date).diff(moment(b.date)));
 
       if (customer?.opening_balance) {
@@ -88,7 +89,7 @@ export const getStatementByUserId = async (id: string): Promise<Response> => {
       const debitAmount = _arrSum(sortedDates, "debit");
       const creditAmount = _arrSum(sortedDates, "credit");
       const deuAmount = debitAmount - creditAmount;
-
+      console.log({ debitAmount })
       const value = {
          debitAmount,
          creditAmount,

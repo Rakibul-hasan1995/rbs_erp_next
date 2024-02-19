@@ -1,10 +1,6 @@
-export interface Pagination {
-   nextPage: number | null,
-   prevPage: number | null,
-   currentPage: number | null,
-   totalPages: number | null,
-   totalDocuments: number | null
-}
+
+import { Pagination } from "@/types";
+
 const generatePagination = (page: number, limit: number, totalRecords: number): Pagination => {
    const totalPages = Math.ceil(totalRecords / limit);
 
@@ -15,7 +11,8 @@ const generatePagination = (page: number, limit: number, totalRecords: number): 
       prevPage: hasPrevPage ? +page - 1 : null,
       currentPage: +page,
       totalPages,
-      totalDocuments: totalRecords
+      totalDocuments: totalRecords,
+      limit: limit
    };
    return pagination
 }

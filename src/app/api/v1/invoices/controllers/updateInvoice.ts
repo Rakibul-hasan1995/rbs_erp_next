@@ -21,11 +21,12 @@ export const updateInvoice = async (id: string, body: any,) => {
             message: 'Bad Request'
          }
       }
-      console.log(validate.data)
 
       Object.assign(invoice, validate.data)
 
       await invoice.save();
+
+
       return {
          code: 200,
          data: invoice,

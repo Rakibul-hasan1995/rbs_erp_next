@@ -77,7 +77,7 @@ const paymentSchema = new Schema<PaymentDocument>(
    }
 );
 // paymentSchema.index({ email: 'text' });
-const Payment = mongoose.models.Payment || mongoose.model('Payment', paymentSchema);
+const Payment: Model<PaymentDocument> = mongoose.models.Payment || mongoose.model('Payment', paymentSchema);
 
 
 

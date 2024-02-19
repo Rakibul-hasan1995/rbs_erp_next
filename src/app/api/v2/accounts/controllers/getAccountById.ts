@@ -21,14 +21,12 @@ export const getAccountById = async (url: any, id: string) => {
       const end_date = getQueryParams(url as string, 'end_date', undefined)
       const expand = getQueryParams(url as string, 'expand', false)
 
-
-
       const account: any = await Account.findById(id)
          .populate('createdBy', 'user_name roll')
          .exec()
 
 
-      let data = { ...account._doc }
+      let data = { ...account?._doc }
       const closingBalance = await getClosingAmount(data._id)
       data.closing_balance = account.account_type == 'Income' ? -closingBalance : closingBalance
 

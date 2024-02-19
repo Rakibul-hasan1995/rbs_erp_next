@@ -13,6 +13,8 @@ export const findPayments = async (url: any,) => {
       const sortKey = getQueryParams(url as string, 'sort_key', 'receipt_no')
       const searchTerm = getQueryParams(url as string, 'search', undefined)
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
+      const start_date = getQueryParams(url as string, 'start_date', null)
+      const end_date = getQueryParams(url as string, 'end_date', null)
 
       const skip = (page - 1) * limit;
 
@@ -28,9 +30,21 @@ export const findPayments = async (url: any,) => {
 
       if (searchBy == 'customer.user_name') {
          const customers = await User.find({ user_name: regex })
-         const customersIds = customers.map((item) => { return new mongoose.Types.ObjectId(item._id) })
+         const customersIds = customers.map((item) => { return item._id })
          filter = { customer: { $in: customersIds }, }
       }
+
+      if (start_date) {
+         filter = {
+            ...filter,
+            date: {
+               $gt: new Date(start_date),
+               $lt: new Date(end_date)
+
+            }
+         }
+      }
+
 
 
       const data = await Payment.find(filter)

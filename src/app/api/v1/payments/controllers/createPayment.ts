@@ -16,10 +16,11 @@ export const createPayment = async (body: any) => {
          amount: payment.amount,
          date: payment.date,
          paid_from_account: "65c0c17289eed83404adf657",
-         paid_to_account: "65b88a8880a3b3419a5804ea",
-         type: "Customer Payment",
+         paid_to_account: payment.payment_mode == 'Settlement' ? '65cd7476657e2fa217255476' : "65b88a8880a3b3419a5804ea",
+         type: payment.payment_mode == 'Settlement' ? 'Settlement' : "Customer Payment",
          customer_id: payment.customer,
-         reference: `MRC_No: ${payment.receipt_no}`
+         reference: `MRC_No: ${payment.receipt_no}`,
+         ref_id: payment._id,
       })
 
 

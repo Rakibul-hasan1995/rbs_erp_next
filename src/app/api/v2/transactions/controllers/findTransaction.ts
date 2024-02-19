@@ -1,5 +1,6 @@
 import { getQueryParams } from "@/app/api/lib/getQueryParams";
 import { queryTransactions } from "@/app/api/lib/transactions/queryTransactions";
+import moment from "moment";
 
 export const findTransactions = async (url: any) => {
    try {
@@ -13,7 +14,8 @@ export const findTransactions = async (url: any) => {
       const searchBy = getQueryParams(url as string, 'search_by', undefined)
       const isDebit = getQueryParams(url as string, 'is_debit', 'false') == 'true'
       const isCredit = getQueryParams(url as string, 'is_credit', 'false') == 'true'
-
+      const start_date = getQueryParams(url as string, 'start_date', moment('2022').startOf('month').toISOString())
+      const end_date = getQueryParams(url as string, 'end_date', moment().endOf('month').toISOString())
 
       const regex = new RegExp(searchTerm, 'i')
       let filter = {}
@@ -26,8 +28,9 @@ export const findTransactions = async (url: any) => {
       if (isCredit) {
          filter = { ...filter, credit_amount: { $gt: 0 } }
       }
-
-
+      if (start_date) {
+         filter = { ...filter, date: { $gt: new Date(start_date), $lt: new Date(end_date) } }
+      }
 
       const { data, pagination } = await queryTransactions({ page, limit, sortKey, sortType, filter })
 
@@ -36,6 +39,7 @@ export const findTransactions = async (url: any) => {
          code: 200,
          data,
          pagination,
+         dateRange: `From ${moment(start_date).format('DD MMM yyyy')} To ${moment(end_date).format('DD MMM yyyy')}`
       };
 
       return response

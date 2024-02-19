@@ -24,24 +24,12 @@ import { objToQueryString, queryStringToJSON } from '@/v1/utils/queryString';
 import AccountForm from '../../add/form';
 
 
-
-
-// limit ?: number;
-// sort_by ?: string;
-// sort_type ?: string;
-// start_date ?: string;
-// end_date ?: string;
-// page ?: number;
-// expand ?: 'true' | 'false'
-
 export default function Page() {
   const { state, setState, fetchDataById, fetchData } = useChartOfAccountContext()
   const theme = useTheme()
   const router = useRouter()
 
   const searchParams = useSearchParams()
-
-
 
   const selected = searchParams.get("selected")
 
@@ -57,7 +45,7 @@ export default function Page() {
 
   useEffect(() => {
     if (selected) {
-      fetchDataById(selected, { sort_key: 'createdAt', sort_type: "asc" })
+      fetchDataById(selected, { sort_key: 'createdAt', sort_type: "asc", limit: 5 })
     }
   }, [selected])
 
@@ -147,7 +135,7 @@ export default function Page() {
               </Box>
             }
           </Box>
-          <CustomScrollbarBox maxHeight={`calc(100vh - 135px)`}>
+          <CustomScrollbarBox maxHeight={`calc(100vh - 136px)`}>
             {state.accounts?.length ? <List sx={{ bgcolor: theme.palette.background.paper, minHeight: `calc(100vh - 136px)`, overflow: 'auto' }}>
               {state.accounts?.map((item) => (
                 <React.Fragment key={item._id}>

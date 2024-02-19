@@ -1,21 +1,24 @@
 'use client'
-import { Box, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
+import { Box, ExtendButtonBase, IconButton, IconButtonTypeMap, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material'
 import React from 'react'
 import { BiUser } from 'react-icons/bi';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 type Props = {
-   itemJson: [{
+   itemJson: {
       title: string;
       onClick: () => void;
       icon?: any
-   }]
+   }[];
+   icon?: any;
+   iconSize?: 'small' | 'medium';
+   iconColor?: "default" | "error" | "primary" | "secondary" | "info" | "success" | "warning" | "inherit"
 }
 
 
 
 
-export default function DotMenu({ itemJson }: Props) {
+export default function DotMenu({ itemJson, icon, iconSize, iconColor }: Props) {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
    const handleClose = () => {
@@ -27,8 +30,10 @@ export default function DotMenu({ itemJson }: Props) {
    return (
       <Box>
          <IconButton
-            color='info' onClick={handleClick} >
-            <HiOutlineDotsHorizontal />
+            size={iconSize}
+            color={iconColor || 'info'}
+            onClick={handleClick} >
+            {icon ? icon : <HiOutlineDotsHorizontal />}
          </IconButton>
          <Menu
             id="basic-menu"
@@ -42,7 +47,6 @@ export default function DotMenu({ itemJson }: Props) {
             {itemJson.map((item) => (
                <MenuItem
                   key={item.title}
-
                   onClick={() => {
                      handleClose()
                      item.onClick()

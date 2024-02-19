@@ -1,6 +1,6 @@
 
 'use client'
-import { Pagination } from '@/app/api/lib/generatePagination copy';
+import { Pagination } from '@/types';
 import { TransactionFormatted, TransactionRaw } from '@/types/transaction';
 import { Axios } from '@/v1/utils/axios-config';
 import { objToQueryString } from '@/v1/utils/queryString';
