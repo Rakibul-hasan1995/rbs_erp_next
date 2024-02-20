@@ -1,10 +1,6 @@
 import { User } from "@/app/api/mongoose/model/User";
 import { Customer } from "@/types/customers";
 
-
-
-
-
 type QueryCustomer = (id: string) => Promise<Customer>
 export const getCustomerById: QueryCustomer = async (id) => {
    try {
