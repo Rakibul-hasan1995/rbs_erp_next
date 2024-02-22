@@ -26,6 +26,7 @@ type InitialValue = {
    status?: string;
    reference?: string;
    image?: string;
+   sl_no?: string;
 }
 
 export default function ExpenseForm({ initialValues, submit, mode = 'add' }: { initialValues?: InitialValue, submit: any, mode?: 'update' | 'add' }) {
@@ -247,6 +248,18 @@ export default function ExpenseForm({ initialValues, submit, mode = 'add' }: { i
                               <TextField
                                  {...field}
                                  label="Reference"
+                                 size="small"
+                                 fullWidth
+                              />
+                           )}
+                        />
+                        <Controller
+                           control={control}
+                           name="sl_no"
+                           render={({ field }) => (
+                              <TextField
+                                 {...field}
+                                 label="SL No"
                                  size="small"
                                  fullWidth
                               />
