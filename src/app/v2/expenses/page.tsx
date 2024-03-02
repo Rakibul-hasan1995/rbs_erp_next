@@ -88,6 +88,7 @@ export default function Page() {
       setSelected(data)
     }
   }
+  
   const { handleDrop, handleFileChange, imgUrl } = useUploadTransactionFile()
 
 
@@ -146,7 +147,7 @@ export default function Page() {
                         secondary={
                           <Typography color={theme.palette.text.secondary} variant='caption'>{`${item.date_formatted} | ${item.paid_from_account?.account_name}`}
                             < br />
-                            <Typography ml={2} variant='caption'>{item.reference && '# '}{item.reference} </Typography>
+                            <Typography ml={2} variant='caption'>{item.sl_no} {item.reference && '# '}{item.reference} </Typography>
                             {item.supplier_id && <Typography color={theme.palette.text.secondary} variant='caption'>| Supplier: {item.supplier_id?.user_name} </Typography>}
                           </Typography>}
                       />

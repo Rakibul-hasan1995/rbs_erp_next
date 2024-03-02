@@ -19,9 +19,7 @@ export type TransactionRaw = {
    reference: string;
    image?: string;
    relative_id?: string;
-
-
-
+   sl_no?: string
 }
 
 export type TransactionFormatted = TransactionRaw & {
@@ -49,7 +47,8 @@ export type TransactionFormatted = TransactionRaw & {
    transaction_details?: string;
    debit_amount_formatted?: string;
    credit_amount_formatted?: string;
-   relative_id?: string
+   relative_id?: string;
+ 
 }
 type TransactionsApiResponse = {
    code: number;

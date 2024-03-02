@@ -66,7 +66,7 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
       },
    });
 
-   
+
 
 
    const { fields, append, remove } = useFieldArray({
@@ -176,24 +176,26 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
    const [orderOptions, setOptions] = useState<AsyncSelectOptionOption[]>([]);
 
    useEffect(() => {
-      if (selectedCustomer.value) {
-         orderLoadOption('  ')
+      const label: string = selectedCustomer?.label
+      if (label) {
+         const lt = label.split(' ')
+         orderLoadOption(lt[0])
       }
    }, [selectedCustomer])
 
    const orderLoadOption = async (searchValue: string) => {
       try {
-         if (searchValue.length < 1 || searchValue.length > 8) {
+
+         if (searchValue.length < 1 || searchValue.length > 40) {
             return
          }
 
          const { data } = await Axios.get(
-            // `/api/v1/users/${selectedCustomer.value}/orders?expand=true&limit=10${searchValue ? `&search=${searchValue}` : ''}`
-            `/api/v1/orders?expand=true&limit=20${searchValue ? `&search=${searchValue}` : ''}`
+            `/api/v1/orders?expand=true&limit=20&expand=false&filter_key=status&filter_value=Invoiced${searchValue ? `&search=${searchValue}&search_by=customer.user_name` : ''}`
 
          );
-        
-         const items: AsyncSelectOptionOption[] = data.data?.filter((item:any)=>item.customer._id == selectedCustomer.value).map((item: any) => ({
+
+         const items: AsyncSelectOptionOption[] = data.data?.filter((item: any) => item.customer._id == selectedCustomer.value).map((item: any) => ({
             // const items: AsyncSelectOptionOption[] = data.data?.filter((item: Order) => item.status !== 'Invoiced')?.map((item: any) => ({
             label: `${item.program_name} ${item.order_name} (${item.status[0]})`,
             value: item,

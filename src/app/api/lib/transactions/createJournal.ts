@@ -15,7 +15,8 @@ type Arg = {
    supplier_id?: string;
    reference?: string;
    ref_id?: string[];
-   status?: string
+   status?: string;
+   sl_no?: string
 }
 type Res = {
    success: boolean;
@@ -81,13 +82,12 @@ export const createJournal: CreateJournal = async (body) => {
          type,
          customer_id: !drType.includes(body.type) ? body.customer_id : null,
          supplier_id: body.type == 'Expanse' ? body.supplier_id : null,
-
-
          // relative_id: debitTransaction._id
       })
 
       creditTransaction.relative_id = debitTransaction._id
       debitTransaction.relative_id = creditTransaction._id
+
 
       await creditTransaction.save()
       await debitTransaction.save()

@@ -1,15 +1,9 @@
-import { uploader } from "@/v1/utils/uploadFile";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useTransactionContext } from "./TransactionProvider";
+import axios from "axios";
 
-export  function useUploadTransactionFile() {
+export function useUploadTransactionFile() {
    const [imgUrl, setImgUrl] = useState('');
-   const searchParams = useSearchParams()
-   const id = searchParams.get('selected')
-
-   const { updateTransaction } = useTransactionContext()
 
    const handleFileChange = (e: any) => {
       if (e.target.files.length) {
@@ -27,35 +21,24 @@ export  function useUploadTransactionFile() {
 
    const uploading = async (file: any) => {
       try {
-         const fileData = new FormData()
-         fileData.append('file', file)
+         const formData = new FormData()
+         formData.append('file', file)
 
 
-         // const { data, success } = await uploader(fileData)
+         const CLOUDINARY_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME
 
-
-
-         const { data, success } = await toast.promise(
-            uploader(fileData),
-            {
-               loading: 'Uploading File...',
-               success: <b>Upload Success</b>,
-               error: <b>Upload Error.</b>
-            }
-         )
-
-         if (!success) {
+         formData.append('upload_preset', 'rqys3beg')
+         const res = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/image/upload`, formData)
+         if (res.status == 200) {
+            return { success: true, data: res.data, error: null }
+         } else {
             return toast.error('File Upload Failed')
          }
-         const url = data.secure_url
-         updateTransaction(`${id}`, { image: url })
 
       } catch (error) {
          console.log(error)
       }
    }
-
-
 
    return { handleDrop, handleFileChange, imgUrl }
 }

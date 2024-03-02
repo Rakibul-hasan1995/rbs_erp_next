@@ -67,7 +67,12 @@ const schema = new Schema<TrDocs>(
       reference: {
          type: String,  // voucher no , invoice no, payment ref, etc
       },
-      image: String
+      image: String,
+      sl_no: {
+         type: String,
+         default: "",
+         required: false
+      }
    },
    {
       timestamps: true,
@@ -75,7 +80,7 @@ const schema = new Schema<TrDocs>(
    }
 );
 // userSchema.index({ email: 'text' });
-const Transaction: Model<TrDocs> = mongoose.models.Transaction ||  mongoose.model<TrDocs>('Transaction', schema);
+const Transaction: Model<TrDocs> = mongoose.models.Transaction || mongoose.model<TrDocs>('Transaction', schema);
 
 
 export { Transaction };
