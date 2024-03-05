@@ -32,7 +32,6 @@ const AddProduction = () => {
             emb_reject_qty: 0,
             fabric_reject_qty: 0,
             remarks: '',
-
          }
       ],
       remarks: ''

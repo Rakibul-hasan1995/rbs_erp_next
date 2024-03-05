@@ -177,22 +177,25 @@ const ChallanForm = ({ submit, initialValues }: Props) => {
 
    useEffect(() => {
       const label: string = selectedCustomer?.label
+      setValue('items', initialValues.items)
       if (label) {
-         const lt = label.split(' ')
-         orderLoadOption(lt[0])
+         orderLoadOption('')
       }
+
    }, [selectedCustomer])
 
    const orderLoadOption = async (searchValue: string) => {
       try {
-
          if (searchValue.length < 1 || searchValue.length > 40) {
             return
          }
 
-         const { data } = await Axios.get(
-            `/api/v1/orders?expand=true&limit=20&expand=false&filter_key=status&filter_value=Invoiced${searchValue ? `&search=${searchValue}&search_by=customer.user_name` : ''}`
+         // const { data } = await Axios.get(
+         //    `/api/v1/orders?expand=true&limit=20&expand=false&filter_key=status&filter_value=Invoiced${searchValue ? `&search=${searchValue}&search_by=customer.user_name` : ''}`
+         // );
 
+         const { data } = await Axios.get(
+            `/api/v1/users/${selectedCustomer.value}/orders?expand=false&filter_key=status&filter_value=Invoiced${searchValue ? `&search=${searchValue}` : ''}`
          );
 
          const items: AsyncSelectOptionOption[] = data.data?.filter((item: any) => item.customer._id == selectedCustomer.value).map((item: any) => ({
