@@ -16,13 +16,12 @@ type Arg = {
    reference?: string;
    ref_id?: string[];
    status?: string;
-   sl_no?: string
+   transaction_details?: string;
 }
 type Res = {
    success: boolean;
    data?: TransactionFormatted[];
    errors?: any
-
 }
 type CreateJournal = (arg: Arg) => Promise<Res>
 
@@ -68,8 +67,8 @@ export const createJournal: CreateJournal = async (body) => {
          paid_to_account,
          debit_amount: +amount,
          type,
-         customer_id: drType.includes(body.type) ? body.customer_id : null,
-         supplier_id: body.type !== 'Expanse' ? body.supplier_id : null
+         customer_id: body.customer_id || null,
+         supplier_id: body.supplier_id || null,
       })
 
       const creditTransaction = new Transaction({
@@ -80,9 +79,8 @@ export const createJournal: CreateJournal = async (body) => {
          paid_to_account,
          credit_amount: +amount,
          type,
-         customer_id: !drType.includes(body.type) ? body.customer_id : null,
-         supplier_id: body.type == 'Expanse' ? body.supplier_id : null,
-         // relative_id: debitTransaction._id
+         customer_id: body.customer_id || null,
+         supplier_id: body.supplier_id || null,
       })
 
       creditTransaction.relative_id = debitTransaction._id
