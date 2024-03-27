@@ -1,7 +1,6 @@
 'use client'
 import { ApexOptions } from "apexcharts";
 import React from "react";
-import Chart from "react-apexcharts";
 import { useThemeContext } from "../context/themeContext";
 import dynamic from "next/dynamic";
 const DynamicApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });

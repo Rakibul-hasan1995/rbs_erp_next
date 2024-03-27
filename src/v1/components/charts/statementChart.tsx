@@ -37,8 +37,6 @@ const GroupChart = ({ invoice, payments, statement }: { invoice: any, payments: 
                name: 'Payments'
             },
          ],
-
-
       chart: {
          type: 'bar',
          height: 300,

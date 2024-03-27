@@ -54,9 +54,9 @@ const paymentValidation = (data: any) => {
    }
 
    if ('payment_mode' in data) {
-      docs.status = data.status
+      docs.payment_mode = data.payment_mode
    } else {
-      docs.status = 'Cash'
+      docs.payment_mode = 'Cash'
    }
 
    if ('description' in data) {

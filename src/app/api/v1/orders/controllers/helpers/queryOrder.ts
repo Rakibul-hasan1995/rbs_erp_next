@@ -14,7 +14,7 @@ export const queryOrder = async (url: string, query: any) => {
       const page = getQueryParams(url as string, 'page', 1);
       const limit = getQueryParams(url as string, 'limit', 10)
       const sortType = getQueryParams(url as string, 'sort_type', 'desc')
-      const sortKey = getQueryParams(url as string, 'sort_key', 'program_name')
+      const sortKey = getQueryParams(url as string, 'sort_key', '_id')
       const expand = getQueryParams(url as string, 'expand', false)
       
       const skip = (page - 1) * limit;

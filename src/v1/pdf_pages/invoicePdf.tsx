@@ -108,6 +108,13 @@ const styles = StyleSheet.create({
       borderCollapse: "collapse",
       fontSize: 9
    },
+   imageCell: {
+      border: '0.3px',
+      paddingVertical: '1px',
+      paddingHorizontal: '1px',
+      borderCollapse: "collapse",
+      fontSize: 9
+   },
    img: {
       // border: '0.2px',
       // paddingVertical: '5px',
@@ -185,7 +192,7 @@ function InvoiceDoc({ showHeader = true, pageData }: { showHeader: boolean, page
                      {pageData?.items ? pageData?.items?.map((item: any) =>
                      (<View key={item._id} style={{ flexDirection: 'row' }} >
                         <Text style={[styles.cell, { width: '24%' }]}>{item.program_name} {item.order_name}</Text>
-                        <View style={[styles.cell, { width: '10%' }]}>
+                        <View style={[styles.imageCell, { width: '10%' }]}>
                            <Image
                               style={styles.img}
                               src={item.cover_photo.href} />

@@ -31,7 +31,7 @@ export const createOrder = async (body: any) => {
       const string = body?.tags || ""
       const arr = string.split(' ')
       arr.forEach((item: string) => tags.push(item))
-      const customerData = await User.findById(new mongoose.Types.ObjectId(customer))
+      const customerData = await User.findById(customer)
       if (!customerData) {
          return { code: 400, data: { field: 'customer', value: '! customer is required' } }
       }

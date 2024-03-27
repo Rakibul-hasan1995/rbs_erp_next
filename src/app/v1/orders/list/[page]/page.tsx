@@ -18,13 +18,7 @@ import { useParams } from 'next/navigation';
 const ReportsOrder = () => {
    const activePage = useParams()
    const page = activePage.page
-
-
-
-
    const { config } = useConfig()
-
-
 
    const colDef: ColDef[] = [
       {

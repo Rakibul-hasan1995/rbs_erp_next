@@ -103,8 +103,6 @@ export const customerBalanceSummary: CustomerBalanceSummary = async (ids: mongoo
       })
 
       // data = data.sort((a, b) => (b.closing_amount - a.closing_amount));
-
-
       return data
 
    } catch (error: any) {

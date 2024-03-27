@@ -2,7 +2,6 @@ import generatePagination from "@/app/api/lib/generatePagination copy";
 import { getQueryParams } from "@/app/api/lib/getQueryParams";
 import { Invoice } from "@/app/api/mongoose/model/Invoice";
 import { User } from "@/app/api/mongoose/model/User";
-import mongoose from "mongoose";
 import '@/app/api/mongoose/model/Gallery'
 
 // only allow for filter = 'items ? order' | 'customer' | 'invoice_no'
@@ -31,7 +30,7 @@ export const findInvoice = async (url: any) => {
 
       if (searchBy == 'customer.user_name') {
          const customers = await User.find({ user_name: regex })
-         const customersIds = customers.map((item) => { return new mongoose.Types.ObjectId(item._id) })
+         const customersIds = customers.map((item) => item._id)
          filter = { customer: { $in: customersIds }, }
       }
 
