@@ -1,6 +1,7 @@
 import { createJournal } from "@/app/api/lib/transactions/createJournal"
 import paymentValidation from "@/app/api/lib/validation/createPaymentValidation"
 import { Payment } from "@/app/api/mongoose/model/Payment"
+import { User } from "@/app/api/mongoose/model/User"
 
 export const createPayment = async (body: any) => {
    try {
@@ -10,6 +11,7 @@ export const createPayment = async (body: any) => {
          return { code: 400, message: 'Bad Request', data: validate.error }
       }
       const payment = new Payment(validate.data)
+      const customer = await User.findById(payment.customer)
 
       await payment.save()
       await createJournal({
@@ -21,6 +23,7 @@ export const createPayment = async (body: any) => {
          customer_id: payment.customer,
          reference: `MRC_No: ${payment.receipt_no}`,
          ref_id: payment._id,
+         transaction_details: customer?.user_name
       })
 
 

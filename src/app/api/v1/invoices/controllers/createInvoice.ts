@@ -4,6 +4,7 @@ import invoiceValidation from "@/app/api/lib/validation/createInvoiceValidation"
 import { Invoice } from "@/app/api/mongoose/model/Invoice";
 import { Order } from "@/app/api/mongoose/model/Order";
 import { History } from "@/app/api/mongoose/model/OrderHistory";
+import { User } from "@/app/api/mongoose/model/User";
 import { landingZeros } from "@/v1/utils/addLandingZero";
 import moment from "moment";
 import mongoose from "mongoose";
@@ -16,6 +17,7 @@ export const createInvoice = async (body: any) => {
       }
 
       const invoice = new Invoice(validate.data)
+      const customer = await User.findById(invoice.customer)
 
       // generate invoice_no
       const invCount = await Invoice.findOne({}).sort({ createdAt: -1 })
@@ -83,7 +85,8 @@ export const createInvoice = async (body: any) => {
          type: "Invoice",
          ref_id: inv._id,
          customer_id: invoice.customer,
-         reference: `${invoice?.invoice_no}`
+         reference: `${invoice?.invoice_no}`,
+         transaction_details: customer?.user_name
       })
 
 
