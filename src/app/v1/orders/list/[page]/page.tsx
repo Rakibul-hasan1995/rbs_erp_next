@@ -141,7 +141,7 @@ const ReportsOrder = () => {
    ]
 
    const { fetch, rowData, pagination, setPagination, handleUpdateOrder } =
-      useOrderSocket(`&page=${page}&sort_key=program_name&sort_type=desc&filter_key=status&filter_value=Invoiced&expand=true`)
+      useOrderSocket(`&page=${page}&filter_key=status&filter_value=Invoiced&expand=true`)
 
    const { setTitle } = useThemeContext()
    React.useEffect(() => {
