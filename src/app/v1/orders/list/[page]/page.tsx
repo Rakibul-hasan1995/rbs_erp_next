@@ -48,6 +48,7 @@ const ReportsOrder = () => {
          field: "program_name",
          headerName: "Program-no",
          filter: true,
+         sortable: false,
          editable: false
       },
 
