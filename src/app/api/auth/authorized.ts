@@ -40,7 +40,7 @@ export const authorized = async (roles = ['admin']) => {
          }
          if (roles.includes(user.roll)) {
             const userData : any = await User.findById(validToken.id).select('status')
-            if (userData?.status !== 'Active') {
+            if (userData?.status !== 'active') {
                return null
             } else {
                return user
