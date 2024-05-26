@@ -51,7 +51,7 @@ export const getStatementByUserId = async (id: string): Promise<Response> => {
          };
          inv.push(data);
       }
-      console.log(invoices)
+
 
 
       for (let index = 0; index < payments.length; index++) {

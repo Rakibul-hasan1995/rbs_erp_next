@@ -39,9 +39,8 @@ export const authorized = async (roles = ['admin']) => {
             email: validToken.email
          }
          if (roles.includes(user.roll)) {
-            const userData = await User.findById(validToken.id).select('status')
-
-            if (userData?.status !== 'Approved') {
+            const userData : any = await User.findById(validToken.id).select('status')
+            if (userData?.status !== 'Active') {
                return null
             } else {
                return user
