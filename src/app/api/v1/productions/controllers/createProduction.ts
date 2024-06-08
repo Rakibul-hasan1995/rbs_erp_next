@@ -1,7 +1,6 @@
 import productionValidate from "@/app/api/lib/validation/createProductionValidation"
 import { History } from "@/app/api/mongoose/model/OrderHistory"
 import { Production } from "@/app/api/mongoose/model/Production"
-import mongoose from "mongoose"
 export const createProduction = async (body: any,) => {
    try {
       const {
@@ -28,6 +27,8 @@ export const createProduction = async (body: any,) => {
       const history: any[] = []
       const productionRow = data?.production_data
       productionRow?.forEach((element: any) => {
+
+
          const obj = {
             parentId: element.order,
             title: 'Production',

@@ -156,6 +156,7 @@ const InvoiceForm = ({ submit, initialValues }: Props) => {
          }
       }
    }
+   
    const { userLoadOption, userOptions } = useSelectCustomer('roll=customer')
 
    const calculateTotalUsd = (order: OrderExpand) => {

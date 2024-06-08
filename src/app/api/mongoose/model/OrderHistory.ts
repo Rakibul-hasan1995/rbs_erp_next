@@ -5,7 +5,8 @@ interface HistoryDocument extends mongoose.Document {
    title: string;
    massage: string;
    snapshot: any,
-   data: any
+   data: any;
+   time: string | Date
 }
 
 
@@ -25,10 +26,10 @@ const historySchema = new Schema<HistoryDocument>(
       data: {
          type: Object
       },
-
       snapshot: {
          type: Object,
       },
+      time: String
    },
    {
       timestamps: true,
